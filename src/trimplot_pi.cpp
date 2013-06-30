@@ -37,7 +37,7 @@
 
 #include "trimplot_pi.h"
 #include "TrimPlotDialog.h"
-#include "TrimPlotPrefsDialog.h"
+#include "PreferencesDialog.h"
 #include "icons.h"
 
 
@@ -69,12 +69,10 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //---------------------------------------------------------------------------------------------------------
 
 trimplot_pi::trimplot_pi(void *ppimgr)
-    : opencpn_plugin_18(ppimgr),
+    : opencpn_plugin_18(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
-    m_lastfix.Lat = NAN;
-    m_lastfix.Lon = NAN;
 }
 
 //---------------------------------------------------------------------------------------------------------
@@ -87,17 +85,10 @@ int trimplot_pi::Init(void)
 {
     AddLocaleCatalog( _T("opencpn-trimplot_pi") );
 
-    // Set some default private member parameters
-    m_trimplot_dialog_x = 0;
-    m_trimplot_dialog_y = 0;
-
-    ::wxDisplaySize(&m_display_width, &m_display_height);
-    
     //    Get a pointer to the opencpn display canvas, to use as a parent for the POI Manager dialog
     m_parent_window = GetOCPNCanvasWindow();
-    m_pconfig = GetOCPNConfigObject(); //    Get opencpn configuration object
 
-    m_preferences = new PreferencesDialog(m_parent_window);
+    m_Preferences = new PreferencesDialog(m_parent_window, *this);
     
     LoadConfig(); //    And load the configuration items
     
@@ -129,6 +120,8 @@ bool trimplot_pi::DeInit(void)
         m_pTrimPlotDialog = NULL;
     }
     SaveConfig();
+
+    delete m_Preferences;
 
     RemovePlugInTool(m_leftclick_tool_id);
 
@@ -198,16 +191,17 @@ void trimplot_pi::RearrangeWindow()
         return;
 
     SetColorScheme(PI_ColorScheme());
-    
-    m_pTrimPlotDialog->Fit();
 }
 
 void trimplot_pi::OnToolbarToolCallback(int id)
 {
     if(!m_pTrimPlotDialog)
     {
-        m_pTrimPlotDialog = new TrimPlotDialog(*this, m_parent_window);
+        m_pTrimPlotDialog = new TrimPlotDialog(m_parent_window, *this);
         m_pTrimPlotDialog->Move(wxPoint(m_trimplot_dialog_x, m_trimplot_dialog_y));
+        m_pTrimPlotDialog->SetSize(m_trimplot_dialog_w, m_trimplot_dialog_h);
+
+        RepopulatePlots();
     }
 
     RearrangeWindow();
@@ -240,54 +234,32 @@ bool trimplot_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
     return true;
 }
 
-void trimplot_pi::ComputeBearingDistance(double seconds, double &bearing, double &distance)
-{
-    PlugIn_Position_Fix_Ex current = m_fixes.front();
-
-    std::list<PlugIn_Position_Fix_Ex>::iterator it = m_fixes.begin();
-    for(;;) {
-        if(it == m_fixes.end())
-            return;
-        if(current.FixTime - (*it).FixTime >= seconds)
-            break;
-    }
-    
-    DistanceBearingMercator_Plugin((*it).lat, (*it).lon, current.lat, current.lon, &bearing, &distance);
-}
-
 void trimplot_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
 {
-    if(!m_Preferences->m_cbCoursePredicion->GetValue() || !m_fixes.size())
+    if(!m_Preferences->m_cbCoursePrediction->GetValue() || !m_fixes.size())
         return;
 
     double bearing, distance;
-    ComputeBearingDistance(m_Preferences.m_sCoursePredictionSeconds.GetValue(),
+    ComputeBearingDistance(m_Preferences->m_sCoursePredictionSeconds->GetValue(),
                            bearing, distance);
 
     PlugIn_Position_Fix_Ex current = m_fixes.front();
     double dlat, dlon;
-    PositionBearingDistanceMercator_Plugin(current.lat, current.lon, bearing,
-                                           distance
-                                           * m_Preferences.m_sCoursePredictionLength.GetValue() * 60.0
-                                           / m_Preferences.m_sCoursePredictionSeconds.GetValue(),
+    PositionBearingDistanceMercator_Plugin(current.Lat, current.Lon, bearing, distance
+                                           * m_Preferences->m_sCoursePredictionLength->GetValue() * 60.0
+                                           / m_Preferences->m_sCoursePredictionSeconds->GetValue(),
                                            &dlat, &dlon);
-    
     wxPoint r1, r2;
-    GetCanvasPixLL(&vp, &r1, current.lat, current.lon);
+    GetCanvasPixLL(&vp, &r1, current.Lat, current.Lon);
     GetCanvasPixLL(&vp, &r2, dlat, dlon);
     
     dc.SetPen(wxPen(*wxRED, 3));
     dc.DrawLine( r1.x, r1.y, r2.x, r2.y);
 }
 
-void trimplot_pi::ResetDeadman()
-{
-    m_DeadmanUpdateTime = wxDateTime::Now();
-}
-
 bool trimplot_pi::LoadConfig(void)
 {
-    wxFileConfig *pConf = m_pconfig;
+    wxFileConfig *pConf = GetOCPNConfigObject();
 
     if(!pConf)
         return false;
@@ -296,21 +268,30 @@ bool trimplot_pi::LoadConfig(void)
     
     m_trimplot_dialog_x =  pConf->Read ( _T ( "DialogPosX" ), 20L );
     m_trimplot_dialog_y =  pConf->Read ( _T ( "DialogPosY" ), 20L );
+    m_trimplot_dialog_w =  pConf->Read ( _T ( "DialogW" ), 300L );
+    m_trimplot_dialog_h =  pConf->Read ( _T ( "DialogH" ), 200L );
 
     return true;
 }
 
 bool trimplot_pi::SaveConfig(void)
 {
-    wxFileConfig *pConf = m_pconfig;
+    wxFileConfig *pConf = GetOCPNConfigObject();
 
     if(!pConf)
         return false;
 
     pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
 
-    pConf->Write ( _T ( "DialogPosX" ),   m_trimplot_dialog_x );
-    pConf->Write ( _T ( "DialogPosY" ),   m_trimplot_dialog_y );
+    if(m_pTrimPlotDialog) {
+        wxPoint p = m_pTrimPlotDialog->GetPosition();
+        wxSize s = m_pTrimPlotDialog->GetSize();
+
+        pConf->Write ( _T ( "DialogPosX" ), p.x);
+        pConf->Write ( _T ( "DialogPosY" ), p.y);
+        pConf->Write ( _T ( "DialogW" ), s.x);
+        pConf->Write ( _T ( "DialogH" ), s.y);
+    }
     
     return true;
 }
@@ -323,21 +304,44 @@ void trimplot_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
         if(m_fixes.size() > 1000)
             m_fixes.pop_back();
 
-        if(m_pTrimPlotDialog && m_pTrimPlotDialog.IsShown()) {
+        if(m_pTrimPlotDialog && m_pTrimPlotDialog->IsShown()) {
             double seconds, bearing, distance;
 
-            seconds = m_Preferences.m_sSpeedSeconds.GetValue();
+            seconds = m_Preferences->m_sSpeedSeconds->GetValue();
             ComputeBearingDistance(seconds, bearing, distance);
-            m_stTrim->SetLabel(wxString::Format(_T("%.2f"), distance / seconds * 3600));
+            m_pTrimPlotDialog->m_stSpeed->SetLabel(wxString::Format(_T("%.2f"), distance / seconds * 3600));
 
-            seconds = m_Preferences.m_sCourseSeconds.GetValue();
+            seconds = m_Preferences->m_sCourseSeconds->GetValue();
             ComputeBearingDistance(seconds, bearing, distance);
-            m_stTrim->SetLabel(wxString::Format(_T("%.2f"), bearing));
+            m_pTrimPlotDialog->m_stCourse->SetLabel(wxString::Format(_T("%.2f"), bearing));
+
+            m_pTrimPlotDialog->Refresh();
         }
     }
 }
 
-void trimplot_pi::ShowPreferencesDialog()
+void trimplot_pi::ShowPreferencesDialog( wxWindow* parent )
 {
-    m_preferences->show();
+    m_Preferences->Show();
+}
+
+void trimplot_pi::ComputeBearingDistance(double seconds, double &bearing, double &distance)
+{
+    PlugIn_Position_Fix_Ex current = m_fixes.front();
+
+    std::list<PlugIn_Position_Fix_Ex>::iterator it;
+    for(it = m_fixes.begin(); current.FixTime - (*it).FixTime < seconds; it++)
+        if(it == m_fixes.end()) {
+            bearing = distance = NAN;
+            return;
+        }
+    
+    DistanceBearingMercator_Plugin(current.Lat, current.Lon, (*it).Lat, (*it).Lon, &bearing, &distance);
+}
+
+void trimplot_pi::RepopulatePlots()
+{
+    if(m_pTrimPlotDialog)
+        m_pTrimPlotDialog->RepopulatePlots(m_Preferences->m_cbSpeed->GetValue(),
+                                           m_Preferences->m_cbCourse->GetValue());
 }

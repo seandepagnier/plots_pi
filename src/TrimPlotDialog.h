@@ -32,12 +32,14 @@ class trimplot_pi;
 class TrimPlotDialog: public TrimPlotDialogBase
 {
 public:
-    TrimPlotDialog( trimplot_pi &_trimplot_pi, wxWindow* parent);
+    TrimPlotDialog(wxWindow* parent, trimplot_pi &_trimplot_pi);
     ~TrimPlotDialog();
 
+    void OnSize(wxSizeEvent& event) { Refresh(); event.Skip(); }
+    void OnDoubleClick( wxMouseEvent& event );
     void OnPaint(wxPaintEvent& event);
-    void OnPreferences(wxCommandEvent& event);
-    void OnClose(wxCommandEvent& event) { Hide(); }
+
+    void RepopulatePlots(bool speed, bool course);
 
 private:
     trimplot_pi &m_trimplot_pi;

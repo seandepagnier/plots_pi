@@ -32,13 +32,12 @@ class trimplot_pi;
 class PreferencesDialog: public PreferencesDialogBase
 {
 public:
-    PreferencesDialog( trimplot_pi &_trimplot_pi, wxWindow* parent);
-    void OnSyncToBoat( wxCommandEvent& event );
-    void OnCurrentCourse( wxCommandEvent& event );
-    void OnTestAlarm( wxCommandEvent& event );
-    void OnInformation( wxCommandEvent& event );
+    PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi);
+    ~PreferencesDialog();
+
+    void OnPlotChange( wxCommandEvent& event );
     void OnAbout( wxCommandEvent& event );
 
-protected:
+private:
     trimplot_pi &m_trimplot_pi;
 };

@@ -26,45 +26,77 @@
  */
 
 #include "trimplot_pi.h"
-#include "TrimPlotPrefsDialog.h"
-#include "AboutDialog.h"
+#include "PreferencesDialog.h"
 
-TrimPlotPrefsDialog::TrimPlotPrefsDialog( trimplot_pi &_trimplot_pi, wxWindow* parent)
-    : TrimPlotPrefsDialogBase( parent ), m_trimplot_pi(_trimplot_pi)
+PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi)
+    : PreferencesDialogBase(parent), m_trimplot_pi(_trimplot_pi)
 {
+    wxFileConfig *pConf = GetOCPNConfigObject();
+
+    if(!pConf)
+        return;
+
+    bool bvalue;
+    double dvalue;
+    int ivalue;
+
+    pConf->Read(_T("SpeedPlot"), &bvalue, true);
+    m_cbSpeed->SetValue(bvalue);
+
+    pConf->Read(_T("SpeedScale"), &dvalue, 3);
+    m_tSpeedScale->SetValue(wxString::Format(_T("%.2f"), dvalue));
+
+    pConf->Read(_T("SpeedSeconds"), &ivalue, 10);
+    m_sSpeedSeconds->SetValue(ivalue);
+
+
+    pConf->Read(_T("CoursePlot"), &bvalue, true);
+    m_cbCourse->SetValue(bvalue);
+
+    pConf->Read(_T("CourseScale"), &dvalue, 20);
+    m_tCourseScale->SetValue(wxString::Format(_T("%.2f"), dvalue));
+
+    pConf->Read(_T("CourseSeconds"), &ivalue, 10);
+    m_sCourseSeconds->SetValue(ivalue);
+
+
+    pConf->Read(_T("CoursePrediction"), &bvalue, false);
+    m_cbCoursePrediction->SetValue(bvalue);
+
+    pConf->Read(_T("CoursePredictionLength"), &ivalue, 10);
+    m_sCoursePredictionLength->SetValue(ivalue);
+
+    pConf->Read(_T("CoursePredictionSeconds"), &ivalue, 10);
+    m_sCoursePredictionSeconds->SetValue(ivalue);
 }
 
-void TrimPlotPrefsDialog::OnSyncToBoat( wxCommandEvent& event )
+PreferencesDialog::~PreferencesDialog()
 {
-    m_tAnchorLatitude->SetValue(wxString::Format(_T("%f"), m_trimplot_pi.m_lastfix.Lat));
-    m_tAnchorLongitude->SetValue(wxString::Format(_T("%f"), m_trimplot_pi.m_lastfix.Lon));
+    wxFileConfig *pConf = GetOCPNConfigObject();
+
+    if(!pConf)
+        return;
+
+    double dvalue;
+
+    pConf->Write(_T("SpeedPlot"), m_cbSpeed->GetValue());
+    m_tSpeedScale->GetValue().ToDouble(&dvalue);
+    pConf->Write(_T("SpeedScale"), dvalue);
+    pConf->Write(_T("SpeedSeconds"), m_tSpeedScale->GetValue());
+
+    pConf->Write(_T("CoursePlot"), m_cbCourse->GetValue());
+    m_tCourseScale->GetValue().ToDouble(&dvalue);
+    pConf->Write(_T("CourseScale"), dvalue);
+    pConf->Write(_T("CourseSeconds"), m_tCourseScale->GetValue());
+
+    pConf->Write(_T("CoursePrediction"), m_cbCoursePrediction->GetValue());
+    pConf->Write(_T("CoursePredictionLength"), m_sCoursePredictionLength->GetValue());
+    pConf->Write(_T("CoursePredictionSeconds"), m_sCoursePredictionSeconds->GetValue());
 }
 
-void TrimPlotPrefsDialog::OnCurrentCourse( wxCommandEvent& event )
+void PreferencesDialog::OnPlotChange( wxCommandEvent& event )
 {
-    m_sCourseDegrees->SetValue(m_trimplot_pi.m_dCurrentCourse);
-}
-
-void TrimPlotPrefsDialog::OnTestAlarm( wxCommandEvent& event )
-{
-        m_trimplot_pi.RunAlarm(m_cbSound->GetValue() ? m_fpSound->GetPath() : _T(""),
-                               m_cbCommand->GetValue() ? m_tCommand->GetValue() : _T(""),
-                               m_cbMessageBox->GetValue());
-}
-
-void TrimPlotPrefsDialog::OnInformation( wxCommandEvent& event )
-{
-    wxMessageDialog mdlg(this, _("Each alarm is enabled/disabled with a check box.\n\n\
-Most alarms should be self-explanatory, however the AIS alarm may be only useful \
-in areas where AIS traffic is known to regularly occur, or from a reciever on a ship \
-which also has an active transmitter.  Otherwise an alarm will occur if there are no \
-ships\n\n\
-Alarm action:\n\n\
-Normally a sound is played, however you can execute any command you like.  \
-On linux for example, builtin sound playing can block, so instead consider a command of:\n\
-\"aplay /usr/local/share/opencpn/sounds/2bells.wav\""),
-                         _("TrimPlot Information"), wxOK | wxICON_INFORMATION);
-    mdlg.ShowModal();
+    m_trimplot_pi.RepopulatePlots();
 }
 
 void PreferencesDialog::OnAbout( wxCommandEvent& event )

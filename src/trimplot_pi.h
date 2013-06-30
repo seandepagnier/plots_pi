@@ -28,6 +28,8 @@
 #ifndef _TRIMPLOTPI_H_
 #define _TRIMPLOTPI_H_
 
+#include <list>
+
 #include "wx/wxprec.h"
 
 #ifndef  WX_PRECOMP
@@ -88,6 +90,7 @@ double heading_resolve(double degrees);
 
 class ocpnDC;
 class TrimPlotDialog;
+class PreferencesDialog;
 
 class trimplot_pi : public wxEvtHandler, public opencpn_plugin_18
 {
@@ -122,7 +125,8 @@ public:
       void SetTrimPlotDialogX    (int x){ m_trimplot_dialog_x = x;}
       void SetTrimPlotDialogY    (int x){ m_trimplot_dialog_y = x;}
 
-      void ShowPreferencesDialog();
+      void ShowPreferencesDialog( wxWindow* parent );
+      void RepopulatePlots();
 
       wxWindow         *m_parent_window;
 
@@ -134,16 +138,17 @@ private:
       bool    LoadConfig(void);
       bool    SaveConfig(void);
 
-      void    SetCursorLatLon(double lat, double lon);
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 
       TrimPlotDialog   *m_pTrimPlotDialog;
       int               m_trimplot_dialog_x, m_trimplot_dialog_y;
-      int               m_display_width, m_display_height;
+      int               m_trimplot_dialog_w, m_trimplot_dialog_h;
 
       int               m_leftclick_tool_id;
 
       void              RearrangeWindow();
+
+      void ComputeBearingDistance(double seconds, double &bearing, double &distance);
 };
 
 #endif

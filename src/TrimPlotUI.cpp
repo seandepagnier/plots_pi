@@ -28,13 +28,13 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer14->SetFlexibleDirection( wxBOTH );
 	fgSizer14->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_swTrim = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
-	m_swTrim->SetScrollRate( 5, 5 );
-	fgSizer14->Add( m_swTrim, 1, wxEXPAND | wxALL, 5 );
+	m_swSpeed = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	m_swSpeed->SetScrollRate( 5, 5 );
+	fgSizer14->Add( m_swSpeed, 1, wxEXPAND | wxALL, 5 );
 	
-	m_stTrim = new wxStaticText( this, wxID_ANY, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_stTrim->Wrap( -1 );
-	fgSizer14->Add( m_stTrim, 0, wxALL, 5 );
+	m_stSpeed = new wxStaticText( this, wxID_ANY, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stSpeed->Wrap( -1 );
+	fgSizer14->Add( m_stSpeed, 0, wxALL, 5 );
 	
 	m_swCourse = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
 	m_swCourse->SetScrollRate( 5, 5 );
@@ -47,20 +47,6 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	
 	fgSizer8->Add( fgSizer14, 1, wxEXPAND, 5 );
 	
-	wxFlexGridSizer* fgSizer71;
-	fgSizer71 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer71->SetFlexibleDirection( wxBOTH );
-	fgSizer71->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_bPreferences = new wxButton( this, wxID_ANY, _("Preferences"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer71->Add( m_bPreferences, 0, wxALL, 5 );
-	
-	m_bClose = new wxButton( this, wxID_ANY, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer71->Add( m_bClose, 0, wxALL, 5 );
-	
-	
-	fgSizer8->Add( fgSizer71, 1, wxEXPAND, 5 );
-	
 	
 	this->SetSizer( fgSizer8 );
 	this->Layout();
@@ -69,19 +55,21 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_swTrim->Connect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
+	this->Connect( wxEVT_SIZE, wxSizeEventHandler( TrimPlotDialogBase::OnSize ) );
+	m_swSpeed->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
+	m_swSpeed->Connect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
+	m_swCourse->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
 	m_swCourse->Connect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
-	m_bPreferences->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrimPlotDialogBase::OnPreferences ), NULL, this );
-	m_bClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrimPlotDialogBase::OnClose ), NULL, this );
 }
 
 TrimPlotDialogBase::~TrimPlotDialogBase()
 {
 	// Disconnect Events
-	m_swTrim->Disconnect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
+	this->Disconnect( wxEVT_SIZE, wxSizeEventHandler( TrimPlotDialogBase::OnSize ) );
+	m_swSpeed->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
+	m_swSpeed->Disconnect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
+	m_swCourse->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
 	m_swCourse->Disconnect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
-	m_bPreferences->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrimPlotDialogBase::OnPreferences ), NULL, this );
-	m_bClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrimPlotDialogBase::OnClose ), NULL, this );
 	
 }
 
@@ -123,12 +111,12 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_staticText15->Wrap( -1 );
 	fgSizer10->Add( m_staticText15, 0, wxALL, 5 );
 	
-	m_staticText7 = new wxStaticText( this, wxID_ANY, _("Numeric Lowpass"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText7 = new wxStaticText( this, wxID_ANY, _("Using"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText7->Wrap( -1 );
 	fgSizer10->Add( m_staticText7, 0, wxALL, 5 );
 	
-	m_sSpeedLowpass = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 10 );
-	fgSizer10->Add( m_sSpeedLowpass, 0, wxALL, 5 );
+	m_sSpeedSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 10 );
+	fgSizer10->Add( m_sSpeedSeconds, 0, wxALL, 5 );
 	
 	m_staticText23 = new wxStaticText( this, wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText23->Wrap( -1 );
@@ -169,12 +157,12 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_staticText151->Wrap( -1 );
 	fgSizer102->Add( m_staticText151, 0, wxALL, 5 );
 	
-	m_staticText72 = new wxStaticText( this, wxID_ANY, _("Numeric Lowpass"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText72 = new wxStaticText( this, wxID_ANY, _("Using"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText72->Wrap( -1 );
 	fgSizer102->Add( m_staticText72, 0, wxALL, 5 );
 	
-	m_sCourseLowpass = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 10 );
-	fgSizer102->Add( m_sCourseLowpass, 0, wxALL, 5 );
+	m_sCourseSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 10 );
+	fgSizer102->Add( m_sCourseSeconds, 0, wxALL, 5 );
 	
 	m_staticText231 = new wxStaticText( this, wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText231->Wrap( -1 );
@@ -258,17 +246,21 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	this->Centre( wxBOTH );
 	
 	// Connect Events
+	m_cbSpeed->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbCourse->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_bAbout->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnAbout ), NULL, this );
 }
 
 PreferencesDialogBase::~PreferencesDialogBase()
 {
 	// Disconnect Events
+	m_cbSpeed->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbCourse->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_bAbout->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnAbout ), NULL, this );
 	
 }
 
-AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+AboutDialog::AboutDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
@@ -277,20 +269,16 @@ AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer90->SetFlexibleDirection( wxBOTH );
 	fgSizer90->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText110 = new wxStaticText( this, wxID_ANY, _("The trimplot plugin for opencpn is\ndesigned to monitor trim and course to make slight changes to sail trim obvious.   For example, sometimes putting a reef in increases trim as weather helm is reduced and so there is less drag.\n\nLicense: GPLv3+\n\nSource Code:\nhttps://github.com/seandepagnier/trimplot_pi\n\nAuthor:\nSean D'Epagnier\n\nMany thanks to all of the translators and testers."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText110 = new wxStaticText( this, wxID_ANY, _("The trimplot plugin for opencpn is\ndesigned to monitor speed and course to make the results of changes to sail trim obvious. \n\nFor example, tightening a vang or adjusting a traveler may produce such a slight result it is difficult to gauge the outcome without feedback.\n\nThe predictor line allows setting the sample time for smoother prediction than the builtin predictor.\n\nLicense: GPLv3+\n\nSource Code:\nhttps://github.com/seandepagnier/trimplot_pi\n\nAuthor:\nSean D'Epagnier\n\nMany thanks to all of the translators and testers."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText110->Wrap( 400 );
 	fgSizer90->Add( m_staticText110, 0, wxALL, 5 );
 	
-	wxFlexGridSizer* fgSizer91;
-	fgSizer91 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer91->SetFlexibleDirection( wxBOTH );
-	fgSizer91->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	m_sdbSizer2 = new wxStdDialogButtonSizer();
+	m_sdbSizer2OK = new wxButton( this, wxID_OK );
+	m_sdbSizer2->AddButton( m_sdbSizer2OK );
+	m_sdbSizer2->Realize();
 	
-	m_bClose = new wxButton( this, wxID_ANY, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer91->Add( m_bClose, 0, wxALL, 5 );
-	
-	
-	fgSizer90->Add( fgSizer91, 1, wxEXPAND, 5 );
+	fgSizer90->Add( m_sdbSizer2, 1, wxEXPAND, 5 );
 	
 	
 	this->SetSizer( fgSizer90 );
@@ -298,14 +286,8 @@ AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer90->Fit( this );
 	
 	this->Centre( wxBOTH );
-	
-	// Connect Events
-	m_bClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AboutDialogBase::OnClose ), NULL, this );
 }
 
-AboutDialogBase::~AboutDialogBase()
+AboutDialog::~AboutDialog()
 {
-	// Disconnect Events
-	m_bClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AboutDialogBase::OnClose ), NULL, this );
-	
 }

@@ -56,16 +56,14 @@ SET(SRC_TRIMPLOT
             src/trimplot_pi.cpp
             src/TrimPlotDialog.h
             src/TrimPlotDialog.cpp
-            src/TrimPlotPrefsDialog.h
-            src/TrimPlotPrefsDialog.cpp
+            src/PreferencesDialog.h
+            src/PreferencesDialog.cpp
             src/TrimPlotUI.h
             src/TrimPlotUI.cpp
             src/icons.h
             src/icons.cpp
 	)
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHMAN})
-
-INCLUDE_DIRECTORIES(${PLUGIN_SOURCE_DIR}/src/libaudiofile)
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_TRIMPLOT})
 
 IF(WIN32)
   SET(OPENCPN_IMPORT_LIB "../../${CMAKE_CFG_INTDIR}/${PARENT}")
