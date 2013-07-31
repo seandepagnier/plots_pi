@@ -307,14 +307,23 @@ void trimplot_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
         if(m_pTrimPlotDialog && m_pTrimPlotDialog->IsShown()) {
             double seconds, bearing, distance;
 
-            seconds = m_Preferences->m_sSpeedSeconds->GetValue();
-            ComputeBearingDistance(seconds, bearing, distance);
-            m_pTrimPlotDialog->m_stSpeed->SetLabel(wxString::Format(_T("%.2f"), distance / seconds * 3600));
-
             seconds = m_Preferences->m_sCourseSeconds->GetValue();
             ComputeBearingDistance(seconds, bearing, distance);
             m_pTrimPlotDialog->m_stCourse->SetLabel(wxString::Format(_T("%.2f"), bearing));
 
+            seconds = m_Preferences->m_sSpeedSeconds->GetValue();
+            ComputeBearingDistance(seconds, bearing, distance);
+            double positionspeed = distance / seconds * 3600;
+            m_pTrimPlotDialog->m_stSpeed->SetLabel(wxString::Format(_T("%.2f"), positionspeed));
+
+            seconds = m_Preferences->m_sCoursePredictionSeconds->GetValue();
+            ComputeBearingDistance(seconds, bearing, distance);
+            positionspeed = distance / seconds * 3600;
+
+            m_pTrimPlotDialog->m_stPositionSpeed->SetLabel(wxString::Format(_T("%.2f"), positionspeed));
+            double speed = ComputeAvgSog(seconds);
+            m_pTrimPlotDialog->m_stSpeedPercentage->SetLabel(wxString::Format(_T("%.2f"),
+                                                                              100 * positionspeed / speed));
             m_pTrimPlotDialog->Refresh();
         }
     }
@@ -327,21 +336,46 @@ void trimplot_pi::ShowPreferencesDialog( wxWindow* parent )
 
 void trimplot_pi::ComputeBearingDistance(double seconds, double &bearing, double &distance)
 {
+    if(m_fixes.size() == 0) {
+        bearing = distance = NAN;
+        return;
+    }
+
     PlugIn_Position_Fix_Ex current = m_fixes.front();
 
     std::list<PlugIn_Position_Fix_Ex>::iterator it;
-    for(it = m_fixes.begin(); current.FixTime - (*it).FixTime < seconds; it++)
+    double d = 1;
+    for(it = m_fixes.begin(); current.FixTime - (*it).FixTime <= seconds; it++)
         if(it == m_fixes.end()) {
-            bearing = distance = NAN;
-            return;
+            d = (current.FixTime - (*it).FixTime) / seconds;
+            break;
         }
     
     DistanceBearingMercator_Plugin(current.Lat, current.Lon, (*it).Lat, (*it).Lon, &bearing, &distance);
+    distance *= d;
+}
+
+double trimplot_pi::ComputeAvgSog(double seconds)
+{
+    if(!m_fixes.size())
+        return NAN;
+
+    PlugIn_Position_Fix_Ex current = m_fixes.front();
+
+    double total = 0, count = 0;
+    std::list<PlugIn_Position_Fix_Ex>::iterator it;
+    for(it = m_fixes.begin(); current.FixTime - (*it).FixTime <= seconds && it != m_fixes.end(); it++) {
+        total += (*it).Sog;
+        count++;
+    }
+    
+    return total / count;
 }
 
 void trimplot_pi::RepopulatePlots()
 {
     if(m_pTrimPlotDialog)
         m_pTrimPlotDialog->RepopulatePlots(m_Preferences->m_cbSpeed->GetValue(),
-                                           m_Preferences->m_cbCourse->GetValue());
+                                           m_Preferences->m_cbCourse->GetValue(),
+                                           m_Preferences->m_cbCoursePrediction->GetValue());
 }

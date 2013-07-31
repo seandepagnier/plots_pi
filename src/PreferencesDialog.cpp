@@ -36,6 +36,8 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
     if(!pConf)
         return;
 
+    pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
+
     bool bvalue;
     double dvalue;
     int ivalue;
@@ -76,6 +78,8 @@ PreferencesDialog::~PreferencesDialog()
 
     if(!pConf)
         return;
+
+    pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
 
     double dvalue;
 

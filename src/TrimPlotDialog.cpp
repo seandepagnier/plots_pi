@@ -82,7 +82,7 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
             v = h*v/scale;
 
             if(x > 0)
-                dc.DrawLine(w-x+1, h/2+u, w-x, h/2+v);
+                dc.DrawLine(w-x+1, h/2-u, w-x, h/2-v);
             u = v;
         }
 
@@ -91,12 +91,14 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
     }
 }
 
-void TrimPlotDialog::RepopulatePlots(bool speed, bool course)
+void TrimPlotDialog::RepopulatePlots(bool speed, bool course, bool prediction)
 {
     m_swSpeed->Show(speed);
     m_stSpeed->Show(speed);
     m_swCourse->Show(course);
     m_stCourse->Show(course);
+    m_stPositionSpeed->Show(prediction);
+    m_stSpeedPercentage->Show(prediction);
 
     wxSize size = GetSize();
     Fit();

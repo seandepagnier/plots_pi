@@ -39,10 +39,10 @@
 #include <wx/fileconf.h>
 
 #define     PLUGIN_VERSION_MAJOR    0
-#define     PLUGIN_VERSION_MINOR    1
+#define     PLUGIN_VERSION_MINOR    2
 
 #define     MY_API_VERSION_MAJOR    1
-#define     MY_API_VERSION_MINOR    8
+#define     MY_API_VERSION_MINOR    10
 
 #include "../../../include/ocpn_plugin.h"
 
@@ -149,6 +149,7 @@ private:
       void              RearrangeWindow();
 
       void ComputeBearingDistance(double seconds, double &bearing, double &distance);
+      double ComputeAvgSog(double seconds);
 };
 
 #endif

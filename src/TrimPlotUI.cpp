@@ -44,6 +44,22 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_stCourse->Wrap( -1 );
 	fgSizer14->Add( m_stCourse, 0, wxALL, 5 );
 	
+	m_staticText16 = new wxStaticText( this, wxID_ANY, _("Speed via Position"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText16->Wrap( -1 );
+	fgSizer14->Add( m_staticText16, 0, wxALL, 5 );
+	
+	m_stPositionSpeed = new wxStaticText( this, wxID_ANY, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stPositionSpeed->Wrap( -1 );
+	fgSizer14->Add( m_stPositionSpeed, 0, wxALL, 5 );
+	
+	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Speed Percentage vs Straight course"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText18->Wrap( -1 );
+	fgSizer14->Add( m_staticText18, 0, wxALL, 5 );
+	
+	m_stSpeedPercentage = new wxStaticText( this, wxID_ANY, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stSpeedPercentage->Wrap( -1 );
+	fgSizer14->Add( m_stSpeedPercentage, 0, wxALL, 5 );
+	
 	
 	fgSizer8->Add( fgSizer14, 1, wxEXPAND, 5 );
 	

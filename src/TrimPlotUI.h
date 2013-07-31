@@ -39,6 +39,8 @@ class TrimPlotDialogBase : public wxDialog
 	protected:
 		wxScrolledWindow* m_swSpeed;
 		wxScrolledWindow* m_swCourse;
+		wxStaticText* m_staticText16;
+		wxStaticText* m_staticText18;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSize( wxSizeEvent& event ) { event.Skip(); }
@@ -49,6 +51,8 @@ class TrimPlotDialogBase : public wxDialog
 	public:
 		wxStaticText* m_stSpeed;
 		wxStaticText* m_stCourse;
+		wxStaticText* m_stPositionSpeed;
+		wxStaticText* m_stSpeedPercentage;
 		
 		TrimPlotDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Trim Plot"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL ); 
 		~TrimPlotDialogBase();

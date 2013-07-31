@@ -39,7 +39,7 @@ public:
     void OnDoubleClick( wxMouseEvent& event );
     void OnPaint(wxPaintEvent& event);
 
-    void RepopulatePlots(bool speed, bool course);
+    void RepopulatePlots(bool speed, bool course, bool prediction);
 
 private:
     trimplot_pi &m_trimplot_pi;
