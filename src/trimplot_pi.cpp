@@ -69,7 +69,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //---------------------------------------------------------------------------------------------------------
 
 trimplot_pi::trimplot_pi(void *ppimgr)
-    : opencpn_plugin_18(ppimgr)
+    : opencpn_plugin_110(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
