@@ -150,7 +150,7 @@ int trimplot_pi::GetPlugInVersionMinor()
 
 wxBitmap *trimplot_pi::GetPlugInBitmap()
 {
-    return _img_trimplot;
+    return new wxBitmap(_img_trimplot->ConvertToImage().Copy());
 }
 
 wxString trimplot_pi::GetCommonName()
