@@ -105,21 +105,26 @@ class PreferencesDialogBase : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class AboutDialog
+/// Class AboutDialogBase
 ///////////////////////////////////////////////////////////////////////////////
-class AboutDialog : public wxDialog 
+class AboutDialogBase : public wxDialog 
 {
 	private:
 	
 	protected:
 		wxStaticText* m_staticText110;
+		wxButton* m_button2;
 		wxStdDialogButtonSizer* m_sdbSizer2;
 		wxButton* m_sdbSizer2OK;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnAboutAuthor( wxCommandEvent& event ) { event.Skip(); }
+		
 	
 	public:
 		
-		AboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About TrimPlot"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
-		~AboutDialog();
+		AboutDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About TrimPlot"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		~AboutDialogBase();
 	
 };
 

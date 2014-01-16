@@ -27,6 +27,7 @@
 
 #include "trimplot_pi.h"
 #include "PreferencesDialog.h"
+#include "AboutDialog.h"
 
 PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi)
     : PreferencesDialogBase(parent), m_trimplot_pi(_trimplot_pi)

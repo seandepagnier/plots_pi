@@ -276,7 +276,7 @@ PreferencesDialogBase::~PreferencesDialogBase()
 	
 }
 
-AboutDialog::AboutDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
@@ -289,12 +289,24 @@ AboutDialog::AboutDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	m_staticText110->Wrap( 400 );
 	fgSizer90->Add( m_staticText110, 0, wxALL, 5 );
 	
+	wxFlexGridSizer* fgSizer9;
+	fgSizer9 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer9->AddGrowableCol( 1 );
+	fgSizer9->SetFlexibleDirection( wxBOTH );
+	fgSizer9->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_button2 = new wxButton( this, wxID_ANY, _("About Author"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer9->Add( m_button2, 0, wxALL, 5 );
+	
 	m_sdbSizer2 = new wxStdDialogButtonSizer();
 	m_sdbSizer2OK = new wxButton( this, wxID_OK );
 	m_sdbSizer2->AddButton( m_sdbSizer2OK );
 	m_sdbSizer2->Realize();
 	
-	fgSizer90->Add( m_sdbSizer2, 1, wxEXPAND, 5 );
+	fgSizer9->Add( m_sdbSizer2, 1, wxEXPAND, 5 );
+	
+	
+	fgSizer90->Add( fgSizer9, 1, wxEXPAND, 5 );
 	
 	
 	this->SetSizer( fgSizer90 );
@@ -302,8 +314,14 @@ AboutDialog::AboutDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	fgSizer90->Fit( this );
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_button2->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AboutDialogBase::OnAboutAuthor ), NULL, this );
 }
 
-AboutDialog::~AboutDialog()
+AboutDialogBase::~AboutDialogBase()
 {
+	// Disconnect Events
+	m_button2->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AboutDialogBase::OnAboutAuthor ), NULL, this );
+	
 }
