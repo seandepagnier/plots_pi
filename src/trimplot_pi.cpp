@@ -25,15 +25,10 @@
  ***************************************************************************
  */
 
-#include "wx/wxprec.h"
+#include <wx/wx.h>
+#include <wx/process.h>
 
-#ifndef  WX_PRECOMP
-  #include "wx/wx.h"
-#endif //precompiled headers
-
-#include "wx/process.h"
-
-#include "../../../include/ocpndc.h"
+#include "ocpndc.h"
 
 #include "trimplot_pi.h"
 #include "TrimPlotDialog.h"

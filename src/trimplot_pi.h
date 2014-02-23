@@ -30,23 +30,17 @@
 
 #include <list>
 
-#include "wx/wxprec.h"
-
-#ifndef  WX_PRECOMP
-  #include "wx/wx.h"
-#endif //precompiled headers
-
+#include <wx/wx.h>
 #include <wx/fileconf.h>
 
-#define     PLUGIN_VERSION_MAJOR    0
-#define     PLUGIN_VERSION_MINOR    2
+#include "version.h"
 
 #define     MY_API_VERSION_MAJOR    1
 #define     MY_API_VERSION_MINOR    10
 
 #define ABOUT_AUTHOR_URL "http://seandepagnier.users.sourceforge.net"
 
-#include "../../../include/ocpn_plugin.h"
+#include "ocpn_plugin.h"
 
 #ifdef __MSVC__
 #include <float.h>
