@@ -1,0 +1,208 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Complément Trimplot pour OpenCPN\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-06-12 19:33+0800\n"
+"PO-Revision-Date: 2014-03-13 13:16+0100\n"
+"Last-Translator: Gilletarom <contact@gilletarom.fr>\n"
+"Language-Team: Gilletarom <contactàgilletarom;fr>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#
+msgid "20"
+msgstr "20"
+#
+msgid "3"
+msgstr "3"
+#
+msgid "About"
+msgstr "Au sujet de"
+#
+msgid "About Author"
+msgstr ""
+#
+msgid "About TrimPlot"
+msgstr "Au sujet de trimplot"
+#
+msgid "Course"
+msgstr "Cap"
+#
+msgid "Course Prediction Display"
+msgstr "Affichage de la prédiction du cap"
+#
+msgid "Enable"
+msgstr "Permettre"
+#
+msgid "Length"
+msgstr "Longueur"
+#
+msgid "N/A"
+msgstr "N/A"
+#
+msgid "Scale"
+msgstr "Echelle"
+#
+msgid "Speed"
+msgstr "Vitesse"
+#
+msgid "Speed Percentage vs Straight course"
+msgstr "Vitesse via position vs route rectiligne"
+#
+msgid "Speed via Position"
+msgstr "Vitesse via position"
+#
+msgid ""
+"The trimplot plugin for opencpn is\n"
+"designed to monitor speed and course to make the results of changes to sail "
+"trim obvious. \n"
+"\n"
+"For example, tightening a vang or adjusting a traveler may produce such a "
+"slight result it is difficult to gauge the outcome without feedback.\n"
+"\n"
+"The predictor line allows setting the sample time for smoother prediction "
+"than the builtin predictor.\n"
+"\n"
+"License: GPLv3+\n"
+"\n"
+"Source Code:\n"
+"https://github.com/seandepagnier/trimplot_pi\n"
+"\n"
+"Author:\n"
+"Sean D'Epagnier\n"
+"\n"
+"Many thanks to all of the translators and testers."
+msgstr ""
+"Le complément trimplot pour opencpn est\n"
+"conçu pour surveiller la vitesse et le cap de façon à rendre évident les "
+"petits réglages des voiles.\n"
+"\n"
+"Par exemple, la tension d'un hale-bas ou le réglage d'une barre de grand "
+"voile peut produire un tel résultat, il est légèrement difficile d'évaluer "
+"les résultats sans retour. \n"
+"\n"
+"La ligne de prédiction permet de régler l'heure de l'échantillon de "
+"prédiction plus lisse que le prédicteur intégré.\n"
+"\n"
+"License: GPLv3+\n"
+"\n"
+"Code source:\n"
+"https://github.com/seandepagnier/trimplot_pi\n"
+"\n"
+"Auteur :\n"
+"Sean D'Epagnier\n"
+"\n"
+"Grands remerciements aux traducteurs et aux testeurs."
+#
+msgid "Trim Plot"
+msgstr "Trim Plot"
+#
+msgid "TrimPlot"
+msgstr "TrimPlot"
+#
+msgid "TrimPlot PlugIn for OpenCPN"
+msgstr "Complément plugin pour OpenCPN"
+#
+msgid ""
+"TrimPlot PlugIn for OpenCPN\n"
+"Plot trim and course over ground to make the result of small sail trim "
+"changes evident.\n"
+"The TrimPlot plugin was written by Sean D'Epagnier\n"
+msgstr ""
+"Complément TrimPlot pour OpenCPN\n"
+"Le complément fournit le tracé et le cap fond pour faciliter les petits "
+"réglages des voiles.\n"
+"Le complément TrimPlot est développé par Sean D'Epagnier\n"
+#
+msgid "TrimPlot Preferences"
+msgstr "Preferences du trimplot"
+#
+msgid "Using"
+msgstr "Utilisant"
+#
+msgid "degrees"
+msgstr "degrés"
+#
+msgid "knots"
+msgstr "Noeuds"
+#
+msgid "minutes"
+msgstr "minutes"
+#
+msgid "seconds"
+msgstr "secondes"
+#
+#~ msgid " Conflicts with already scheduled fax: "
+#~ msgstr "Conflit avec fax déjà programmé :"
+#
+#~ msgid " disable this fax? "
+#~ msgstr "désactiver ce fax ?"
+#
+#~ msgid "AIS Radar"
+#~ msgstr "Radar AIS"
+#
+#~ msgid "AIS Radar view"
+#~ msgstr "Affichage des données AIS en mode radar"
+#
+#~ msgid "AIS Radar view PlugIn"
+#~ msgstr "Complément pour affichage des données AIS en mode radar"
+#
+#~ msgid "Controls"
+#~ msgstr "Contrôles"
+#
+#~ msgid "E"
+#~ msgstr "E"
+#
+#~ msgid "EBL"
+#~ msgstr "Ligne de foi"
+#
+#~ msgid "Miles"
+#~ msgstr "Miles"
+#
+#~ msgid "N"
+#~ msgstr "N"
+#
+#~ msgid "North Up"
+#~ msgstr "Nord en haut"
+#
+#~ msgid "Radar"
+#~ msgstr "Radar"
+#
+#~ msgid "Radar Display"
+#~ msgstr "Affichage en mode radar"
+#
+#~ msgid ""
+#~ "Radar PlugIn for OpenCPN\n"
+#~ "Shows AIS targets in a radar style view \n"
+#~ "\n"
+#~ msgstr ""
+#~ "Complément, pour OpenCPN, pour affichage des données AIS en mode radar\n"
+#~ "Il montre les cibles AIS dans un fenêtre ayant le style des écrans des "
+#~ "radars.\n"
+#~ "\n"
+#
+#~ msgid "Range"
+#~ msgstr "Rayon d'action"
+#
+#~ msgid "Ring "
+#~ msgstr "Cercle"
+#
+#~ msgid "S"
+#~ msgstr "S"
+#
+#~ msgid "Show RADAR icon:"
+#~ msgstr "Montrer l'icône du complément"
+#
+#~ msgid "Use AIS as radar source:"
+#~ msgstr "Utiliser les données de l'AIS comme source"
+#
+#~ msgid "W"
+#~ msgstr "O"

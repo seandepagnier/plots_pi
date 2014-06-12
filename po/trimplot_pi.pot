@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: trimplot_pi 3.3.1303\n"
+"Project-Id-Version: trimplot_pi 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-12 13:30+0800\n"
+"POT-Creation-Date: 2014-06-12 19:33+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -109,6 +109,10 @@ msgid ""
 "Many thanks to all of the translators and testers."
 msgstr ""
 
+#: src/TrimPlotUI.cpp:298
+msgid "About Author"
+msgstr ""
+
 #: src/TrimPlotUI.h:57
 msgid "Trim Plot"
 msgstr ""
@@ -117,19 +121,19 @@ msgstr ""
 msgid "TrimPlot Preferences"
 msgstr ""
 
-#: src/TrimPlotUI.h:121
+#: src/TrimPlotUI.h:126
 msgid "About TrimPlot"
 msgstr ""
 
-#: src/trimplot_pi.cpp:97 src/trimplot_pi.cpp:158
+#: src/trimplot_pi.cpp:92 src/trimplot_pi.cpp:153
 msgid "TrimPlot"
 msgstr ""
 
-#: src/trimplot_pi.cpp:164
+#: src/trimplot_pi.cpp:159
 msgid "TrimPlot PlugIn for OpenCPN"
 msgstr ""
 
-#: src/trimplot_pi.cpp:169
+#: src/trimplot_pi.cpp:164
 msgid ""
 "TrimPlot PlugIn for OpenCPN\n"
 "Plot trim and course over ground to make the result of small sail trim "
