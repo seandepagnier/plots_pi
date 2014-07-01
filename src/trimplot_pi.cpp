@@ -91,7 +91,7 @@ int trimplot_pi::Init(void)
         (_T(""), _img_trimplot, _img_trimplot, wxITEM_NORMAL,
          _("TrimPlot"), _T(""), NULL, TRIMPLOT_TOOL_POSITION, 0, this);
     
-    m_pTrimPlotDialog = NULL;
+    m_TrimPlotDialog = NULL;
     
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
@@ -104,15 +104,15 @@ int trimplot_pi::Init(void)
 bool trimplot_pi::DeInit(void)
 {
     //    Record the dialog position
-    if (m_pTrimPlotDialog)
+    if (m_TrimPlotDialog)
     {
-        wxPoint p = m_pTrimPlotDialog->GetPosition();
+        wxPoint p = m_TrimPlotDialog->GetPosition();
         SetTrimPlotDialogX(p.x);
         SetTrimPlotDialogY(p.y);
         
-        m_pTrimPlotDialog->Close();
-        delete m_pTrimPlotDialog;
-        m_pTrimPlotDialog = NULL;
+        m_TrimPlotDialog->Close();
+        delete m_TrimPlotDialog;
+        m_TrimPlotDialog = NULL;
     }
     SaveConfig();
 
@@ -174,15 +174,15 @@ int trimplot_pi::GetToolbarToolCount(void)
 
 void trimplot_pi::SetColorScheme(PI_ColorScheme cs)
 {
-    if (NULL == m_pTrimPlotDialog)
+    if (NULL == m_TrimPlotDialog)
         return;
 
-    DimeWindow(m_pTrimPlotDialog);
+    DimeWindow(m_TrimPlotDialog);
 }
 
 void trimplot_pi::RearrangeWindow()
 {
-    if (NULL == m_pTrimPlotDialog)
+    if (NULL == m_TrimPlotDialog)
         return;
 
     SetColorScheme(PI_ColorScheme());
@@ -190,21 +190,21 @@ void trimplot_pi::RearrangeWindow()
 
 void trimplot_pi::OnToolbarToolCallback(int id)
 {
-    if(!m_pTrimPlotDialog)
+    if(!m_TrimPlotDialog)
     {
-        m_pTrimPlotDialog = new TrimPlotDialog(m_parent_window, *this);
-        m_pTrimPlotDialog->Move(wxPoint(m_trimplot_dialog_x, m_trimplot_dialog_y));
-        m_pTrimPlotDialog->SetSize(m_trimplot_dialog_w, m_trimplot_dialog_h);
+        m_TrimPlotDialog = new TrimPlotDialog(m_parent_window, *this);
+        m_TrimPlotDialog->Move(wxPoint(m_trimplot_dialog_x, m_trimplot_dialog_y));
+        m_TrimPlotDialog->SetSize(m_trimplot_dialog_w, m_trimplot_dialog_h);
 
         RepopulatePlots();
     }
 
     RearrangeWindow();
-    m_pTrimPlotDialog->Show(!m_pTrimPlotDialog->IsShown());
+    m_TrimPlotDialog->Show(!m_TrimPlotDialog->IsShown());
 
-    wxPoint p = m_pTrimPlotDialog->GetPosition();
-    m_pTrimPlotDialog->Move(0, 0);        // workaround for gtk autocentre dialog behavior
-    m_pTrimPlotDialog->Move(p);
+    wxPoint p = m_TrimPlotDialog->GetPosition();
+    m_TrimPlotDialog->Move(0, 0);        // workaround for gtk autocentre dialog behavior
+    m_TrimPlotDialog->Move(p);
 }
 
 bool trimplot_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
@@ -278,9 +278,9 @@ bool trimplot_pi::SaveConfig(void)
 
     pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
 
-    if(m_pTrimPlotDialog) {
-        wxPoint p = m_pTrimPlotDialog->GetPosition();
-        wxSize s = m_pTrimPlotDialog->GetSize();
+    if(m_TrimPlotDialog) {
+        wxPoint p = m_TrimPlotDialog->GetPosition();
+        wxSize s = m_TrimPlotDialog->GetSize();
 
         pConf->Write ( _T ( "DialogPosX" ), p.x);
         pConf->Write ( _T ( "DialogPosY" ), p.y);
@@ -299,27 +299,27 @@ void trimplot_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
         if(m_fixes.size() > 1000)
             m_fixes.pop_back();
 
-        if(m_pTrimPlotDialog && m_pTrimPlotDialog->IsShown()) {
+        if(m_TrimPlotDialog && m_TrimPlotDialog->IsShown()) {
             double seconds, bearing, distance;
 
             seconds = m_Preferences->m_sCourseSeconds->GetValue();
             ComputeBearingDistance(seconds, bearing, distance);
-            m_pTrimPlotDialog->m_stCourse->SetLabel(wxString::Format(_T("%.2f"), bearing));
+            m_TrimPlotDialog->m_stCourse->SetLabel(wxString::Format(_T("%.2f"), bearing));
 
             seconds = m_Preferences->m_sSpeedSeconds->GetValue();
             ComputeBearingDistance(seconds, bearing, distance);
             double positionspeed = distance / seconds * 3600;
-            m_pTrimPlotDialog->m_stSpeed->SetLabel(wxString::Format(_T("%.2f"), positionspeed));
+            m_TrimPlotDialog->m_stSpeed->SetLabel(wxString::Format(_T("%.2f"), positionspeed));
 
             seconds = m_Preferences->m_sCoursePredictionSeconds->GetValue();
             ComputeBearingDistance(seconds, bearing, distance);
             positionspeed = distance / seconds * 3600;
 
-            m_pTrimPlotDialog->m_stPositionSpeed->SetLabel(wxString::Format(_T("%.2f"), positionspeed));
+            m_TrimPlotDialog->m_stPositionSpeed->SetLabel(wxString::Format(_T("%.2f"), positionspeed));
             double speed = ComputeAvgSog(seconds);
-            m_pTrimPlotDialog->m_stSpeedPercentage->SetLabel(wxString::Format(_T("%.2f"),
+            m_TrimPlotDialog->m_stSpeedPercentage->SetLabel(wxString::Format(_T("%.2f"),
                                                                               100 * positionspeed / speed));
-            m_pTrimPlotDialog->Refresh();
+            m_TrimPlotDialog->Refresh();
         }
     }
 }
@@ -369,8 +369,8 @@ double trimplot_pi::ComputeAvgSog(double seconds)
 
 void trimplot_pi::RepopulatePlots()
 {
-    if(m_pTrimPlotDialog)
-        m_pTrimPlotDialog->RepopulatePlots(m_Preferences->m_cbSpeed->GetValue(),
+    if(m_TrimPlotDialog)
+        m_TrimPlotDialog->RepopulatePlots(m_Preferences->m_cbSpeed->GetValue(),
                                            m_Preferences->m_cbCourse->GetValue(),
                                            m_Preferences->m_cbCoursePrediction->GetValue());
 }
