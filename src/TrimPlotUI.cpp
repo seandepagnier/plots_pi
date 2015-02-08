@@ -20,6 +20,25 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->SetFlexibleDirection( wxBOTH );
 	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
+	m_scrolledWindow2 = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	m_scrolledWindow2->SetScrollRate( 5, 5 );
+	wxFlexGridSizer* fgSizer10;
+	fgSizer10 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer10->AddGrowableCol( 0 );
+	fgSizer10->AddGrowableRow( 0 );
+	fgSizer10->SetFlexibleDirection( wxBOTH );
+	fgSizer10->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_swPlots = new wxScrolledWindow( m_scrolledWindow2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	m_swPlots->SetScrollRate( 5, 5 );
+	fgSizer10->Add( m_swPlots, 1, wxEXPAND | wxALL, 5 );
+	
+	
+	m_scrolledWindow2->SetSizer( fgSizer10 );
+	m_scrolledWindow2->Layout();
+	fgSizer10->Fit( m_scrolledWindow2 );
+	fgSizer8->Add( m_scrolledWindow2, 1, wxEXPAND | wxALL, 5 );
+	
 	wxFlexGridSizer* fgSizer14;
 	fgSizer14 = new wxFlexGridSizer( 0, 2, 0, 0 );
 	fgSizer14->AddGrowableCol( 0 );
@@ -27,22 +46,6 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer14->AddGrowableRow( 1 );
 	fgSizer14->SetFlexibleDirection( wxBOTH );
 	fgSizer14->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_swSpeed = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
-	m_swSpeed->SetScrollRate( 5, 5 );
-	fgSizer14->Add( m_swSpeed, 1, wxEXPAND | wxALL, 5 );
-	
-	m_stSpeed = new wxStaticText( this, wxID_ANY, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_stSpeed->Wrap( -1 );
-	fgSizer14->Add( m_stSpeed, 0, wxALL, 5 );
-	
-	m_swCourse = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
-	m_swCourse->SetScrollRate( 5, 5 );
-	fgSizer14->Add( m_swCourse, 1, wxEXPAND | wxALL, 5 );
-	
-	m_stCourse = new wxStaticText( this, wxID_ANY, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_stCourse->Wrap( -1 );
-	fgSizer14->Add( m_stCourse, 0, wxALL, 5 );
 	
 	m_staticText16 = new wxStaticText( this, wxID_ANY, _("Speed via Position"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText16->Wrap( -1 );
@@ -60,6 +63,12 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_stSpeedPercentage->Wrap( -1 );
 	fgSizer14->Add( m_stSpeedPercentage, 0, wxALL, 5 );
 	
+	m_bAnalyze = new wxButton( this, wxID_ANY, _("Analyze"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer14->Add( m_bAnalyze, 0, wxALL, 5 );
+	
+	m_bSetup = new wxButton( this, wxID_ANY, _("Setup"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer14->Add( m_bSetup, 0, wxALL, 5 );
+	
 	
 	fgSizer8->Add( fgSizer14, 1, wxEXPAND, 5 );
 	
@@ -72,20 +81,18 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	
 	// Connect Events
 	this->Connect( wxEVT_SIZE, wxSizeEventHandler( TrimPlotDialogBase::OnSize ) );
-	m_swSpeed->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
-	m_swSpeed->Connect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
-	m_swCourse->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
-	m_swCourse->Connect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
+	m_swPlots->Connect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
+	m_bAnalyze->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrimPlotDialogBase::OnAnalyze ), NULL, this );
+	m_bSetup->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrimPlotDialogBase::OnSetup ), NULL, this );
 }
 
 TrimPlotDialogBase::~TrimPlotDialogBase()
 {
 	// Disconnect Events
 	this->Disconnect( wxEVT_SIZE, wxSizeEventHandler( TrimPlotDialogBase::OnSize ) );
-	m_swSpeed->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
-	m_swSpeed->Disconnect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
-	m_swCourse->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
-	m_swCourse->Disconnect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
+	m_swPlots->Disconnect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
+	m_bAnalyze->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrimPlotDialogBase::OnAnalyze ), NULL, this );
+	m_bSetup->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrimPlotDialogBase::OnSetup ), NULL, this );
 	
 }
 
@@ -99,96 +106,69 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	fgSizer4->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	wxStaticBoxSizer* sbSizer6;
-	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Speed") ), wxVERTICAL );
+	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Plots") ), wxVERTICAL );
 	
 	wxFlexGridSizer* fgSizer10;
-	fgSizer10 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer10 = new wxFlexGridSizer( 0, 2, 0, 0 );
 	fgSizer10->SetFlexibleDirection( wxBOTH );
 	fgSizer10->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_cbSpeed = new wxCheckBox( this, wxID_ANY, _("Enable"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_cbSpeed->SetValue(true); 
-	fgSizer10->Add( m_cbSpeed, 0, wxALL, 5 );
+	m_cbTWS = new wxCheckBox( this, wxID_ANY, _("True Wind Speed (tws) WIND + GPS"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_cbTWS, 0, wxALL, 5 );
+	
+	m_cbTWD = new wxCheckBox( this, wxID_ANY, _("True Wind Direction (twd) WIND + GPS"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_cbTWD, 0, wxALL, 5 );
+	
+	m_cbTWA = new wxCheckBox( this, wxID_ANY, _("True Wind Angle (twa) WIND + GPS"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_cbTWA, 0, wxALL, 5 );
+	
+	m_cbAWS = new wxCheckBox( this, wxID_ANY, _("Apparent Wind Speed (aws) WIND"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_cbAWS, 0, wxALL, 5 );
+	
+	m_cbAWA = new wxCheckBox( this, wxID_ANY, _("Angle Wind Apparent (awa) WIND"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_cbAWA, 0, wxALL, 5 );
 	
 	
 	fgSizer10->Add( 0, 0, 1, wxEXPAND, 5 );
 	
+	m_cbSOG = new wxCheckBox( this, wxID_ANY, _("Speed Over Ground (sog) GPS"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_cbSOG, 0, wxALL, 5 );
+	
+	m_cbCOG = new wxCheckBox( this, wxID_ANY, _("Course Over Ground (cog) GPS"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbCOG->SetValue(true); 
+	fgSizer10->Add( m_cbCOG, 0, wxALL, 5 );
+	
+	m_cbAOG = new wxCheckBox( this, wxID_ANY, _("Acceleration Over Ground"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_cbAOG, 0, wxALL, 5 );
+	
+	m_cbCCG = new wxCheckBox( this, wxID_ANY, _("Course Change Ground"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_cbCCG, 0, wxALL, 5 );
+	
+	m_cbHDG = new wxCheckBox( this, wxID_ANY, _("Heading (hdg)"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_cbHDG, 0, wxALL, 5 );
+	
+	m_cbXTE = new wxCheckBox( this, wxID_ANY, _("Cross Track Error (xte)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbXTE->SetValue(true); 
+	fgSizer10->Add( m_cbXTE, 0, wxALL, 5 );
+	
+	m_cbHEL = new wxCheckBox( this, wxID_ANY, _("Heel (hel)"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_cbHEL, 0, wxALL, 5 );
+	
 	
 	fgSizer10->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_staticText14 = new wxStaticText( this, wxID_ANY, _("Scale"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText14->Wrap( -1 );
-	fgSizer10->Add( m_staticText14, 0, wxALL, 5 );
+	m_staticText12 = new wxStaticText( this, wxID_ANY, _("Plot Height"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText12->Wrap( -1 );
+	fgSizer10->Add( m_staticText12, 0, wxALL, 5 );
 	
-	m_tSpeedScale = new wxTextCtrl( this, wxID_ANY, _("3"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer10->Add( m_tSpeedScale, 0, wxALL, 5 );
-	
-	m_staticText15 = new wxStaticText( this, wxID_ANY, _("knots"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText15->Wrap( -1 );
-	fgSizer10->Add( m_staticText15, 0, wxALL, 5 );
-	
-	m_staticText7 = new wxStaticText( this, wxID_ANY, _("Using"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText7->Wrap( -1 );
-	fgSizer10->Add( m_staticText7, 0, wxALL, 5 );
-	
-	m_sSpeedSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 10 );
-	fgSizer10->Add( m_sSpeedSeconds, 0, wxALL, 5 );
-	
-	m_staticText23 = new wxStaticText( this, wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText23->Wrap( -1 );
-	fgSizer10->Add( m_staticText23, 0, wxALL, 5 );
+	m_sPlotHeight = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 10, 250, 30 );
+	fgSizer10->Add( m_sPlotHeight, 0, wxALL, 5 );
 	
 	
 	sbSizer6->Add( fgSizer10, 1, wxEXPAND, 5 );
 	
 	
 	fgSizer4->Add( sbSizer6, 1, wxEXPAND, 5 );
-	
-	wxStaticBoxSizer* sbSizer2;
-	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Course") ), wxVERTICAL );
-	
-	wxFlexGridSizer* fgSizer102;
-	fgSizer102 = new wxFlexGridSizer( 0, 3, 0, 0 );
-	fgSizer102->SetFlexibleDirection( wxBOTH );
-	fgSizer102->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_cbCourse = new wxCheckBox( this, wxID_ANY, _("Enable"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_cbCourse->SetValue(true); 
-	fgSizer102->Add( m_cbCourse, 0, wxALL, 5 );
-	
-	
-	fgSizer102->Add( 0, 0, 1, wxEXPAND, 5 );
-	
-	
-	fgSizer102->Add( 0, 0, 1, wxEXPAND, 5 );
-	
-	m_staticText141 = new wxStaticText( this, wxID_ANY, _("Scale"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText141->Wrap( -1 );
-	fgSizer102->Add( m_staticText141, 0, wxALL, 5 );
-	
-	m_tCourseScale = new wxTextCtrl( this, wxID_ANY, _("20"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer102->Add( m_tCourseScale, 0, wxALL, 5 );
-	
-	m_staticText151 = new wxStaticText( this, wxID_ANY, _("degrees"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText151->Wrap( -1 );
-	fgSizer102->Add( m_staticText151, 0, wxALL, 5 );
-	
-	m_staticText72 = new wxStaticText( this, wxID_ANY, _("Using"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText72->Wrap( -1 );
-	fgSizer102->Add( m_staticText72, 0, wxALL, 5 );
-	
-	m_sCourseSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 10 );
-	fgSizer102->Add( m_sCourseSeconds, 0, wxALL, 5 );
-	
-	m_staticText231 = new wxStaticText( this, wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText231->Wrap( -1 );
-	fgSizer102->Add( m_staticText231, 0, wxALL, 5 );
-	
-	
-	sbSizer2->Add( fgSizer102, 1, wxEXPAND, 5 );
-	
-	
-	fgSizer4->Add( sbSizer2, 1, wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer61;
 	sbSizer61 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Course Prediction Display") ), wxVERTICAL );
@@ -262,16 +242,36 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_cbSpeed->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
-	m_cbCourse->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbTWS->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbTWD->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbTWA->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbAWS->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbAWA->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbSOG->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbCOG->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbAOG->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbCCG->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbHDG->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbXTE->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbHEL->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_bAbout->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnAbout ), NULL, this );
 }
 
 PreferencesDialogBase::~PreferencesDialogBase()
 {
 	// Disconnect Events
-	m_cbSpeed->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
-	m_cbCourse->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbTWS->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbTWD->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbTWA->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbAWS->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbAWA->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbSOG->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbCOG->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbAOG->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbCCG->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbHDG->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbXTE->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cbHEL->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_bAbout->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnAbout ), NULL, this );
 	
 }

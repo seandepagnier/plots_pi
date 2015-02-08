@@ -5,8 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2013 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
+ *   Copyright (C) 2015 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -32,15 +31,17 @@ class trimplot_pi;
 class TrimPlotDialog: public TrimPlotDialogBase
 {
 public:
-    TrimPlotDialog(wxWindow* parent, trimplot_pi &_trimplot_pi);
+    TrimPlotDialog(wxWindow* parent, trimplot_pi &_trimplot_pi, PreferencesDialog &preferences);
     ~TrimPlotDialog();
 
     void OnSize(wxSizeEvent& event) { Refresh(); event.Skip(); }
     void OnDoubleClick( wxMouseEvent& event );
     void OnPaint(wxPaintEvent& event);
 
-    void RepopulatePlots(bool speed, bool course, bool prediction);
-
 private:
+    void OnAnalyze( wxCommandEvent& event );
+    void OnSetup( wxCommandEvent& event );
+
+    PreferencesDialog &m_preferences;
     trimplot_pi &m_trimplot_pi;
 };

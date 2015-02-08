@@ -17,14 +17,13 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/string.h>
-#include <wx/stattext.h>
 #include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/checkbox.h>
-#include <wx/textctrl.h>
 #include <wx/spinctrl.h>
 #include <wx/statbox.h>
-#include <wx/button.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -37,20 +36,21 @@ class TrimPlotDialogBase : public wxDialog
 	private:
 	
 	protected:
-		wxScrolledWindow* m_swSpeed;
-		wxScrolledWindow* m_swCourse;
+		wxScrolledWindow* m_scrolledWindow2;
+		wxScrolledWindow* m_swPlots;
 		wxStaticText* m_staticText16;
 		wxStaticText* m_staticText18;
+		wxButton* m_bAnalyze;
+		wxButton* m_bSetup;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSize( wxSizeEvent& event ) { event.Skip(); }
-		virtual void OnDoubleClick( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnPaint( wxPaintEvent& event ) { event.Skip(); }
+		virtual void OnAnalyze( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSetup( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
-		wxStaticText* m_stSpeed;
-		wxStaticText* m_stCourse;
 		wxStaticText* m_stPositionSpeed;
 		wxStaticText* m_stSpeedPercentage;
 		
@@ -67,14 +67,19 @@ class PreferencesDialogBase : public wxDialog
 	private:
 	
 	protected:
-		wxStaticText* m_staticText14;
-		wxStaticText* m_staticText15;
-		wxStaticText* m_staticText7;
-		wxStaticText* m_staticText23;
-		wxStaticText* m_staticText141;
-		wxStaticText* m_staticText151;
-		wxStaticText* m_staticText72;
-		wxStaticText* m_staticText231;
+		wxCheckBox* m_cbTWD;
+		wxCheckBox* m_cbTWA;
+		wxCheckBox* m_cbAWS;
+		wxCheckBox* m_cbAWA;
+		wxCheckBox* m_cbSOG;
+		wxCheckBox* m_cbCOG;
+		wxCheckBox* m_cbAOG;
+		wxCheckBox* m_cbCCG;
+		wxCheckBox* m_cbHDG;
+		wxCheckBox* m_cbXTE;
+		wxCheckBox* m_cbHEL;
+		wxStaticText* m_staticText12;
+		wxSpinCtrl* m_sPlotHeight;
 		wxStaticText* m_staticText1411;
 		wxStaticText* m_staticText1511;
 		wxStaticText* m_staticText721;
@@ -89,12 +94,7 @@ class PreferencesDialogBase : public wxDialog
 		
 	
 	public:
-		wxCheckBox* m_cbSpeed;
-		wxTextCtrl* m_tSpeedScale;
-		wxSpinCtrl* m_sSpeedSeconds;
-		wxCheckBox* m_cbCourse;
-		wxTextCtrl* m_tCourseScale;
-		wxSpinCtrl* m_sCourseSeconds;
+		wxCheckBox* m_cbTWS;
 		wxCheckBox* m_cbCoursePrediction;
 		wxSpinCtrl* m_sCoursePredictionLength;
 		wxSpinCtrl* m_sCoursePredictionSeconds;

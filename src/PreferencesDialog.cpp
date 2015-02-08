@@ -5,8 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2013 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
+ *   Copyright (C) 2015 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -38,32 +37,26 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
     if(!pConf)
         return;
 
+    m_cbStates[TWS] = m_cbTWS;
+    m_cbStates[TWD] = m_cbTWD;
+    m_cbStates[TWA] = m_cbTWA;
+    m_cbStates[AWS] = m_cbAWS;
+    m_cbStates[AWA] = m_cbAWA;
+    m_cbStates[SOG] = m_cbSOG;
+    m_cbStates[COG] = m_cbCOG;
+    m_cbStates[AOG] = m_cbAOG;
+    m_cbStates[CCG] = m_cbCCG;
+    m_cbStates[HDG] = m_cbHDG;
+    m_cbStates[XTE] = m_cbXTE;
+    m_cbStates[HEL] = m_cbHEL;
+
     pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
 
+    for(int i=0; i<STATE_COUNT; i++)
+        m_cbStates[i]->SetValue(pConf->Read(_T("Plot ") + StateNames[i], m_cbStates[i]->GetValue()));
+
     bool bvalue;
-    double dvalue;
     int ivalue;
-
-    pConf->Read(_T("SpeedPlot"), &bvalue, true);
-    m_cbSpeed->SetValue(bvalue);
-
-    pConf->Read(_T("SpeedScale"), &dvalue, 3);
-    m_tSpeedScale->SetValue(wxString::Format(_T("%.2f"), dvalue));
-
-    pConf->Read(_T("SpeedSeconds"), &ivalue, 10);
-    m_sSpeedSeconds->SetValue(ivalue);
-
-
-    pConf->Read(_T("CoursePlot"), &bvalue, true);
-    m_cbCourse->SetValue(bvalue);
-
-    pConf->Read(_T("CourseScale"), &dvalue, 20);
-    m_tCourseScale->SetValue(wxString::Format(_T("%.2f"), dvalue));
-
-    pConf->Read(_T("CourseSeconds"), &ivalue, 10);
-    m_sCourseSeconds->SetValue(ivalue);
-
-
     pConf->Read(_T("CoursePrediction"), &bvalue, false);
     m_cbCoursePrediction->SetValue(bvalue);
 
@@ -83,17 +76,8 @@ PreferencesDialog::~PreferencesDialog()
 
     pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
 
-    double dvalue;
-
-    pConf->Write(_T("SpeedPlot"), m_cbSpeed->GetValue());
-    m_tSpeedScale->GetValue().ToDouble(&dvalue);
-    pConf->Write(_T("SpeedScale"), dvalue);
-    pConf->Write(_T("SpeedSeconds"), m_tSpeedScale->GetValue());
-
-    pConf->Write(_T("CoursePlot"), m_cbCourse->GetValue());
-    m_tCourseScale->GetValue().ToDouble(&dvalue);
-    pConf->Write(_T("CourseScale"), dvalue);
-    pConf->Write(_T("CourseSeconds"), m_tCourseScale->GetValue());
+    for(int i=0; i<STATE_COUNT; i++)
+        pConf->Write(_T("Plot ") + StateNames[i], m_cbStates[i]->GetValue());
 
     pConf->Write(_T("CoursePrediction"), m_cbCoursePrediction->GetValue());
     pConf->Write(_T("CoursePredictionLength"), m_sCoursePredictionLength->GetValue());
@@ -102,12 +86,31 @@ PreferencesDialog::~PreferencesDialog()
 
 void PreferencesDialog::OnPlotChange( wxCommandEvent& event )
 {
-    m_trimplot_pi.RepopulatePlots();
-    m_trimplot_pi.m_TrimPlotDialog->Fit();
+    m_trimplot_pi.m_TrimPlotDialog->Refresh();
 }
 
 void PreferencesDialog::OnAbout( wxCommandEvent& event )
 {
     AboutDialog dlg(this);
     dlg.ShowModal();
+}
+
+int PreferencesDialog::PlotCount()
+{
+    int count = 0;
+    for(int i=0; i<STATE_COUNT; i++)
+        count += m_cbStates[i]->GetValue();
+    return count;
+}
+
+int PreferencesDialog::PlotDataIndex(int index)
+{
+    for(int i=0; i<STATE_COUNT; i++) {
+        if(index == 0)
+            return i;
+
+        index -= m_cbStates[i]->GetValue();
+    }
+    
+    wxASSERT(_T("Invalid plot data index"));
 }

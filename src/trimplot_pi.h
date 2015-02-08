@@ -5,8 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2013 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
+ *   Copyright (C) 2015 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -83,10 +82,23 @@ double heading_resolve(double degrees);
 //----------------------------------------------------------------------------------------------------------
 
 #define TRIMPLOT_TOOL_POSITION    -1          // Request default positioning of toolbar tool
-
 class ocpnDC;
 class TrimPlotDialog;
 class PreferencesDialog;
+
+const wxString StateNames[] = {_T("tws"), _T("twd"), _T("twa"), _T("aws"),
+                               _T("awa"), _T("sog"), _T("cog"), _T("aog"),
+                               _T("ccg"), _T("hdg"), _T("xte"), _T("hel")};
+const bool StateResolve[] = {0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0}; // does it need heading resolve?
+
+enum States {TWS, TWD, TWA, AWS, AWA, SOG, COG, AOG, CCG, HDG, XTE, HEL, STATE_COUNT};
+
+struct State
+{
+    State(double v, time_t t) : value(v), time(t) {}
+    double value;
+    time_t time;
+};
 
 class trimplot_pi : public wxEvtHandler, public opencpn_plugin_110
 {
@@ -122,11 +134,11 @@ public:
       void SetTrimPlotDialogY    (int x){ m_trimplot_dialog_y = x;}
 
       void ShowPreferencesDialog( wxWindow* parent );
-      void RepopulatePlots();
 
       wxWindow         *m_parent_window;
 
-      std::list<PlugIn_Position_Fix_Ex> m_fixes;
+      std::list<State> m_states[STATE_COUNT];
+
       TrimPlotDialog   *m_TrimPlotDialog;
       PreferencesDialog *m_Preferences;
 

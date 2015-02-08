@@ -5,8 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2013 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
+ *   Copyright (C) 2015 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -38,6 +37,12 @@ public:
     void OnPlotChange( wxCommandEvent& event );
     void OnAbout( wxCommandEvent& event );
 
+    int PlotCount();
+    int PlotDataIndex(int index);
+
+    int PlotHeight() { return m_sPlotHeight->GetValue(); }
+
 private:
     trimplot_pi &m_trimplot_pi;
+    wxCheckBox *m_cbStates[STATE_COUNT];
 };
