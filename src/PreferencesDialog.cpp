@@ -53,7 +53,10 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
     pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
 
     for(int i=0; i<STATE_COUNT; i++)
-        m_cbStates[i]->SetValue(pConf->Read(_T("Plot ") + StateNames[i], m_cbStates[i]->GetValue()));
+        m_cbStates[i]->SetValue(pConf->Read(_T("Plot ") + StateName[i], m_cbStates[i]->GetValue()));
+
+    m_sPlotHeight->SetValue(pConf->Read(_T("PlotHeight"), m_sPlotHeight->GetValue()));
+    m_sPlotThickness->SetValue(pConf->Read(_T("PlotThickness"), m_sPlotThickness->GetValue()));
 
     bool bvalue;
     int ivalue;
@@ -77,16 +80,14 @@ PreferencesDialog::~PreferencesDialog()
     pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
 
     for(int i=0; i<STATE_COUNT; i++)
-        pConf->Write(_T("Plot ") + StateNames[i], m_cbStates[i]->GetValue());
+        pConf->Write(_T("Plot ") + StateName[i], m_cbStates[i]->GetValue());
+
+    pConf->Write(_T("PlotHeight"), m_sPlotHeight->GetValue());
+    pConf->Write(_T("PlotThickness"), m_sPlotThickness->GetValue());
 
     pConf->Write(_T("CoursePrediction"), m_cbCoursePrediction->GetValue());
     pConf->Write(_T("CoursePredictionLength"), m_sCoursePredictionLength->GetValue());
     pConf->Write(_T("CoursePredictionSeconds"), m_sCoursePredictionSeconds->GetValue());
-}
-
-void PreferencesDialog::OnPlotChange( wxCommandEvent& event )
-{
-    m_trimplot_pi.m_TrimPlotDialog->Refresh();
 }
 
 void PreferencesDialog::OnAbout( wxCommandEvent& event )
@@ -106,11 +107,18 @@ int PreferencesDialog::PlotCount()
 int PreferencesDialog::PlotDataIndex(int index)
 {
     for(int i=0; i<STATE_COUNT; i++) {
-        if(index == 0)
-            return i;
-
         index -= m_cbStates[i]->GetValue();
+
+        if(index < 0)
+            return i;
     }
     
     wxASSERT(_T("Invalid plot data index"));
+    return 0;
+}
+
+void PreferencesDialog::PlotChange()
+{
+    m_trimplot_pi.m_TrimPlotDialog->Refresh();
+    m_trimplot_pi.m_TrimPlotDialog->SetPlotHeight();
 }

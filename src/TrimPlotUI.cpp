@@ -20,8 +20,8 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->SetFlexibleDirection( wxBOTH );
 	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_scrolledWindow2 = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
-	m_scrolledWindow2->SetScrollRate( 5, 5 );
+	m_scrollWindow = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	m_scrollWindow->SetScrollRate( 5, 5 );
 	wxFlexGridSizer* fgSizer10;
 	fgSizer10 = new wxFlexGridSizer( 0, 2, 0, 0 );
 	fgSizer10->AddGrowableCol( 0 );
@@ -29,15 +29,15 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer10->SetFlexibleDirection( wxBOTH );
 	fgSizer10->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_swPlots = new wxScrolledWindow( m_scrolledWindow2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	m_swPlots = new wxScrolledWindow( m_scrollWindow, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
 	m_swPlots->SetScrollRate( 5, 5 );
 	fgSizer10->Add( m_swPlots, 1, wxEXPAND | wxALL, 5 );
 	
 	
-	m_scrolledWindow2->SetSizer( fgSizer10 );
-	m_scrolledWindow2->Layout();
-	fgSizer10->Fit( m_scrolledWindow2 );
-	fgSizer8->Add( m_scrolledWindow2, 1, wxEXPAND | wxALL, 5 );
+	m_scrollWindow->SetSizer( fgSizer10 );
+	m_scrollWindow->Layout();
+	fgSizer10->Fit( m_scrollWindow );
+	fgSizer8->Add( m_scrollWindow, 1, wxEXPAND | wxALL, 5 );
 	
 	wxFlexGridSizer* fgSizer14;
 	fgSizer14 = new wxFlexGridSizer( 0, 2, 0, 0 );
@@ -157,12 +157,19 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	
 	fgSizer10->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_staticText12 = new wxStaticText( this, wxID_ANY, _("Plot Height"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText12 = new wxStaticText( this, wxID_ANY, _("Height"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText12->Wrap( -1 );
 	fgSizer10->Add( m_staticText12, 0, wxALL, 5 );
 	
-	m_sPlotHeight = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 10, 250, 30 );
+	m_sPlotHeight = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 10, 1000, 50 );
 	fgSizer10->Add( m_sPlotHeight, 0, wxALL, 5 );
+	
+	m_staticText11 = new wxStaticText( this, wxID_ANY, _("Thickness"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText11->Wrap( -1 );
+	fgSizer10->Add( m_staticText11, 0, wxALL, 5 );
+	
+	m_sPlotThickness = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10, 1 );
+	fgSizer10->Add( m_sPlotThickness, 0, wxALL, 5 );
 	
 	
 	sbSizer6->Add( fgSizer10, 1, wxEXPAND, 5 );
@@ -254,6 +261,8 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_cbHDG->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_cbXTE->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_cbHEL->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_sPlotHeight->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_sPlotThickness->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_bAbout->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnAbout ), NULL, this );
 }
 
@@ -272,6 +281,8 @@ PreferencesDialogBase::~PreferencesDialogBase()
 	m_cbHDG->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_cbXTE->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_cbHEL->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_sPlotHeight->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_sPlotThickness->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_bAbout->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnAbout ), NULL, this );
 	
 }

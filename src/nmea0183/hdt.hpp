@@ -1,15 +1,15 @@
-/******************************************************************************
+/***************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  trimplot Plugin
- * Author:   Sean D'Epagnier
+ * Purpose:  NMEA0183 Support Classes
+ * Author:   Samuel R. Blackburn, David S. Register
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2010 by Samuel R. Blackburn, David S Register           *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 3 of the License, or     *
+ *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
@@ -20,33 +20,44 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.             *
  ***************************************************************************
+ *
+ *   S Blackburn's original source license:                                *
+ *         "You can use it any way you like."                              *
+ *   More recent (2010) license statement:                                 *
+ *         "It is BSD license, do with it what you will"                   *
  */
+#if ! defined( HDT_CLASS_HEADER )
+#define HDT_CLASS_HEADER
 
-#include "TrimPlotUI.h"
-
-class trimplot_pi;
-
-class PreferencesDialog: public PreferencesDialogBase
+class HDT : public RESPONSE
 {
-public:
-    PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi);
-    ~PreferencesDialog();
 
-    void OnPlotChange( wxCommandEvent& event ) { PlotChange(); }
-    void OnPlotChange( wxSpinEvent& event ) { PlotChange(); }
-    void OnAbout( wxCommandEvent& event );
+   public:
 
-    int PlotCount();
-    int PlotDataIndex(int index);
+      HDT();
+     ~HDT();
 
-    int PlotHeight() { return m_sPlotHeight->GetValue(); }
-    int PlotThickness() { return m_sPlotThickness->GetValue(); }
+      /*
+      ** Data
+      */
 
-private:
-    void PlotChange();
+      double DegreesTrue;
 
-    trimplot_pi &m_trimplot_pi;
-    wxCheckBox *m_cbStates[STATE_COUNT];
+      /*
+      ** Methods
+      */
+
+      virtual void Empty( void );
+      virtual bool Parse( const SENTENCE& sentence );
+      virtual bool Write( SENTENCE& sentence );
+
+      /*
+      ** Operators
+      */
+
+      virtual const HDT& operator = ( const HDT& source );
 };
+
+#endif // HDT_CLASS_HEADER

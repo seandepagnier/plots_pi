@@ -38,10 +38,16 @@ public:
     void OnDoubleClick( wxMouseEvent& event );
     void OnPaint(wxPaintEvent& event);
 
+    void SetPlotHeight();
+
 private:
     void OnAnalyze( wxCommandEvent& event );
     void OnSetup( wxCommandEvent& event );
 
-    PreferencesDialog &m_preferences;
+    void OnRefreshTimer( wxTimerEvent & );
+
     trimplot_pi &m_trimplot_pi;
+    PreferencesDialog &m_preferences;
+
+    wxTimer m_tRefreshTimer;
 };

@@ -75,6 +75,8 @@ inline double round(double n) { return n < 0.0 ? ceil(n - 0.5) : floor(n + 0.5);
 
 #endif
 
+#include <nmea0183.h>
+
 double heading_resolve(double degrees);
 
 //----------------------------------------------------------------------------------------------------------
@@ -86,7 +88,7 @@ class ocpnDC;
 class TrimPlotDialog;
 class PreferencesDialog;
 
-const wxString StateNames[] = {_T("tws"), _T("twd"), _T("twa"), _T("aws"),
+const wxString StateName[] = {_T("tws"), _T("twd"), _T("twa"), _T("aws"),
                                _T("awa"), _T("sog"), _T("cog"), _T("aog"),
                                _T("ccg"), _T("hdg"), _T("xte"), _T("hel")};
 const bool StateResolve[] = {0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0}; // does it need heading resolve?
@@ -141,18 +143,25 @@ public:
 
       TrimPlotDialog   *m_TrimPlotDialog;
       PreferencesDialog *m_Preferences;
+      
+      bool m_newData;
 
 private:
 
       bool    LoadConfig(void);
       bool    SaveConfig(void);
 
+      void SetNMEASentence( wxString &sentence );
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 
+      void AddData(enum States state, double value);
+      
       int               m_trimplot_dialog_x, m_trimplot_dialog_y;
       int               m_trimplot_dialog_w, m_trimplot_dialog_h;
 
       int               m_leftclick_tool_id;
+
+      NMEA0183 m_NMEA0183;
 
       void              RearrangeWindow();
 

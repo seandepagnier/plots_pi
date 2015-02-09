@@ -1,15 +1,15 @@
-/******************************************************************************
+/***************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  trimplot Plugin
- * Author:   Sean D'Epagnier
+ * Purpose:  NMEA0183 Support Classes
+ * Author:   Samuel R. Blackburn, David S. Register
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2010 by Samuel R. Blackburn, David S Register           *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 3 of the License, or     *
+ *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
@@ -20,33 +20,39 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.             *
  ***************************************************************************
+ *
+ *   S Blackburn's original source license:                                *
+ *         "You can use it any way you like."                              *
+ *   More recent (2010) license statement:                                 *
+ *         "It is BSD license, do with it what you will"                   *
  */
 
-#include "TrimPlotUI.h"
 
-class trimplot_pi;
+#include "nmea0183.h"
 
-class PreferencesDialog: public PreferencesDialogBase
+/*
+** Author: Samuel R. Blackburn
+** CI$: 76300,326
+** Internet: sammy@sed.csc.com
+**
+** You can use it any way you like.
+*/
+
+ wxString& talker_id( const wxString &sentence )
 {
-public:
-    PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi);
-    ~PreferencesDialog();
+   static wxString return_string;
 
-    void OnPlotChange( wxCommandEvent& event ) { PlotChange(); }
-    void OnPlotChange( wxSpinEvent& event ) { PlotChange(); }
-    void OnAbout( wxCommandEvent& event );
+   return_string.Empty();
 
-    int PlotCount();
-    int PlotDataIndex(int index);
+   if ( sentence.Len() >= 3 )
+   {
+      if ( sentence[ 0 ] == '$' )
+      {
+         return_string = sentence.Mid( 1, 2 );
+      }
+   }
 
-    int PlotHeight() { return m_sPlotHeight->GetValue(); }
-    int PlotThickness() { return m_sPlotThickness->GetValue(); }
-
-private:
-    void PlotChange();
-
-    trimplot_pi &m_trimplot_pi;
-    wxCheckBox *m_cbStates[STATE_COUNT];
-};
+   return( return_string );
+}

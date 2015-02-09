@@ -36,7 +36,6 @@ class TrimPlotDialogBase : public wxDialog
 	private:
 	
 	protected:
-		wxScrolledWindow* m_scrolledWindow2;
 		wxScrolledWindow* m_swPlots;
 		wxStaticText* m_staticText16;
 		wxStaticText* m_staticText18;
@@ -51,6 +50,7 @@ class TrimPlotDialogBase : public wxDialog
 		
 	
 	public:
+		wxScrolledWindow* m_scrollWindow;
 		wxStaticText* m_stPositionSpeed;
 		wxStaticText* m_stSpeedPercentage;
 		
@@ -80,6 +80,8 @@ class PreferencesDialogBase : public wxDialog
 		wxCheckBox* m_cbHEL;
 		wxStaticText* m_staticText12;
 		wxSpinCtrl* m_sPlotHeight;
+		wxStaticText* m_staticText11;
+		wxSpinCtrl* m_sPlotThickness;
 		wxStaticText* m_staticText1411;
 		wxStaticText* m_staticText1511;
 		wxStaticText* m_staticText721;
@@ -90,6 +92,7 @@ class PreferencesDialogBase : public wxDialog
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnPlotChange( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPlotChange( wxSpinEvent& event ) { event.Skip(); }
 		virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
 		
 	

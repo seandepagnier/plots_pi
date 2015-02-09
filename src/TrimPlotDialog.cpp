@@ -31,6 +31,9 @@
 TrimPlotDialog::TrimPlotDialog(wxWindow* parent, trimplot_pi &_trimplot_pi, PreferencesDialog &preferences)
     : TrimPlotDialogBase( parent ), m_trimplot_pi(_trimplot_pi), m_preferences(preferences)
 {
+    m_tRefreshTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
+                            ( TrimPlotDialog::OnRefreshTimer ), NULL, this);
+    m_tRefreshTimer.Start();
 }
 
 TrimPlotDialog::~TrimPlotDialog()
@@ -48,25 +51,24 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
     if(!window)
         return;
 
+    int w, h;
+    window->GetSize(&w, &h);
+
     wxPaintDC dc( window );
-    dc.SetBrush(wxBrush(*wxBLACK));
-    dc.SetPen(wxPen( *wxBLACK, 1 ));
-
-    int h = m_preferences.PlotHeight() * m_preferences.PlotCount();
-
-    int w, oldh;
-    window->GetSize(&w, &oldh);
-
-//    if(oldh != h)
-    window->SetMinSize(wxSize(-1, h));
+    dc.SetBrush(*wxTRANSPARENT_BRUSH);
+    dc.SetPen(wxPen( *wxBLACK, m_preferences.PlotThickness() ));
 
     for(int p = 0; p < m_preferences.PlotCount(); p++) {
-        int x = 0;
+        int h = m_preferences.PlotHeight();
+        int x = 0, y = p * h;
         double cur = NAN;
         double u = 0;
-        int index = m_preferences.PlotDataIndex(p);
-        for(std::list<State>::iterator it = m_trimplot_pi.m_states[index].begin();
-            it != m_trimplot_pi.m_states[index].end(); it++) {
+        int i = m_preferences.PlotDataIndex(p);
+
+        dc.DrawText(StateName[i], x, y);
+
+        for(std::list<State>::iterator it = m_trimplot_pi.m_states[i].begin();
+            it != m_trimplot_pi.m_states[i].end(); it++) {
 
             double val = it->value;
 
@@ -74,7 +76,7 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
                 if(isnan(cur))
                     cur = val;
                 double v = val-cur;
-                if(StateResolve[index])
+                if(StateResolve[i])
                     v = heading_resolve(v);
                 v = h*v;///scale;
                 
@@ -89,11 +91,36 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
     }
 }
 
+void TrimPlotDialog::SetPlotHeight()
+{
+    int h = m_preferences.PlotHeight() * m_preferences.PlotCount();
+
+    int w, oldh;
+    m_swPlots->GetSize(&w, &oldh);
+    m_swPlots->SetMinSize(wxSize(-1, h));
+    
+    if(oldh != h) {
+        wxSize s =     m_trimplot_pi.m_TrimPlotDialog->GetSize();
+        SetSize(s.x+1, s.y);
+        SetSize(s.x, s.y);
+    }
+}
+
 void TrimPlotDialog::OnAnalyze( wxCommandEvent& event )
 {
+    wxMessageBox(_T("Unimplemented"));
 }
 
 void TrimPlotDialog::OnSetup( wxCommandEvent& event )
 {
     m_preferences.Show();
+}
+
+void TrimPlotDialog::OnRefreshTimer( wxTimerEvent & )
+{
+    if(!m_trimplot_pi.m_newData)
+        return;
+
+    Refresh();
+    m_trimplot_pi.m_newData = false;
 }

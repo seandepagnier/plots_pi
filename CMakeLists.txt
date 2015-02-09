@@ -26,7 +26,11 @@ SET(SRC_TRIMPLOT
             src/TrimPlotUI.cpp
             src/icons.cpp
 	)
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_TRIMPLOT})
+
+INCLUDE("cmake/PluginNMEA.cmake")
+INCLUDE("cmake/PluginJSON.cmake")
+
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_TRIMPLOT} ${SRC_NMEA0183} ${SRC_JSON})
 
 INCLUDE("cmake/PluginInstall.cmake")
 INCLUDE("cmake/PluginLocalization.cmake")

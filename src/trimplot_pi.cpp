@@ -96,12 +96,15 @@ int trimplot_pi::Init(void)
             WANTS_OPENGL_OVERLAY_CALLBACK |
             WANTS_TOOLBAR_CALLBACK    |
 //            WANTS_PREFERENCES         |
+            WANTS_NMEA_SENTENCES   |
             WANTS_NMEA_EVENTS         |
             WANTS_CONFIG);
 }
 
 bool trimplot_pi::DeInit(void)
 {
+    SaveConfig();
+
     //    Record the dialog position
     if (m_TrimPlotDialog)
     {
@@ -113,7 +116,6 @@ bool trimplot_pi::DeInit(void)
         delete m_TrimPlotDialog;
         m_TrimPlotDialog = NULL;
     }
-    SaveConfig();
 
     delete m_Preferences;
 
@@ -194,6 +196,7 @@ void trimplot_pi::OnToolbarToolCallback(int id)
         m_TrimPlotDialog = new TrimPlotDialog(m_parent_window, *this, *m_Preferences);
         m_TrimPlotDialog->Move(wxPoint(m_trimplot_dialog_x, m_trimplot_dialog_y));
         m_TrimPlotDialog->SetSize(m_trimplot_dialog_w, m_trimplot_dialog_h);
+        m_TrimPlotDialog->SetPlotHeight();
     }
 
     RearrangeWindow();
@@ -235,9 +238,9 @@ void trimplot_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
     ComputeBearingDistance(m_Preferences->m_sCoursePredictionSeconds->GetValue(),
                            bearing, distance);
 
+#if 0
     double current_sog = m_states[SOG].front().value;
     double current_cog = m_states[COG].front().value;
-#if 0
     double dlat, dlon;
     PositionBearingDistanceMercator_Plugin(current.Lat, current.Lon, bearing, distance
                                            * m_Preferences->m_sCoursePredictionLength->GetValue() * 60.0
@@ -263,7 +266,7 @@ bool trimplot_pi::LoadConfig(void)
     
     m_trimplot_dialog_x =  pConf->Read ( _T ( "DialogPosX" ), 20L );
     m_trimplot_dialog_y =  pConf->Read ( _T ( "DialogPosY" ), 20L );
-    m_trimplot_dialog_w =  pConf->Read ( _T ( "DialogW" ), 300L );
+    m_trimplot_dialog_w =  pConf->Read ( _T ( "DialogW" ), 400L );
     m_trimplot_dialog_h =  pConf->Read ( _T ( "DialogH" ), 200L );
 
     return true;
@@ -291,40 +294,46 @@ bool trimplot_pi::SaveConfig(void)
     return true;
 }
 
+void trimplot_pi::SetNMEASentence( wxString &sentence )
+{
+    m_NMEA0183 << sentence;
+
+    if( !m_NMEA0183.PreParse() )
+        return;
+
+    if( m_NMEA0183.LastSentenceIDReceived == _T("HDT") ) {
+        if( m_NMEA0183.Parse() ) {
+            if( !wxIsNaN(m_NMEA0183.Hdt.DegreesTrue) )
+                AddData(HDG, m_NMEA0183.Hdt.DegreesTrue);
+        }
+    }
+    // NMEA 0183 standard Wind Direction and Speed, with respect to north.
+    else if( m_NMEA0183.LastSentenceIDReceived == _T("MWD") ) {
+        if( m_NMEA0183.Parse() ) {
+            // Option for True vs Magnetic
+//            wxString windunit;
+            if( m_NMEA0183.Mwd.WindAngleTrue < 999. ) { //if WindAngleTrue is available, use it ...
+                AddData(TWD, m_NMEA0183.Mwd.WindAngleTrue);
+                AddData(TWS, m_NMEA0183.Mwd.WindSpeedKnots);
+            } else if( m_NMEA0183.Mwd.WindAngleMagnetic < 999. ) { //otherwise try WindAngleMagnetic ...
+                // TODO: use wmm plugin to compensate to true wind
+//                truewind = m_NMEA0183.Mwd.WindAngleMagnetic;
+            }
+        }
+    }
+}
+
 void trimplot_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 {
     if(pfix.FixTime && pfix.nSats) {
-        m_states[SOG].push_front(State(pfix.Sog, pfix.FixTime));
-        m_states[COG].push_front(State(pfix.Cog, pfix.FixTime));
-    }
+        if(m_states[SOG].size())
+            AddData(AOG, pfix.Sog - m_states[SOG].front().value);
 
-#if 0
-    if(m_states.size() > 1000)
-        m_states.pop_back();
-#endif
+        if(m_states[COG].size())
+            AddData(CCG, heading_resolve(pfix.Cog - m_states[COG].front().value));
 
-    if(m_TrimPlotDialog && m_TrimPlotDialog->IsShown()) {
-#if 0
-        double seconds, bearing, distance;
-        seconds = m_Preferences->m_sCourseSeconds->GetValue();
-        ComputeBearingDistance(seconds, bearing, distance);
-        m_TrimPlotDialog->m_stCourse->SetLabel(wxString::Format(_T("%.2f"), bearing));
-
-        seconds = m_Preferences->m_sSpeedSeconds->GetValue();
-        ComputeBearingDistance(seconds, bearing, distance);
-        double positionspeed = distance / seconds * 3600;
-        m_TrimPlotDialog->m_stSpeed->SetLabel(wxString::Format(_T("%.2f"), positionspeed));
-
-        seconds = m_Preferences->m_sCoursePredictionSeconds->GetValue();
-        ComputeBearingDistance(seconds, bearing, distance);
-        positionspeed = distance / seconds * 3600;
-
-        m_TrimPlotDialog->m_stPositionSpeed->SetLabel(wxString::Format(_T("%.2f"), positionspeed));
-        double speed = ComputeAvgSog(seconds);
-        m_TrimPlotDialog->m_stSpeedPercentage->SetLabel(wxString::Format(_T("%.2f"),
-                                                                         100 * positionspeed / speed));
-#endif
-        m_TrimPlotDialog->Refresh();
+        AddData(SOG, pfix.Sog);
+        AddData(COG, pfix.Cog);
     }
 }
 
@@ -375,4 +384,14 @@ double trimplot_pi::ComputeAvgSog(double seconds)
     
     return total / count;
 #endif
+}
+
+void trimplot_pi::AddData(enum States state, double value)
+{
+    m_states[state].push_front(State(value, wxDateTime::Now().GetTicks()));
+
+    if(m_states[state].size() > 1000)
+        m_states[state].pop_back();
+
+    m_newData = true;
 }
