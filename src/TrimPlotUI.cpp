@@ -63,14 +63,28 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_stSpeedPercentage->Wrap( -1 );
 	fgSizer14->Add( m_stSpeedPercentage, 0, wxALL, 5 );
 	
-	m_bAnalyze = new wxButton( this, wxID_ANY, _("Analyze"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer14->Add( m_bAnalyze, 0, wxALL, 5 );
-	
-	m_bSetup = new wxButton( this, wxID_ANY, _("Setup"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer14->Add( m_bSetup, 0, wxALL, 5 );
-	
 	
 	fgSizer8->Add( fgSizer14, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer12;
+	fgSizer12 = new wxFlexGridSizer( 1, 0, 0, 0 );
+	fgSizer12->SetFlexibleDirection( wxBOTH );
+	fgSizer12->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_bAnalyze = new wxButton( this, wxID_ANY, _("Analyze"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer12->Add( m_bAnalyze, 0, wxALL, 5 );
+	
+	wxString m_cTimeChoices[] = { _("5 min"), _("20 min"), _("1 h"), _("4 h"), _("8 h"), _("24 h") };
+	int m_cTimeNChoices = sizeof( m_cTimeChoices ) / sizeof( wxString );
+	m_cTime = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cTimeNChoices, m_cTimeChoices, 0 );
+	m_cTime->SetSelection( 0 );
+	fgSizer12->Add( m_cTime, 0, wxALL, 5 );
+	
+	m_bSetup = new wxButton( this, wxID_ANY, _("Setup"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer12->Add( m_bSetup, 0, wxALL, 5 );
+	
+	
+	fgSizer8->Add( fgSizer12, 1, wxEXPAND, 5 );
 	
 	
 	this->SetSizer( fgSizer8 );
@@ -107,6 +121,11 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	
 	wxStaticBoxSizer* sbSizer6;
 	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Plots") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer111;
+	fgSizer111 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer111->SetFlexibleDirection( wxBOTH );
+	fgSizer111->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	wxFlexGridSizer* fgSizer10;
 	fgSizer10 = new wxFlexGridSizer( 0, 2, 0, 0 );
@@ -157,28 +176,63 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	
 	fgSizer10->Add( 0, 0, 1, wxEXPAND, 5 );
 	
+	
+	fgSizer111->Add( fgSizer10, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer101;
+	fgSizer101 = new wxFlexGridSizer( 0, 4, 0, 0 );
+	fgSizer101->SetFlexibleDirection( wxBOTH );
+	fgSizer101->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
 	m_staticText12 = new wxStaticText( this, wxID_ANY, _("Height"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText12->Wrap( -1 );
-	fgSizer10->Add( m_staticText12, 0, wxALL, 5 );
+	fgSizer101->Add( m_staticText12, 0, wxALL, 5 );
 	
 	m_sPlotHeight = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 10, 1000, 50 );
-	fgSizer10->Add( m_sPlotHeight, 0, wxALL, 5 );
+	fgSizer101->Add( m_sPlotHeight, 0, wxALL, 5 );
 	
 	m_staticText11 = new wxStaticText( this, wxID_ANY, _("Thickness"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText11->Wrap( -1 );
-	fgSizer10->Add( m_staticText11, 0, wxALL, 5 );
+	fgSizer101->Add( m_staticText11, 0, wxALL, 5 );
 	
 	m_sPlotThickness = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10, 1 );
-	fgSizer10->Add( m_sPlotThickness, 0, wxALL, 5 );
+	fgSizer101->Add( m_sPlotThickness, 0, wxALL, 5 );
+	
+	m_staticText121 = new wxStaticText( this, wxID_ANY, _("Trace Color"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText121->Wrap( -1 );
+	fgSizer101->Add( m_staticText121, 0, wxALL, 5 );
+	
+	m_cpTrace = new wxColourPickerCtrl( this, wxID_ANY, wxColour( 71, 0, 0 ), wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE );
+	fgSizer101->Add( m_cpTrace, 0, wxALL, 5 );
+	
+	m_staticText14 = new wxStaticText( this, wxID_ANY, _("Grid Color"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText14->Wrap( -1 );
+	fgSizer101->Add( m_staticText14, 0, wxALL, 5 );
+	
+	m_cpGrid = new wxColourPickerCtrl( this, wxID_ANY, wxColour( 0, 0, 96 ), wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE );
+	fgSizer101->Add( m_cpGrid, 0, wxALL, 5 );
+	
+	m_staticText13 = new wxStaticText( this, wxID_ANY, _("Background Color"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText13->Wrap( -1 );
+	fgSizer101->Add( m_staticText13, 0, wxALL, 5 );
+	
+	m_cpBackground = new wxColourPickerCtrl( this, wxID_ANY, wxColour( 255, 255, 255 ), wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE );
+	fgSizer101->Add( m_cpBackground, 0, wxALL, 5 );
+	
+	m_cbStatistics = new wxCheckBox( this, wxID_ANY, _("Statistics"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer101->Add( m_cbStatistics, 0, wxALL, 5 );
 	
 	
-	sbSizer6->Add( fgSizer10, 1, wxEXPAND, 5 );
+	fgSizer111->Add( fgSizer101, 1, wxEXPAND, 5 );
+	
+	
+	sbSizer6->Add( fgSizer111, 1, wxEXPAND, 5 );
 	
 	
 	fgSizer4->Add( sbSizer6, 1, wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer61;
-	sbSizer61 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Course Prediction Display") ), wxVERTICAL );
+	sbSizer61 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Course Prediction Display (from ship on main chart)") ), wxVERTICAL );
 	
 	wxFlexGridSizer* fgSizer1021;
 	fgSizer1021 = new wxFlexGridSizer( 0, 3, 0, 0 );
@@ -296,7 +350,7 @@ AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer90->SetFlexibleDirection( wxBOTH );
 	fgSizer90->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText110 = new wxStaticText( this, wxID_ANY, _("The trimplot plugin for opencpn is\ndesigned to monitor speed and course to make the results of changes to sail trim obvious. \n\nFor example, tightening a vang or adjusting a traveler may produce such a slight result it is difficult to gauge the outcome without feedback.\n\nThe predictor line allows setting the sample time for smoother prediction than the builtin predictor.\n\nLicense: GPLv3+\n\nSource Code:\nhttps://github.com/seandepagnier/trimplot_pi\n\nAuthor:\nSean D'Epagnier\n\nMany thanks to all of the translators and testers."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText110 = new wxStaticText( this, wxID_ANY, _("The trimplot plugin for opencpn is\ndesigned to monitor speed and course to make the results of changes to sail trim obvious.  It may be used to better understand the sailing characteristics of a particular vessel, or for fine tuning to give optimal results.\n\nFor example, tightening a vang or adjusting a traveler may produce such a slight result it is difficult to gauge the outcome.  This plugin can make gps speed feedback visible.\n\nThe predictor line allows setting the sample time for smoother prediction than the builtin predictor.\n\nLicense: GPLv3+\n\nSource Code:\nhttps://github.com/seandepagnier/trimplot_pi\n\nAuthor:\nSean D'Epagnier\n\nMany thanks to all of the translators and testers."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText110->Wrap( 400 );
 	fgSizer90->Add( m_staticText110, 0, wxALL, 5 );
 	

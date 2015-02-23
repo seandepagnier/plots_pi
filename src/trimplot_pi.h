@@ -77,7 +77,7 @@ inline double round(double n) { return n < 0.0 ? ceil(n - 0.5) : floor(n + 0.5);
 
 #include <nmea0183.h>
 
-double heading_resolve(double degrees);
+double heading_resolve(double degrees, double ref=0);
 
 //----------------------------------------------------------------------------------------------------------
 //    The PlugIn Class Definition
@@ -100,6 +100,12 @@ struct State
     State(double v, time_t t) : value(v), time(t) {}
     double value;
     time_t time;
+};
+
+struct StateScale
+{
+    double offset, scale;
+    bool center_offset;
 };
 
 class trimplot_pi : public wxEvtHandler, public opencpn_plugin_110
@@ -140,6 +146,7 @@ public:
       wxWindow         *m_parent_window;
 
       std::list<State> m_states[STATE_COUNT];
+      StateScale m_statescales[STATE_COUNT];
 
       TrimPlotDialog   *m_TrimPlotDialog;
       PreferencesDialog *m_Preferences;
@@ -154,12 +161,19 @@ private:
       void SetNMEASentence( wxString &sentence );
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 
+      void AvgCOG(double cog);
+
       void AddData(enum States state, double value);
+      void SetScale(enum States state, double scale, double offset=0, bool center_offset=false);
+      void SetScalec(enum States state, double scale, double offset=0) { SetScale(state, scale, offset, true); }
+      void ScaleIncrease(enum States state, double scale);
       
       int               m_trimplot_dialog_x, m_trimplot_dialog_y;
       int               m_trimplot_dialog_w, m_trimplot_dialog_h;
 
       int               m_leftclick_tool_id;
+
+      double m_avgcog;
 
       NMEA0183 m_NMEA0183;
 

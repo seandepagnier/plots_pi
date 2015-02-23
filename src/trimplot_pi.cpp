@@ -5,7 +5,6 @@
  *
  ***************************************************************************
  *   Copyright (C) 2015 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -35,11 +34,11 @@
 #include "icons.h"
 
 
-double heading_resolve(double degrees)
+double heading_resolve(double degrees, double ref)
 {
-    while(degrees < -180)
+    while(degrees < ref-180)
         degrees += 360;
-    while(degrees >= 180)
+    while(degrees >= ref+180)
         degrees -= 360;
     return degrees;
 }
@@ -67,6 +66,24 @@ trimplot_pi::trimplot_pi(void *ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
+
+    m_avgcog = NAN;
+
+    const double ws = 10; // wind scale
+    const double wd = 25; // wind direction scale
+
+    SetScale(TWS, ws);
+    SetScalec(TWD, wd);
+    SetScalec(TWA, wd);
+    SetScale(AWS, ws);
+    SetScalec(AWA, wd);
+    SetScale(SOG, 5);
+    SetScalec(COG, 30);
+    SetScalec(AOG, 2);
+    SetScalec(CCG, 5);
+    SetScalec(HDG, 30);
+    SetScalec(XTE, 10);
+    SetScalec(HEL, 20);
 }
 
 //---------------------------------------------------------------------------------------------------------
@@ -197,6 +214,11 @@ void trimplot_pi::OnToolbarToolCallback(int id)
         m_TrimPlotDialog->Move(wxPoint(m_trimplot_dialog_x, m_trimplot_dialog_y));
         m_TrimPlotDialog->SetSize(m_trimplot_dialog_w, m_trimplot_dialog_h);
         m_TrimPlotDialog->SetPlotHeight();
+
+        wxIcon icon;
+        icon.CopyFromBitmap(*_img_trimplot);
+        m_TrimPlotDialog->SetIcon(icon);
+        m_Preferences->SetIcon(icon);
     }
 
     RearrangeWindow();
@@ -329,11 +351,14 @@ void trimplot_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
         if(m_states[SOG].size())
             AddData(AOG, pfix.Sog - m_states[SOG].front().value);
 
-        if(m_states[COG].size())
-            AddData(CCG, heading_resolve(pfix.Cog - m_states[COG].front().value));
-
         AddData(SOG, pfix.Sog);
         AddData(COG, pfix.Cog);
+
+        double last_avgcog = m_avgcog;
+        AvgCOG(pfix.Cog);
+
+        AddData(CCG, heading_resolve(m_avgcog - last_avgcog));
+        m_statescales[COG].offset = m_avgcog;
     }
 }
 
@@ -386,12 +411,35 @@ double trimplot_pi::ComputeAvgSog(double seconds)
 #endif
 }
 
+void trimplot_pi::AvgCOG(double cog)
+{
+    if(isnan(m_avgcog))
+        m_avgcog = cog;
+
+    const double lp = .2;
+    m_avgcog = heading_resolve(lp*cog + (1-lp)*heading_resolve(m_avgcog, cog));
+}
+
 void trimplot_pi::AddData(enum States state, double value)
 {
     m_states[state].push_front(State(value, wxDateTime::Now().GetTicks()));
+    if(!StateResolve[state])
+        ScaleIncrease(state, value);
 
     if(m_states[state].size() > 1000)
         m_states[state].pop_back();
 
     m_newData = true;
+}
+
+void trimplot_pi::SetScale(enum States state, double scale, double offset, bool center_offset)
+{
+    m_statescales[state].scale = scale;
+    m_statescales[state].offset = offset;
+    m_statescales[state].center_offset = center_offset;
+}
+
+void trimplot_pi::ScaleIncrease(enum States state, double scale)
+{
+    m_statescales[state].scale = wxMax(m_statescales[state].scale, scale);
 }

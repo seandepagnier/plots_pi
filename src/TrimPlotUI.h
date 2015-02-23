@@ -20,9 +20,11 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/button.h>
+#include <wx/choice.h>
 #include <wx/dialog.h>
 #include <wx/checkbox.h>
 #include <wx/spinctrl.h>
+#include <wx/clrpicker.h>
 #include <wx/statbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -40,6 +42,7 @@ class TrimPlotDialogBase : public wxDialog
 		wxStaticText* m_staticText16;
 		wxStaticText* m_staticText18;
 		wxButton* m_bAnalyze;
+		wxChoice* m_cTime;
 		wxButton* m_bSetup;
 		
 		// Virtual event handlers, overide them in your derived class
@@ -82,6 +85,10 @@ class PreferencesDialogBase : public wxDialog
 		wxSpinCtrl* m_sPlotHeight;
 		wxStaticText* m_staticText11;
 		wxSpinCtrl* m_sPlotThickness;
+		wxStaticText* m_staticText121;
+		wxStaticText* m_staticText14;
+		wxStaticText* m_staticText13;
+		wxCheckBox* m_cbStatistics;
 		wxStaticText* m_staticText1411;
 		wxStaticText* m_staticText1511;
 		wxStaticText* m_staticText721;
@@ -98,6 +105,9 @@ class PreferencesDialogBase : public wxDialog
 	
 	public:
 		wxCheckBox* m_cbTWS;
+		wxColourPickerCtrl* m_cpTrace;
+		wxColourPickerCtrl* m_cpGrid;
+		wxColourPickerCtrl* m_cpBackground;
 		wxCheckBox* m_cbCoursePrediction;
 		wxSpinCtrl* m_sCoursePredictionLength;
 		wxSpinCtrl* m_sCoursePredictionSeconds;

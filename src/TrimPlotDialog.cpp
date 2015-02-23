@@ -55,33 +55,67 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
     window->GetSize(&w, &h);
 
     wxPaintDC dc( window );
+
+    window->SetBackgroundColour(m_preferences.m_cpBackground->GetColour());
+
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
-    dc.SetPen(wxPen( *wxBLACK, m_preferences.PlotThickness() ));
+
+    wxCoord textheight;
+    dc.GetTextExtent(_T("A"), 0, &textheight);
 
     for(int p = 0; p < m_preferences.PlotCount(); p++) {
         int h = m_preferences.PlotHeight();
         int x = 0, y = p * h;
-        double cur = NAN;
         double u = 0;
         int i = m_preferences.PlotDataIndex(p);
 
-        dc.DrawText(StateName[i], x, y);
+        dc.DestroyClippingRegion();
+        dc.SetClippingRegion(wxRect(x, y, w, h));
+
+        double offset = m_trimplot_pi.m_statescales[i].offset;
+        double scale = m_trimplot_pi.m_statescales[i].scale;
+        if(m_trimplot_pi.m_statescales[i].center_offset)
+            offset -= scale/2;
+
+        wxPen pen(m_preferences.m_cpGrid->GetColour(), 1, wxUSER_DASH);
+        wxDash dashes[2] = {(wxDash)(1+p%2), 7};
+        pen.SetDashes(2, dashes);
+        dc.SetPen(pen);
+        dc.SetTextForeground(m_preferences.m_cpGrid->GetColour());
+
+        // horizontal grid
+        for(int i=0; i<5; i++) {
+            double u = (double)i / 5 + .1;
+            double v = (1 - u)*h + y;
+            dc.DrawLine(0, v, w, v);
+            dc.DrawText(wxString::Format(_T("%4.1f"), offset + u*scale), 0, v - textheight/2);
+        }
+
+        dc.SetPen(wxPen( m_preferences.m_cpTrace->GetColour(), m_preferences.PlotThickness()));
+        dc.SetTextForeground(m_preferences.m_cpTrace->GetColour());
+
+        wxCoord textwidth;
+        dc.GetTextExtent(StateName[i], &textwidth, 0);
+        dc.DrawText(StateName[i], w - textwidth, y + h - textheight);
 
         for(std::list<State>::iterator it = m_trimplot_pi.m_states[i].begin();
             it != m_trimplot_pi.m_states[i].end(); it++) {
 
-            double val = it->value;
+            double v = it->value;
 
-            if(!isnan(val)) {
-                if(isnan(cur))
-                    cur = val;
-                double v = val-cur;
+            if(!isnan(v)) {
                 if(StateResolve[i])
-                    v = heading_resolve(v);
-                v = h*v;///scale;
+                    v = heading_resolve(v, offset);
+
+                v -= offset;
+                // apply scale
+                v = h*v/scale;
+
+                // position in plot area and flip y axis
+                v = y + h - v;
                 
                 if(x > 0)
-                    dc.DrawLine(w-x+1, h/2-u, w-x, h/2-v);
+                    dc.DrawLine(w-x+1, u, w-x, v);
                 u = v;
             }
 

@@ -57,6 +57,9 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
 
     m_sPlotHeight->SetValue(pConf->Read(_T("PlotHeight"), m_sPlotHeight->GetValue()));
     m_sPlotThickness->SetValue(pConf->Read(_T("PlotThickness"), m_sPlotThickness->GetValue()));
+    m_cpTrace->SetColour(pConf->Read(_T("TraceColor"), m_cpTrace->GetColour().GetAsString()));
+    m_cpGrid->SetColour(pConf->Read(_T("GridColor"), m_cpGrid->GetColour().GetAsString()));
+    m_cpBackground->SetColour(pConf->Read(_T("BackgroundColor"), m_cpBackground->GetColour().GetAsString()));
 
     bool bvalue;
     int ivalue;
@@ -84,6 +87,9 @@ PreferencesDialog::~PreferencesDialog()
 
     pConf->Write(_T("PlotHeight"), m_sPlotHeight->GetValue());
     pConf->Write(_T("PlotThickness"), m_sPlotThickness->GetValue());
+    pConf->Write(_T("TraceColor"), m_cpTrace->GetColour().GetAsString());
+    pConf->Write(_T("GridColor"), m_cpGrid->GetColour().GetAsString());
+    pConf->Write(_T("BackgroundColor"), m_cpBackground->GetColour().GetAsString());
 
     pConf->Write(_T("CoursePrediction"), m_cbCoursePrediction->GetValue());
     pConf->Write(_T("CoursePredictionLength"), m_sCoursePredictionLength->GetValue());
