@@ -197,7 +197,6 @@ void trimplot_pi::OnToolbarToolCallback(int id)
                                pConf->Read ( _T ( "DialogPosY" ), 20L ));
         m_TrimPlotDialog->SetSize(pConf->Read ( _T ( "DialogW" ), 400L ),
                                   pConf->Read ( _T ( "DialogH" ), 300L ));
-        m_TrimPlotDialog->SetPlotHeight();
 
         wxIcon icon;
         icon.CopyFromBitmap(*_img_trimplot);
@@ -207,6 +206,9 @@ void trimplot_pi::OnToolbarToolCallback(int id)
 
     RearrangeWindow();
     m_TrimPlotDialog->Show(!m_TrimPlotDialog->IsShown());
+
+    if(m_TrimPlotDialog->IsShown())
+        m_TrimPlotDialog->SetupPlot();
 
     wxPoint p = m_TrimPlotDialog->GetPosition();
     m_TrimPlotDialog->Move(0, 0);        // workaround for gtk autocentre dialog behavior
@@ -334,15 +336,6 @@ void trimplot_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 
         UpdatePositionDetermined(PDS10, PDC10, 10);
         UpdatePositionDetermined(PDS60, PDC60, 60);
-
-#if 0
-        double last_avgcog = m_avgcog;
-        AvgCOG(pfix.Cog);
-
-
-        m_history[COG].data[0].offset = m_avgcog;
-        m_history[COG].data[1].offset = m_avgcog;
-#endif
     }
 }
 

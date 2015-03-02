@@ -11,25 +11,26 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
+#include <wx/string.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
+#include <wx/icon.h>
+#include <wx/menu.h>
 #include <wx/scrolwin.h>
 #include <wx/gdicmn.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
-#include <wx/string.h>
 #include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/button.h>
-#include <wx/choice.h>
 #include <wx/dialog.h>
 #include <wx/checkbox.h>
+#include <wx/button.h>
 #include <wx/panel.h>
-#include <wx/bitmap.h>
-#include <wx/image.h>
-#include <wx/icon.h>
+#include <wx/stattext.h>
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
 #include <wx/spinctrl.h>
+#include <wx/choice.h>
 #include <wx/statbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -44,27 +45,31 @@ class TrimPlotDialogBase : public wxDialog
 	
 	protected:
 		wxScrolledWindow* m_swPlots;
-		wxStaticText* m_staticText16;
-		wxStaticText* m_staticText18;
-		wxButton* m_bAnalyze;
-		wxChoice* m_cTime;
-		wxButton* m_bSetup;
+		wxMenu* m_menu1;
+		wxMenuItem* m_mt1;
+		wxMenuItem* m_mt2;
+		wxMenuItem* m_mt3;
+		wxMenuItem* m_mt4;
+		wxMenuItem* m_mt5;
+		wxMenuItem* m_mt6;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSize( wxSizeEvent& event ) { event.Skip(); }
+		virtual void OnDoubleClick( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnPaint( wxPaintEvent& event ) { event.Skip(); }
-		virtual void OnAnalyze( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnTimeChoice( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSetup( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		wxScrolledWindow* m_scrollWindow;
-		wxStaticText* m_stPositionSpeed;
-		wxStaticText* m_stSpeedPercentage;
 		
-		TrimPlotDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Trim Plot"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL ); 
+		TrimPlotDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxRESIZE_BORDER|wxSUNKEN_BORDER ); 
 		~TrimPlotDialogBase();
+		
+		void m_swPlotsOnContextMenu( wxMouseEvent &event )
+		{
+			m_swPlots->PopupMenu( m_menu1, event.GetPosition() );
+		}
 	
 };
 
@@ -88,6 +93,7 @@ class PreferencesDialogBase : public wxDialog
 		wxStaticText* m_staticText12;
 		wxSpinCtrl* m_sPlotHeight;
 		wxStaticText* m_staticText121;
+		wxStaticText* m_staticText11;
 		wxStaticText* m_staticText1411;
 		wxStaticText* m_staticText1511;
 		wxStaticText* m_staticText721;
@@ -99,6 +105,7 @@ class PreferencesDialogBase : public wxDialog
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnPDS( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPlotChange( wxSpinEvent& event ) { event.Skip(); }
+		virtual void OnPlotChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
 		
 	
@@ -115,6 +122,7 @@ class PreferencesDialogBase : public wxDialog
 		wxCheckBox* m_cbCourseSubtractionPlot;
 		wxCheckBox* m_cbCourseFFTWPlot;
 		wxChoice* m_cColors;
+		wxSpinCtrl* m_sPlotTransparency;
 		wxCheckBox* m_cbCoursePrediction;
 		wxSpinCtrl* m_sCoursePredictionLength;
 		wxSpinCtrl* m_sCoursePredictionSeconds;

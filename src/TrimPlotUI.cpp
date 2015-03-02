@@ -11,7 +11,7 @@
 
 TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( -1,-1 ), wxSize( -1,-1 ) );
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
 	wxFlexGridSizer* fgSizer8;
 	fgSizer8 = new wxFlexGridSizer( 2, 1, 0, 0 );
@@ -31,6 +31,34 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	
 	m_swPlots = new wxScrolledWindow( m_scrollWindow, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
 	m_swPlots->SetScrollRate( 5, 5 );
+	m_menu1 = new wxMenu();
+	m_mt1 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("5 m") ) , wxEmptyString, wxITEM_RADIO );
+	m_menu1->Append( m_mt1 );
+	m_mt1->Check( true );
+	
+	m_mt2 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("20 m") ) , wxEmptyString, wxITEM_RADIO );
+	m_menu1->Append( m_mt2 );
+	
+	m_mt3 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("1 h") ) , wxEmptyString, wxITEM_RADIO );
+	m_menu1->Append( m_mt3 );
+	
+	m_mt4 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("4 h") ) , wxEmptyString, wxITEM_RADIO );
+	m_menu1->Append( m_mt4 );
+	
+	m_mt5 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("8 h") ) , wxEmptyString, wxITEM_RADIO );
+	m_menu1->Append( m_mt5 );
+	
+	m_mt6 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("24 h") ) , wxEmptyString, wxITEM_RADIO );
+	m_menu1->Append( m_mt6 );
+	
+	m_menu1->AppendSeparator();
+	
+	wxMenuItem* m_mSetup;
+	m_mSetup = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("Setup") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu1->Append( m_mSetup );
+	
+	m_swPlots->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( TrimPlotDialogBase::m_swPlotsOnContextMenu ), NULL, this ); 
+	
 	fgSizer10->Add( m_swPlots, 1, wxEXPAND | wxALL, 5 );
 	
 	
@@ -47,22 +75,6 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer14->SetFlexibleDirection( wxBOTH );
 	fgSizer14->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText16 = new wxStaticText( this, wxID_ANY, _("Speed via Position"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText16->Wrap( -1 );
-	fgSizer14->Add( m_staticText16, 0, wxALL, 5 );
-	
-	m_stPositionSpeed = new wxStaticText( this, wxID_ANY, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_stPositionSpeed->Wrap( -1 );
-	fgSizer14->Add( m_stPositionSpeed, 0, wxALL, 5 );
-	
-	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Speed Percentage vs Straight course"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText18->Wrap( -1 );
-	fgSizer14->Add( m_staticText18, 0, wxALL, 5 );
-	
-	m_stSpeedPercentage = new wxStaticText( this, wxID_ANY, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_stSpeedPercentage->Wrap( -1 );
-	fgSizer14->Add( m_stSpeedPercentage, 0, wxALL, 5 );
-	
 	
 	fgSizer8->Add( fgSizer14, 1, wxEXPAND, 5 );
 	
@@ -70,18 +82,6 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer12 = new wxFlexGridSizer( 1, 0, 0, 0 );
 	fgSizer12->SetFlexibleDirection( wxBOTH );
 	fgSizer12->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_bAnalyze = new wxButton( this, wxID_ANY, _("Analyze"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer12->Add( m_bAnalyze, 0, wxALL, 5 );
-	
-	wxString m_cTimeChoices[] = { _("5 min"), _("20 min"), _("1 h"), _("4 h"), _("8 h"), _("24 h") };
-	int m_cTimeNChoices = sizeof( m_cTimeChoices ) / sizeof( wxString );
-	m_cTime = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cTimeNChoices, m_cTimeChoices, 0 );
-	m_cTime->SetSelection( 0 );
-	fgSizer12->Add( m_cTime, 0, wxALL, 5 );
-	
-	m_bSetup = new wxButton( this, wxID_ANY, _("Setup"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer12->Add( m_bSetup, 0, wxALL, 5 );
 	
 	
 	fgSizer8->Add( fgSizer12, 1, wxEXPAND, 5 );
@@ -95,21 +95,20 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	
 	// Connect Events
 	this->Connect( wxEVT_SIZE, wxSizeEventHandler( TrimPlotDialogBase::OnSize ) );
+	m_swPlots->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
 	m_swPlots->Connect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
-	m_bAnalyze->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrimPlotDialogBase::OnAnalyze ), NULL, this );
-	m_cTime->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( TrimPlotDialogBase::OnTimeChoice ), NULL, this );
-	m_bSetup->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrimPlotDialogBase::OnSetup ), NULL, this );
+	this->Connect( m_mSetup->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( TrimPlotDialogBase::OnSetup ) );
 }
 
 TrimPlotDialogBase::~TrimPlotDialogBase()
 {
 	// Disconnect Events
 	this->Disconnect( wxEVT_SIZE, wxSizeEventHandler( TrimPlotDialogBase::OnSize ) );
+	m_swPlots->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
 	m_swPlots->Disconnect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
-	m_bAnalyze->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrimPlotDialogBase::OnAnalyze ), NULL, this );
-	m_cTime->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( TrimPlotDialogBase::OnTimeChoice ), NULL, this );
-	m_bSetup->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrimPlotDialogBase::OnSetup ), NULL, this );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( TrimPlotDialogBase::OnSetup ) );
 	
+	delete m_menu1; 
 }
 
 PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -273,6 +272,13 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_cColors->SetSelection( 0 );
 	fgSizer101->Add( m_cColors, 0, wxALL, 5 );
 	
+	m_staticText11 = new wxStaticText( this, wxID_ANY, _("Transparency"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText11->Wrap( -1 );
+	fgSizer101->Add( m_staticText11, 0, wxALL, 5 );
+	
+	m_sPlotTransparency = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 50 );
+	fgSizer101->Add( m_sPlotTransparency, 0, wxALL, 5 );
+	
 	
 	fgSizer111->Add( fgSizer101, 1, wxEXPAND, 5 );
 	
@@ -356,6 +362,8 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	// Connect Events
 	m_button5->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPDS ), NULL, this );
 	m_sPlotHeight->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cColors->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_sPlotTransparency->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_bAbout->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnAbout ), NULL, this );
 }
 
@@ -364,6 +372,8 @@ PreferencesDialogBase::~PreferencesDialogBase()
 	// Disconnect Events
 	m_button5->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPDS ), NULL, this );
 	m_sPlotHeight->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_cColors->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
+	m_sPlotTransparency->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_bAbout->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnAbout ), NULL, this );
 	
 }

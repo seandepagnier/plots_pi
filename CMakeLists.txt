@@ -23,6 +23,8 @@ SET(SRC_TRIMPLOT
             src/TrimPlotDialog.cpp
             src/PreferencesDialog.cpp
             src/AboutDialog.cpp
+            src/History.cpp
+            src/Plot.cpp
             src/TrimPlotUI.cpp
             src/icons.cpp
 	)

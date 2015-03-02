@@ -28,13 +28,11 @@
 #include "TrimPlotDialog.h"
 #include "PreferencesDialog.h"
 
-struct PlotColor PlotColorSchemes[] = {{{*wxGREEN, *wxRED, *wxBLUE, *wxCYAN}, wxColor(200, 180, 0), *wxWHITE, *wxBLACK},
-                        {{*wxRED, *wxGREEN, *wxBLUE, wxColor(255, 196, 128)}, wxColor(40, 40, 40), *wxGREEN, *wxWHITE},
-                      {{wxColor(255, 0, 255), wxColor(255, 255, 0), wxColor(0, 255, 255), wxColor(200, 180, 40)}, wxColor(200, 180, 0), *wxBLUE, *wxBLACK}};
-
+#include "Plot.h"
 
 TrimPlotDialog::TrimPlotDialog(wxWindow* parent, trimplot_pi &_trimplot_pi, PreferencesDialog &preferences)
-    : TrimPlotDialogBase( parent ), m_trimplot_pi(_trimplot_pi), m_preferences(preferences)
+    : TrimPlotDialogBase( parent ), m_trimplot_pi(_trimplot_pi), m_preferences(preferences),
+      m_lastTimerTotalSeconds(0)
 {
     m_tRefreshTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
                             ( TrimPlotDialog::OnRefreshTimer ), NULL, this);
@@ -85,7 +83,7 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
         return;
     }
 
-    int plotcount;
+    int plotcount = 0;
     for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++) {
         if(!(*it)->Visible())
             continue;
@@ -96,25 +94,22 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
     }
 }
 
-void TrimPlotDialog::SetPlotHeight()
+void TrimPlotDialog::SetupPlot()
 {
     int count = wxMax(PlotCount(), 1); // even with no plots, make size of one plot
     int h = m_preferences.PlotHeight() * count;
 
     int w, oldh;
     m_swPlots->GetSize(&w, &oldh);
-    m_swPlots->SetMinSize(wxSize(-1, h));
+    m_swPlots->SetMinSize(wxSize(10, h));
     
     if(oldh != h) {
         wxSize s = m_trimplot_pi.m_TrimPlotDialog->GetSize();
         SetSize(s.x+1, s.y);
         SetSize(s.x, s.y);
     }
-}
 
-void TrimPlotDialog::OnAnalyze( wxCommandEvent& event )
-{
-    wxMessageBox(_T("Unimplemented"));
+    SetTransparent(255 - 255*m_preferences.m_sPlotTransparency->GetValue()/100);
 }
 
 void TrimPlotDialog::OnSetup( wxCommandEvent& event )
@@ -124,6 +119,9 @@ void TrimPlotDialog::OnSetup( wxCommandEvent& event )
 
 void TrimPlotDialog::OnRefreshTimer( wxTimerEvent & )
 {
+    if(m_lastTimerTotalSeconds != TotalSeconds())
+        Refresh();
+    else
     for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++) {
         if(!(*it)->Visible())
             continue;
@@ -134,6 +132,7 @@ void TrimPlotDialog::OnRefreshTimer( wxTimerEvent & )
         }
     }
 
+    m_lastTimerTotalSeconds = TotalSeconds();
     
     for(int i = 0; i < HISTORY_COUNT; i++)
         g_history[i].ClearNewData();
@@ -150,6 +149,12 @@ int TrimPlotDialog::PlotCount()
 
 int TrimPlotDialog::TotalSeconds()
 {
-    const int cts[6] = {5, 20, 60, 4*60, 8*60, 24*60};
-    return 60*cts[m_cTime->GetSelection()];
+    const int cts[] = {5, 20, 60, 4*60, 8*60, 24*60};
+    wxMenuItem *items[] = {m_mt1, m_mt2, m_mt3, m_mt4, m_mt5, m_mt6};
+
+    for(unsigned int i=0; i<sizeof cts / sizeof *cts; i++)
+        if(items[i]->IsChecked())
+            return 60*cts[i];
+
+    return 60;
 }

@@ -24,37 +24,37 @@
  ***************************************************************************
  */
 
-#include "TrimPlotUI.h"
+#include <list>
 
-class trimplot_pi;
-class Plot;
+enum HistoryEnum {TWS, TWD, TWA, AWS, AWA, SOG, COG, HDG, XTE, LAT, LON,
+                  PDS10, PDS60, PDC10, PDC60, HISTORY_COUNT};
 
-class TrimPlotDialog: public TrimPlotDialogBase
+struct HistoryAtom
 {
-public:
-    TrimPlotDialog(wxWindow* parent, trimplot_pi &_trimplot_pi, PreferencesDialog &preferences);
-    ~TrimPlotDialog();
-
-    void OnSize(wxSizeEvent& event) { Refresh(); event.Skip(); }
-    void OnDoubleClick( wxMouseEvent& event );
-    void OnPaint(wxPaintEvent& event);
-
-    void SetupPlot();
-
-private:
-    void OnTimeChoice( wxCommandEvent& event ) { Refresh(); }
-    void OnSetup( wxCommandEvent& event );
-
-    void OnRefreshTimer( wxTimerEvent & );
-
-    int PlotCount();
-    int TotalSeconds();
-
-    trimplot_pi &m_trimplot_pi;
-    PreferencesDialog &m_preferences;
-
-    wxTimer m_tRefreshTimer;
-    int m_lastTimerTotalSeconds;
-
-    std::list<Plot*> m_plots;
+    HistoryAtom(double v, time_t t) : value(v), ticks(t) {}
+    double value;
+    time_t ticks;
 };
+
+struct HistoryData
+{
+    std::list<HistoryAtom> data;
+    bool newdata;
+};
+
+struct History
+{
+    HistoryData data[2];  // two buffers, one for current data, and one
+                          // with entrees averaged to each second
+    bool resolve;
+
+    bool LastValue(double &value, int ticks=0);
+    time_t LastTicks();
+    void AddData(int i, HistoryAtom state);
+    void AddData(double value);
+    void ClearNewData();
+};
+
+extern History g_history[];
+extern const int history_depths[];
+extern const wxString HistoryName[];

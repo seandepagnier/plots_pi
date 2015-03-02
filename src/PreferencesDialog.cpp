@@ -57,6 +57,7 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
         it->cb->SetValue(pConf->Read(_T("Plot ") + it->name, it->cb->GetValue()));
 
     m_sPlotHeight->SetValue(pConf->Read(_T("PlotHeight"), m_sPlotHeight->GetValue()));
+    m_sPlotTransparency->SetValue(pConf->Read(_T("PlotTransparency"), m_sPlotTransparency->GetValue()));
 
     bool bvalue;
     int ivalue;
@@ -83,6 +84,7 @@ PreferencesDialog::~PreferencesDialog()
         pConf->Write(_T("Plot ") + it->name, it->cb->GetValue());
 
     pConf->Write(_T("PlotHeight"), m_sPlotHeight->GetValue());
+    pConf->Write(_T("PlotTransparency"), m_sPlotTransparency->GetValue());
 
     pConf->Write(_T("CoursePrediction"), m_cbCoursePrediction->GetValue());
     pConf->Write(_T("CoursePredictionLength"), m_sCoursePredictionLength->GetValue());
@@ -109,5 +111,5 @@ void PreferencesDialog::OnAbout( wxCommandEvent& event )
 void PreferencesDialog::PlotChange()
 {
     m_trimplot_pi.m_TrimPlotDialog->Refresh();
-    m_trimplot_pi.m_TrimPlotDialog->SetPlotHeight();
+    m_trimplot_pi.m_TrimPlotDialog->SetupPlot();
 }
