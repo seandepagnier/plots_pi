@@ -163,7 +163,8 @@ void Plot::Paint(wxDC &dc, PlotSettings &settings)
 
     TraceSettings tracesettings;
     tracesettings.offset = round((min + max) / 2);
-    tracesettings.scale = ceil(max - min);
+    tracesettings.scale = 2*wxMax(ceil(max - tracesettings.offset),
+                                  ceil(tracesettings.offset - min));
     if(tracesettings.scale == 0)
         tracesettings.scale = 1;
 

@@ -358,17 +358,6 @@ void trimplot_pi::UpdatePositionDetermined(enum HistoryEnum speed, enum HistoryE
     AddData(course, brg);
 }
 
-#if 0
-void trimplot_pi::AvgCOG(double cog)
-{
-    if(isnan(m_avgcog))
-        m_avgcog = cog;
-
-    const double lp = .05;
-    m_avgcog = heading_resolve(lp*cog + (1-lp)*heading_resolve(m_avgcog, cog));
-}
-#endif
-
 void trimplot_pi::AddData(enum HistoryEnum e, double value)
 {
     g_history[e].AddData(value);
