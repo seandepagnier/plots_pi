@@ -42,12 +42,18 @@ public:
 
 private:
     void OnAnalyze( wxCommandEvent& event );
+    void OnTimeChoice( wxCommandEvent& event ) { Refresh(); }
     void OnSetup( wxCommandEvent& event );
 
     void OnRefreshTimer( wxTimerEvent & );
+
+    int PlotCount();
+    int TotalSeconds();
 
     trimplot_pi &m_trimplot_pi;
     PreferencesDialog &m_preferences;
 
     wxTimer m_tRefreshTimer;
+
+    std::list<Plot*> m_plots;
 };

@@ -36,17 +36,22 @@ public:
 
     void OnPlotChange( wxCommandEvent& event ) { PlotChange(); }
     void OnPlotChange( wxSpinEvent& event ) { PlotChange(); }
+
+    void OnPDS( wxCommandEvent& event );
     void OnAbout( wxCommandEvent& event );
 
-    int PlotCount();
-    int PlotDataIndex(int index);
-
     int PlotHeight() { return m_sPlotHeight->GetValue(); }
-    int PlotThickness() { return m_sPlotThickness->GetValue(); }
 
 private:
     void PlotChange();
 
     trimplot_pi &m_trimplot_pi;
-    wxCheckBox *m_cbStates[STATE_COUNT];
+
+    struct cbState {
+       cbState(wxCheckBox *a, wxString n) : cb(a), name(n) { }
+        wxCheckBox *cb;
+        wxString name;
+    };
+
+    std::list<cbState> m_cbStates;
 };

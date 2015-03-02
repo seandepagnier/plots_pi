@@ -37,29 +37,26 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
     if(!pConf)
         return;
 
-    m_cbStates[TWS] = m_cbTWS;
-    m_cbStates[TWD] = m_cbTWD;
-    m_cbStates[TWA] = m_cbTWA;
-    m_cbStates[AWS] = m_cbAWS;
-    m_cbStates[AWA] = m_cbAWA;
-    m_cbStates[SOG] = m_cbSOG;
-    m_cbStates[COG] = m_cbCOG;
-    m_cbStates[AOG] = m_cbAOG;
-    m_cbStates[CCG] = m_cbCCG;
-    m_cbStates[HDG] = m_cbHDG;
-    m_cbStates[XTE] = m_cbXTE;
-    m_cbStates[HEL] = m_cbHEL;
+#define ADD_CB(NAME)                                    \
+    m_cbStates.push_back(cbState(m_cb##NAME, _T(#NAME)));
+
+    ADD_CB(SOG);
+    ADD_CB(PDS10);
+    ADD_CB(PDS60);
+    ADD_CB(SpeedSubtractionPlot);
+    ADD_CB(SOG);
+    ADD_CB(PDS10);
+    ADD_CB(PDS60);
+    ADD_CB(Heading);
+    ADD_CB(CourseSubtractionPlot);
+    ADD_CB(CourseFFTWPlot);
 
     pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
 
-    for(int i=0; i<STATE_COUNT; i++)
-        m_cbStates[i]->SetValue(pConf->Read(_T("Plot ") + StateName[i], m_cbStates[i]->GetValue()));
+    for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
+        it->cb->SetValue(pConf->Read(_T("Plot ") + it->name, it->cb->GetValue()));
 
     m_sPlotHeight->SetValue(pConf->Read(_T("PlotHeight"), m_sPlotHeight->GetValue()));
-    m_sPlotThickness->SetValue(pConf->Read(_T("PlotThickness"), m_sPlotThickness->GetValue()));
-    m_cpTrace->SetColour(pConf->Read(_T("TraceColor"), m_cpTrace->GetColour().GetAsString()));
-    m_cpGrid->SetColour(pConf->Read(_T("GridColor"), m_cpGrid->GetColour().GetAsString()));
-    m_cpBackground->SetColour(pConf->Read(_T("BackgroundColor"), m_cpBackground->GetColour().GetAsString()));
 
     bool bvalue;
     int ivalue;
@@ -82,45 +79,31 @@ PreferencesDialog::~PreferencesDialog()
 
     pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
 
-    for(int i=0; i<STATE_COUNT; i++)
-        pConf->Write(_T("Plot ") + StateName[i], m_cbStates[i]->GetValue());
+    for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
+        pConf->Write(_T("Plot ") + it->name, it->cb->GetValue());
 
     pConf->Write(_T("PlotHeight"), m_sPlotHeight->GetValue());
-    pConf->Write(_T("PlotThickness"), m_sPlotThickness->GetValue());
-    pConf->Write(_T("TraceColor"), m_cpTrace->GetColour().GetAsString());
-    pConf->Write(_T("GridColor"), m_cpGrid->GetColour().GetAsString());
-    pConf->Write(_T("BackgroundColor"), m_cpBackground->GetColour().GetAsString());
 
     pConf->Write(_T("CoursePrediction"), m_cbCoursePrediction->GetValue());
     pConf->Write(_T("CoursePredictionLength"), m_sCoursePredictionLength->GetValue());
     pConf->Write(_T("CoursePredictionSeconds"), m_sCoursePredictionSeconds->GetValue());
 }
 
+void PreferencesDialog::OnPDS( wxCommandEvent& event )
+{
+        wxMessageDialog mdlg(this, _("\
+Position Determined Speed finds the speed of the vessel by comparing current position to the position\
+from the past.  For example PDS10 (10 seconds) or PDS60 (60 seconds)\n\n\
+This method filters the data, and also gives a comparison to useful speed traveled rather than the speed\
+over a changing course (eg: downwind autosteering S curves)\n"),
+                             _("Positon Determined Speed"), wxOK | wxICON_INFORMATION);
+        mdlg.ShowModal();
+}
+
 void PreferencesDialog::OnAbout( wxCommandEvent& event )
 {
     AboutDialog dlg(this);
     dlg.ShowModal();
-}
-
-int PreferencesDialog::PlotCount()
-{
-    int count = 0;
-    for(int i=0; i<STATE_COUNT; i++)
-        count += m_cbStates[i]->GetValue();
-    return count;
-}
-
-int PreferencesDialog::PlotDataIndex(int index)
-{
-    for(int i=0; i<STATE_COUNT; i++) {
-        index -= m_cbStates[i]->GetValue();
-
-        if(index < 0)
-            return i;
-    }
-    
-    wxASSERT(_T("Invalid plot data index"));
-    return 0;
 }
 
 void PreferencesDialog::PlotChange()

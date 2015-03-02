@@ -2,6 +2,7 @@
  *
  * Project:  OpenCPN
  * Purpose:  trimplot Plugin
+ * Author:   Sean D'Epagnier
  *
  ***************************************************************************
  *   Copyright (C) 2015 by Sean D'Epagnier                                 *
@@ -33,6 +34,7 @@
 #include "PreferencesDialog.h"
 #include "icons.h"
 
+History g_history[HISTORY_COUNT];
 
 double heading_resolve(double degrees, double ref)
 {
@@ -66,24 +68,6 @@ trimplot_pi::trimplot_pi(void *ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
-
-    m_avgcog = NAN;
-
-    const double ws = 10; // wind scale
-    const double wd = 25; // wind direction scale
-
-    SetScale(TWS, ws);
-    SetScalec(TWD, wd);
-    SetScalec(TWA, wd);
-    SetScale(AWS, ws);
-    SetScalec(AWA, wd);
-    SetScale(SOG, 5);
-    SetScalec(COG, 30);
-    SetScalec(AOG, 2);
-    SetScalec(CCG, 5);
-    SetScalec(HDG, 30);
-    SetScalec(XTE, 10);
-    SetScalec(HEL, 20);
 }
 
 //---------------------------------------------------------------------------------------------------------
@@ -112,7 +96,6 @@ int trimplot_pi::Init(void)
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
             WANTS_TOOLBAR_CALLBACK    |
-//            WANTS_PREFERENCES         |
             WANTS_NMEA_SENTENCES   |
             WANTS_NMEA_EVENTS         |
             WANTS_CONFIG);
@@ -122,13 +105,8 @@ bool trimplot_pi::DeInit(void)
 {
     SaveConfig();
 
-    //    Record the dialog position
     if (m_TrimPlotDialog)
     {
-        wxPoint p = m_TrimPlotDialog->GetPosition();
-        SetTrimPlotDialogX(p.x);
-        SetTrimPlotDialogY(p.y);
-        
         m_TrimPlotDialog->Close();
         delete m_TrimPlotDialog;
         m_TrimPlotDialog = NULL;
@@ -211,8 +189,14 @@ void trimplot_pi::OnToolbarToolCallback(int id)
     if(!m_TrimPlotDialog)
     {
         m_TrimPlotDialog = new TrimPlotDialog(m_parent_window, *this, *m_Preferences);
-        m_TrimPlotDialog->Move(wxPoint(m_trimplot_dialog_x, m_trimplot_dialog_y));
-        m_TrimPlotDialog->SetSize(m_trimplot_dialog_w, m_trimplot_dialog_h);
+
+        wxFileConfig *pConf = GetOCPNConfigObject();
+        pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
+
+        m_TrimPlotDialog->Move(pConf->Read ( _T ( "DialogPosX" ), 20L ),
+                               pConf->Read ( _T ( "DialogPosY" ), 20L ));
+        m_TrimPlotDialog->SetSize(pConf->Read ( _T ( "DialogW" ), 400L ),
+                                  pConf->Read ( _T ( "DialogH" ), 300L ));
         m_TrimPlotDialog->SetPlotHeight();
 
         wxIcon icon;
@@ -256,25 +240,27 @@ void trimplot_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
     if(!m_Preferences->m_cbCoursePrediction->GetValue())
         return;
 
-    double bearing, distance;
-    ComputeBearingDistance(m_Preferences->m_sCoursePredictionSeconds->GetValue(),
-                           bearing, distance);
+    int ticks = m_Preferences->m_sCoursePredictionSeconds->GetValue();
+    int length = m_Preferences->m_sCoursePredictionLength->GetValue();
 
-#if 0
-    double current_sog = m_states[SOG].front().value;
-    double current_cog = m_states[COG].front().value;
+    double lat0, lon0, lat1, lon1;
+    if(!g_history[LAT].LastValue(lat0) ||
+       !g_history[LON].LastValue(lon0) ||
+       !g_history[LAT].LastValue(lat1, ticks) ||
+       !g_history[LON].LastValue(lon1, ticks))
+        return;
+
+    double brg, dist;
+    DistanceBearingMercator_Plugin(lat0, lon0, lat1, lon1, &brg, &dist);
+
     double dlat, dlon;
-    PositionBearingDistanceMercator_Plugin(current.Lat, current.Lon, bearing, distance
-                                           * m_Preferences->m_sCoursePredictionLength->GetValue() * 60.0
-                                           / m_Preferences->m_sCoursePredictionSeconds->GetValue(),
-                                           &dlat, &dlon);
+    PositionBearingDistanceMercator_Plugin(lat1, lon1, brg, dist * length * 60.0 / ticks, &dlat, &dlon);
     wxPoint r1, r2;
-    GetCanvasPixLL(&vp, &r1, current.Lat, current.Lon);
+    GetCanvasPixLL(&vp, &r1, lat1, lon1);
     GetCanvasPixLL(&vp, &r2, dlat, dlon);
     
     dc.SetPen(wxPen(*wxRED, 3));
     dc.DrawLine( r1.x, r1.y, r2.x, r2.y);
-#endif
 }
 
 bool trimplot_pi::LoadConfig(void)
@@ -285,11 +271,6 @@ bool trimplot_pi::LoadConfig(void)
         return false;
 
     pConf->SetPath ( _T( "/Settings/TrimPlot" ) );
-    
-    m_trimplot_dialog_x =  pConf->Read ( _T ( "DialogPosX" ), 20L );
-    m_trimplot_dialog_y =  pConf->Read ( _T ( "DialogPosY" ), 20L );
-    m_trimplot_dialog_w =  pConf->Read ( _T ( "DialogW" ), 400L );
-    m_trimplot_dialog_h =  pConf->Read ( _T ( "DialogH" ), 200L );
 
     return true;
 }
@@ -297,10 +278,6 @@ bool trimplot_pi::LoadConfig(void)
 bool trimplot_pi::SaveConfig(void)
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
-
-    if(!pConf)
-        return false;
-
     pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
 
     if(m_TrimPlotDialog) {
@@ -348,98 +325,58 @@ void trimplot_pi::SetNMEASentence( wxString &sentence )
 void trimplot_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 {
     if(pfix.FixTime && pfix.nSats) {
-        if(m_states[SOG].size())
-            AddData(AOG, pfix.Sog - m_states[SOG].front().value);
 
         AddData(SOG, pfix.Sog);
         AddData(COG, pfix.Cog);
 
+        AddData(LAT, pfix.Lat);
+        AddData(LON, pfix.Lon);
+
+        UpdatePositionDetermined(PDS10, PDC10, 10);
+        UpdatePositionDetermined(PDS60, PDC60, 60);
+
+#if 0
         double last_avgcog = m_avgcog;
         AvgCOG(pfix.Cog);
 
-        AddData(CCG, heading_resolve(m_avgcog - last_avgcog));
-        m_statescales[COG].offset = m_avgcog;
+
+        m_history[COG].data[0].offset = m_avgcog;
+        m_history[COG].data[1].offset = m_avgcog;
+#endif
     }
 }
 
-void trimplot_pi::ShowPreferencesDialog( wxWindow* parent )
+void trimplot_pi::UpdatePositionDetermined(enum HistoryEnum speed, enum HistoryEnum course, int ticks)
 {
-//    m_Preferences->Show();
-}
-
-void trimplot_pi::ComputeBearingDistance(double seconds, double &bearing, double &distance)
-{
-    return;
-#if 0
-    if(m_states.size() == 0) {
-        bearing = distance = NAN;
+    if(g_history[speed].LastTicks() + ticks > g_history[LAT].LastTicks())
         return;
-    }
 
-    State current = m_states.front();
+    double lat0, lon0, lat1, lon1;
+    if(!g_history[LAT].LastValue(lat0) ||
+       !g_history[LON].LastValue(lon0) ||
+       !g_history[LAT].LastValue(lat1, ticks) ||
+       !g_history[LON].LastValue(lon1, ticks))
+        return;
 
-    std::list<State>::iterator it;
-    double d = 1;
-    for(it = m_states.begin(); fix.FixTime - (*it).FixTime <= seconds; it++)
-        if(it == m_states.end()) {
-            d = (fix.FixTime - (*it).FixTime) / seconds;
-            break;
-        }
-    
-    DistanceBearingMercator_Plugin(fix.Lat, fix.Lon, (*it).Lat, (*it).Lon, &bearing, &distance);
-    distance *= d;
-#endif
+    double brg, dist;
+    DistanceBearingMercator_Plugin(lat0, lon0, lat1, lon1, &brg, &dist);
+
+    AddData(speed, dist * 3600.0 / ticks);
+    AddData(course, brg);
 }
 
-double trimplot_pi::ComputeAvgSog(double seconds)
-{
-    return 0;
 #if 0
-    if(!m_states.size())
-        return NAN;
-
-    PlugIn_Position_Fix_Ex current = m_fixes.front();
-
-    double total = 0, count = 0;
-    std::list<State>::iterator it;
-    for(it = m_fixes.begin(); fix.FixTime - (*it).FixTime <= seconds && it != m_fixes.end(); it++) {
-        total += (*it).Sog;
-        count++;
-    }
-    
-    return total / count;
-#endif
-}
-
 void trimplot_pi::AvgCOG(double cog)
 {
     if(isnan(m_avgcog))
         m_avgcog = cog;
 
-    const double lp = .2;
+    const double lp = .05;
     m_avgcog = heading_resolve(lp*cog + (1-lp)*heading_resolve(m_avgcog, cog));
 }
+#endif
 
-void trimplot_pi::AddData(enum States state, double value)
+void trimplot_pi::AddData(enum HistoryEnum e, double value)
 {
-    m_states[state].push_front(State(value, wxDateTime::Now().GetTicks()));
-    if(!StateResolve[state])
-        ScaleIncrease(state, value);
-
-    if(m_states[state].size() > 1000)
-        m_states[state].pop_back();
-
-    m_newData = true;
-}
-
-void trimplot_pi::SetScale(enum States state, double scale, double offset, bool center_offset)
-{
-    m_statescales[state].scale = scale;
-    m_statescales[state].offset = offset;
-    m_statescales[state].center_offset = center_offset;
-}
-
-void trimplot_pi::ScaleIncrease(enum States state, double scale)
-{
-    m_statescales[state].scale = wxMax(m_statescales[state].scale, scale);
+    g_history[e].AddData(value);
 }

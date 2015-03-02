@@ -23,8 +23,13 @@
 #include <wx/choice.h>
 #include <wx/dialog.h>
 #include <wx/checkbox.h>
+#include <wx/panel.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
+#include <wx/icon.h>
+#include <wx/listbook.h>
+#include <wx/listctrl.h>
 #include <wx/spinctrl.h>
-#include <wx/clrpicker.h>
 #include <wx/statbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -49,6 +54,7 @@ class TrimPlotDialogBase : public wxDialog
 		virtual void OnSize( wxSizeEvent& event ) { event.Skip(); }
 		virtual void OnPaint( wxPaintEvent& event ) { event.Skip(); }
 		virtual void OnAnalyze( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTimeChoice( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSetup( wxCommandEvent& event ) { event.Skip(); }
 		
 	
@@ -70,25 +76,18 @@ class PreferencesDialogBase : public wxDialog
 	private:
 	
 	protected:
-		wxCheckBox* m_cbTWD;
-		wxCheckBox* m_cbTWA;
-		wxCheckBox* m_cbAWS;
-		wxCheckBox* m_cbAWA;
-		wxCheckBox* m_cbSOG;
-		wxCheckBox* m_cbCOG;
-		wxCheckBox* m_cbAOG;
-		wxCheckBox* m_cbCCG;
-		wxCheckBox* m_cbHDG;
-		wxCheckBox* m_cbXTE;
-		wxCheckBox* m_cbHEL;
+		wxListbook* m_listbook1;
+		wxButton* m_button5;
+		wxPanel* m_panel2;
+		wxPanel* m_panel3;
+		wxStaticText* m_staticText15;
+		wxPanel* m_panel4;
+		wxStaticText* m_staticText16;
+		wxPanel* m_panel5;
+		wxStaticText* m_staticText161;
 		wxStaticText* m_staticText12;
 		wxSpinCtrl* m_sPlotHeight;
-		wxStaticText* m_staticText11;
-		wxSpinCtrl* m_sPlotThickness;
 		wxStaticText* m_staticText121;
-		wxStaticText* m_staticText14;
-		wxStaticText* m_staticText13;
-		wxCheckBox* m_cbStatistics;
 		wxStaticText* m_staticText1411;
 		wxStaticText* m_staticText1511;
 		wxStaticText* m_staticText721;
@@ -98,16 +97,24 @@ class PreferencesDialogBase : public wxDialog
 		wxButton* m_sdbSizer1OK;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnPlotChange( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPDS( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPlotChange( wxSpinEvent& event ) { event.Skip(); }
 		virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
-		wxCheckBox* m_cbTWS;
-		wxColourPickerCtrl* m_cpTrace;
-		wxColourPickerCtrl* m_cpGrid;
-		wxColourPickerCtrl* m_cpBackground;
+		wxPanel* m_panel1;
+		wxCheckBox* m_cbSOG;
+		wxCheckBox* m_cbPDS10;
+		wxCheckBox* m_cbPDS60;
+		wxCheckBox* m_cbSpeedSubtractionPlot;
+		wxCheckBox* m_cbCOG;
+		wxCheckBox* m_cbPDC10;
+		wxCheckBox* m_cbPDC60;
+		wxCheckBox* m_cbHeading;
+		wxCheckBox* m_cbCourseSubtractionPlot;
+		wxCheckBox* m_cbCourseFFTWPlot;
+		wxChoice* m_cColors;
 		wxCheckBox* m_cbCoursePrediction;
 		wxSpinCtrl* m_sCoursePredictionLength;
 		wxSpinCtrl* m_sCoursePredictionSeconds;

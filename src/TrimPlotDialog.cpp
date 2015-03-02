@@ -28,16 +28,38 @@
 #include "TrimPlotDialog.h"
 #include "PreferencesDialog.h"
 
+struct PlotColor PlotColorSchemes[] = {{{*wxGREEN, *wxRED, *wxBLUE, *wxCYAN}, wxColor(200, 180, 0), *wxWHITE, *wxBLACK},
+                        {{*wxRED, *wxGREEN, *wxBLUE, wxColor(255, 196, 128)}, wxColor(40, 40, 40), *wxGREEN, *wxWHITE},
+                      {{wxColor(255, 0, 255), wxColor(255, 255, 0), wxColor(0, 255, 255), wxColor(200, 180, 40)}, wxColor(200, 180, 0), *wxBLUE, *wxBLACK}};
+
+
 TrimPlotDialog::TrimPlotDialog(wxWindow* parent, trimplot_pi &_trimplot_pi, PreferencesDialog &preferences)
     : TrimPlotDialogBase( parent ), m_trimplot_pi(_trimplot_pi), m_preferences(preferences)
 {
     m_tRefreshTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
                             ( TrimPlotDialog::OnRefreshTimer ), NULL, this);
     m_tRefreshTimer.Start();
+
+#define PUSH_HISTORY_TRACE(NAME) \
+    traces.push_back(new HistoryTrace(_T(#NAME), m_preferences.m_cb##NAME, NAME));
+
+    Plot *speedPlot = new Plot(_("Speed"), false);
+    speedPlot->PUSH_HISTORY_TRACE(SOG);
+    speedPlot->PUSH_HISTORY_TRACE(PDS10);
+    speedPlot->PUSH_HISTORY_TRACE(PDS60);
+    m_plots.push_back(speedPlot);
+
+    Plot *coursePlot = new Plot(_("Course"), true);
+    coursePlot->PUSH_HISTORY_TRACE(COG);
+    coursePlot->PUSH_HISTORY_TRACE(PDC10);
+    coursePlot->PUSH_HISTORY_TRACE(PDC60);
+    m_plots.push_back(coursePlot);
 }
 
 TrimPlotDialog::~TrimPlotDialog()
 {
+    for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++)
+        delete *it;
 }
 
 void TrimPlotDialog::OnDoubleClick( wxMouseEvent& event )
@@ -51,90 +73,40 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
     if(!window)
         return;
 
-    int w, h;
-    window->GetSize(&w, &h);
-
     wxPaintDC dc( window );
-
-    window->SetBackgroundColour(m_preferences.m_cpBackground->GetColour());
-
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
-    wxCoord textheight;
-    dc.GetTextExtent(_T("A"), 0, &textheight);
+    PlotSettings settings(PlotColorSchemes[m_preferences.m_cColors->GetSelection()], TotalSeconds());
 
-    for(int p = 0; p < m_preferences.PlotCount(); p++) {
-        int h = m_preferences.PlotHeight();
-        int x = 0, y = p * h;
-        double u = 0;
-        int i = m_preferences.PlotDataIndex(p);
+    window->SetBackgroundColour(settings.colors.BackgroundColor);
 
-        dc.DestroyClippingRegion();
-        dc.SetClippingRegion(wxRect(x, y, w, h));
+    if(PlotCount() == 0) {
+        dc.DrawText(_("No Plots Enabled"), 0, 0);
+        return;
+    }
 
-        double offset = m_trimplot_pi.m_statescales[i].offset;
-        double scale = m_trimplot_pi.m_statescales[i].scale;
-        if(m_trimplot_pi.m_statescales[i].center_offset)
-            offset -= scale/2;
+    int plotcount;
+    for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++) {
+        if(!(*it)->Visible())
+            continue;
 
-        wxPen pen(m_preferences.m_cpGrid->GetColour(), 1, wxUSER_DASH);
-        wxDash dashes[2] = {(wxDash)(1+p%2), 7};
-        pen.SetDashes(2, dashes);
-        dc.SetPen(pen);
-        dc.SetTextForeground(m_preferences.m_cpGrid->GetColour());
-
-        // horizontal grid
-        for(int i=0; i<5; i++) {
-            double u = (double)i / 5 + .1;
-            double v = (1 - u)*h + y;
-            dc.DrawLine(0, v, w, v);
-            dc.DrawText(wxString::Format(_T("%4.1f"), offset + u*scale), 0, v - textheight/2);
-        }
-
-        dc.SetPen(wxPen( m_preferences.m_cpTrace->GetColour(), m_preferences.PlotThickness()));
-        dc.SetTextForeground(m_preferences.m_cpTrace->GetColour());
-
-        wxCoord textwidth;
-        dc.GetTextExtent(StateName[i], &textwidth, 0);
-        dc.DrawText(StateName[i], w - textwidth, y + h - textheight);
-
-        for(std::list<State>::iterator it = m_trimplot_pi.m_states[i].begin();
-            it != m_trimplot_pi.m_states[i].end(); it++) {
-
-            double v = it->value;
-
-            if(!isnan(v)) {
-                if(StateResolve[i])
-                    v = heading_resolve(v, offset);
-
-                v -= offset;
-                // apply scale
-                v = h*v/scale;
-
-                // position in plot area and flip y axis
-                v = y + h - v;
-                
-                if(x > 0)
-                    dc.DrawLine(w-x+1, u, w-x, v);
-                u = v;
-            }
-
-            if(++x > w)
-                break;
-        }
+        settings.rect = wxRect(0, plotcount++ * m_preferences.PlotHeight(), 
+                               window->GetSize().x, m_preferences.PlotHeight());
+        (*it)->Paint(dc, settings);
     }
 }
 
 void TrimPlotDialog::SetPlotHeight()
 {
-    int h = m_preferences.PlotHeight() * m_preferences.PlotCount();
+    int count = wxMax(PlotCount(), 1); // even with no plots, make size of one plot
+    int h = m_preferences.PlotHeight() * count;
 
     int w, oldh;
     m_swPlots->GetSize(&w, &oldh);
     m_swPlots->SetMinSize(wxSize(-1, h));
     
     if(oldh != h) {
-        wxSize s =     m_trimplot_pi.m_TrimPlotDialog->GetSize();
+        wxSize s = m_trimplot_pi.m_TrimPlotDialog->GetSize();
         SetSize(s.x+1, s.y);
         SetSize(s.x, s.y);
     }
@@ -152,9 +124,32 @@ void TrimPlotDialog::OnSetup( wxCommandEvent& event )
 
 void TrimPlotDialog::OnRefreshTimer( wxTimerEvent & )
 {
-    if(!m_trimplot_pi.m_newData)
-        return;
+    for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++) {
+        if(!(*it)->Visible())
+            continue;
 
-    Refresh();
-    m_trimplot_pi.m_newData = false;
+        if((*it)->NewData(TotalSeconds())) {
+            Refresh();
+            break;
+        }
+    }
+
+    
+    for(int i = 0; i < HISTORY_COUNT; i++)
+        g_history[i].ClearNewData();
+}
+
+int TrimPlotDialog::PlotCount()
+{
+    int count = 0;
+    for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++)
+        count += (*it)->Visible();
+
+    return count;
+}
+
+int TrimPlotDialog::TotalSeconds()
+{
+    const int cts[6] = {5, 20, 60, 4*60, 8*60, 24*60};
+    return 60*cts[m_cTime->GetSelection()];
 }
