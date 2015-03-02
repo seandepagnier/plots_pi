@@ -339,26 +339,27 @@ void trimplot_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
     }
 }
 
-void trimplot_pi::UpdatePositionDetermined(enum HistoryEnum speed, enum HistoryEnum course, int ticks)
+void trimplot_pi::UpdatePositionDetermined(enum HistoryEnum speed, enum HistoryEnum course, int tick_diff)
 {
-    if(g_history[speed].LastTicks() + ticks > g_history[LAT].LastTicks())
+    if(g_history[speed].LastTicks() + tick_diff > g_history[LAT].LastTicks())
         return;
 
     double lat0, lon0, lat1, lon1;
     if(!g_history[LAT].LastValue(lat0) ||
        !g_history[LON].LastValue(lon0) ||
-       !g_history[LAT].LastValue(lat1, ticks) ||
-       !g_history[LON].LastValue(lon1, ticks))
+       !g_history[LAT].LastValue(lat1, tick_diff) ||
+       !g_history[LON].LastValue(lon1, tick_diff))
         return;
 
     double brg, dist;
     DistanceBearingMercator_Plugin(lat0, lon0, lat1, lon1, &brg, &dist);
 
-    AddData(speed, dist * 3600.0 / ticks);
-    AddData(course, brg);
+    time_t ticks = wxDateTime::Now().GetTicks() - tick_diff/2;
+    AddData(speed, dist * 3600.0 / tick_diff, ticks);
+    AddData(course, brg, ticks);
 }
 
-void trimplot_pi::AddData(enum HistoryEnum e, double value)
+void trimplot_pi::AddData(enum HistoryEnum e, double value, time_t ticks)
 {
-    g_history[e].AddData(value);
+    g_history[e].AddData(value, ticks);
 }

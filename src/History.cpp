@@ -36,7 +36,7 @@ const wxString HistoryName[] = {_T("tws"), _T("twd"), _T("twa"), _T("aws"),
 #define HISTORY_DIVISOR 60
 const int history_depths[] = {1440, 1440*60};
 
-bool History::LastValue(double &value, int ticks)
+bool History::LastValue(double &value, int tick_diff)
 {
     if(!data[0].data.size())
         return false;
@@ -46,7 +46,7 @@ bool History::LastValue(double &value, int ticks)
     for(int i=0; i<2; i++) {
         for(std::list<HistoryAtom>::iterator it = data[i].data.begin();
             it != data[i].data.end(); it++)
-            if(it->ticks + ticks <= first_ticks) {
+            if(it->ticks + tick_diff <= first_ticks) {
                 value = it->value;
                 return true;
             }
@@ -73,9 +73,11 @@ void History::AddData(int i, HistoryAtom state)
 }
 
 
-void History::AddData(double value)
+void History::AddData(double value, time_t ticks)
 {
-    time_t ticks = wxDateTime::Now().GetTicks();
+    if(ticks == 0)
+        ticks = wxDateTime::Now().GetTicks();
+
     // don't allow more than one entree per tick
     if(data[0].data.size() &&
        data[0].data.front().ticks == ticks)

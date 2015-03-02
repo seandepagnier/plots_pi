@@ -132,9 +132,9 @@ private:
       void SetNMEASentence( wxString &sentence );
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 
-      void UpdatePositionDetermined(enum HistoryEnum speed, enum HistoryEnum course, int ticks);
+      void UpdatePositionDetermined(enum HistoryEnum speed, enum HistoryEnum course, int tick_diff);
 
-      void AddData(enum HistoryEnum e, double value);
+      void AddData(enum HistoryEnum e, double value, time_t ticks=0);
 
       int               m_leftclick_tool_id;
 

@@ -83,7 +83,6 @@ void HistoryTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tr
 {
     time_t first_ticks = wxDateTime::Now().GetTicks();
 
-    bool first = true;
     int lx = 0;
 
     int w = plotsettings.rect.width, h = plotsettings.rect.height;
@@ -94,12 +93,7 @@ void HistoryTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tr
 
         double v = it->value;
 
-        int x;
-        if(first) {
-            first = false;
-            x = 0;
-        } else
-            x = w*(first_ticks - it->ticks) / plotsettings.TotalSeconds;
+        int x = w*(first_ticks - it->ticks) / plotsettings.TotalSeconds;
 
         if(!isnan(v)) {
             if(tracesettings.resolve)
