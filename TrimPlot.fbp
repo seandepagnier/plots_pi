@@ -49,7 +49,7 @@
             <property name="tooltip"></property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
-            <property name="window_style">wxSUNKEN_BORDER</property>
+            <property name="window_style">wxSUNKEN_BORDER|wxWANTS_CHARS</property>
             <event name="OnActivate"></event>
             <event name="OnActivateApp"></event>
             <event name="OnAuiFindManager"></event>
@@ -247,11 +247,11 @@
                                     <property name="window_extra_style"></property>
                                     <property name="window_name"></property>
                                     <property name="window_style">wxHSCROLL|wxVSCROLL</property>
-                                    <event name="OnChar"></event>
+                                    <event name="OnChar">Relay</event>
                                     <event name="OnEnterWindow"></event>
                                     <event name="OnEraseBackground"></event>
-                                    <event name="OnKeyDown"></event>
-                                    <event name="OnKeyUp"></event>
+                                    <event name="OnKeyDown">Relay</event>
+                                    <event name="OnKeyUp">Relay</event>
                                     <event name="OnKillFocus"></event>
                                     <event name="OnLeaveWindow"></event>
                                     <event name="OnLeftDClick">OnDoubleClick</event>

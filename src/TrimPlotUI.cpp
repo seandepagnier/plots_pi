@@ -95,6 +95,9 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	
 	// Connect Events
 	this->Connect( wxEVT_SIZE, wxSizeEventHandler( TrimPlotDialogBase::OnSize ) );
+	m_swPlots->Connect( wxEVT_CHAR, wxKeyEventHandler( TrimPlotDialogBase::Relay ), NULL, this );
+	m_swPlots->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( TrimPlotDialogBase::Relay ), NULL, this );
+	m_swPlots->Connect( wxEVT_KEY_UP, wxKeyEventHandler( TrimPlotDialogBase::Relay ), NULL, this );
 	m_swPlots->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
 	m_swPlots->Connect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
 	this->Connect( m_mSetup->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( TrimPlotDialogBase::OnSetup ) );
@@ -104,6 +107,9 @@ TrimPlotDialogBase::~TrimPlotDialogBase()
 {
 	// Disconnect Events
 	this->Disconnect( wxEVT_SIZE, wxSizeEventHandler( TrimPlotDialogBase::OnSize ) );
+	m_swPlots->Disconnect( wxEVT_CHAR, wxKeyEventHandler( TrimPlotDialogBase::Relay ), NULL, this );
+	m_swPlots->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler( TrimPlotDialogBase::Relay ), NULL, this );
+	m_swPlots->Disconnect( wxEVT_KEY_UP, wxKeyEventHandler( TrimPlotDialogBase::Relay ), NULL, this );
 	m_swPlots->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
 	m_swPlots->Disconnect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( TrimPlotDialogBase::OnSetup ) );

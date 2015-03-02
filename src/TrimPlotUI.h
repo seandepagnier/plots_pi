@@ -55,6 +55,7 @@ class TrimPlotDialogBase : public wxDialog
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSize( wxSizeEvent& event ) { event.Skip(); }
+		virtual void Relay( wxKeyEvent& event ) { event.Skip(); }
 		virtual void OnDoubleClick( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnPaint( wxPaintEvent& event ) { event.Skip(); }
 		virtual void OnSetup( wxCommandEvent& event ) { event.Skip(); }
@@ -63,7 +64,7 @@ class TrimPlotDialogBase : public wxDialog
 	public:
 		wxScrolledWindow* m_scrollWindow;
 		
-		TrimPlotDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxRESIZE_BORDER|wxSUNKEN_BORDER ); 
+		TrimPlotDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxRESIZE_BORDER|wxSUNKEN_BORDER|wxWANTS_CHARS ); 
 		~TrimPlotDialogBase();
 		
 		void m_swPlotsOnContextMenu( wxMouseEvent &event )

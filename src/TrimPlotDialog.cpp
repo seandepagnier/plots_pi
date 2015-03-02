@@ -60,6 +60,11 @@ TrimPlotDialog::~TrimPlotDialog()
         delete *it;
 }
 
+void TrimPlotDialog::Relay( wxKeyEvent& event )
+{
+    GetOCPNCanvasWindow()->GetEventHandler()->AddPendingEvent( event );
+}
+
 void TrimPlotDialog::OnDoubleClick( wxMouseEvent& event )
 {
     m_trimplot_pi.m_Preferences->Show();

@@ -35,6 +35,7 @@ public:
     TrimPlotDialog(wxWindow* parent, trimplot_pi &_trimplot_pi, PreferencesDialog &preferences);
     ~TrimPlotDialog();
 
+    void Relay( wxKeyEvent& event );
     void OnSize(wxSizeEvent& event) { Refresh(); event.Skip(); }
     void OnDoubleClick( wxMouseEvent& event );
     void OnPaint(wxPaintEvent& event);
