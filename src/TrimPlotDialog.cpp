@@ -88,13 +88,16 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
         return;
     }
 
+    int PlotHeight = wxMax(m_preferences.PlotMinHeight(),
+                           window->GetSize().y / PlotCount());
+
     int plotcount = 0;
     for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++) {
         if(!(*it)->Visible())
             continue;
 
-        settings.rect = wxRect(0, plotcount++ * m_preferences.PlotHeight(), 
-                               window->GetSize().x, m_preferences.PlotHeight());
+        settings.rect = wxRect(0, plotcount++ * PlotHeight,
+                               window->GetSize().x, PlotHeight);
         (*it)->Paint(dc, settings);
     }
 }
@@ -102,13 +105,14 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
 void TrimPlotDialog::SetupPlot()
 {
     int count = wxMax(PlotCount(), 1); // even with no plots, make size of one plot
-    int h = m_preferences.PlotHeight() * count;
+    int minh = m_preferences.PlotMinHeight() * count;
 
-    int w, oldh;
-    m_swPlots->GetSize(&w, &oldh);
-    m_swPlots->SetMinSize(wxSize(10, h));
-    
-    if(oldh != h) {
+    int w, h;
+    m_swPlots->GetSize(&w, &h);
+    m_swPlots->SetMinSize(wxSize(10, minh));
+
+    if(h < minh) {
+        // hack needed to make scrollbar appear
         wxSize s = m_trimplot_pi.m_TrimPlotDialog->GetSize();
         SetSize(s.x+1, s.y);
         SetSize(s.x, s.y);
@@ -127,20 +131,13 @@ void TrimPlotDialog::OnRefreshTimer( wxTimerEvent & )
     if(m_lastTimerTotalSeconds != TotalSeconds())
         Refresh();
     else
-    for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++) {
-        if(!(*it)->Visible())
-            continue;
-
-        if((*it)->NewData(TotalSeconds())) {
+    for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++)
+        if((*it)->Visible() && (*it)->NewData(TotalSeconds())) {
             Refresh();
             break;
         }
-    }
 
     m_lastTimerTotalSeconds = TotalSeconds();
-    
-    for(int i = 0; i < HISTORY_COUNT; i++)
-        g_history[i].ClearNewData();
 }
 
 int TrimPlotDialog::PlotCount()

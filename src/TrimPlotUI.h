@@ -92,7 +92,7 @@ class PreferencesDialogBase : public wxDialog
 		wxPanel* m_panel5;
 		wxStaticText* m_staticText161;
 		wxStaticText* m_staticText12;
-		wxSpinCtrl* m_sPlotHeight;
+		wxSpinCtrl* m_sPlotMinHeight;
 		wxStaticText* m_staticText121;
 		wxStaticText* m_staticText11;
 		wxStaticText* m_staticText1411;

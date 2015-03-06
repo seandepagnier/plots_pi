@@ -40,7 +40,7 @@ public:
     void OnPDS( wxCommandEvent& event );
     void OnAbout( wxCommandEvent& event );
 
-    int PlotHeight() { return m_sPlotHeight->GetValue(); }
+    int PlotMinHeight() { return m_sPlotMinHeight->GetValue(); }
 
 private:
     void PlotChange();

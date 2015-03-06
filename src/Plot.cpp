@@ -114,6 +114,8 @@ void HistoryTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tr
         if(x > w)
             break;
     }
+
+    g_history[datai].data[HistoryIndex(plotsettings)].newdata = false;
 }
 
 struct PlotColor PlotColorSchemes[] = {{{*wxGREEN, *wxRED, *wxBLUE, *wxCYAN}, wxColor(200, 180, 0), *wxWHITE, *wxBLACK},
@@ -129,8 +131,9 @@ Plot::~Plot()
 bool Plot::NewData(int TotalSeconds)
 {
     for(std::list<Trace*>::iterator it=traces.begin(); it != traces.end(); it++)
-        if((*it)->NewData(TotalSeconds))
+        if((*it)->Visible() && (*it)->NewData(TotalSeconds))
             return true;
+
     return false;
 }
 
@@ -155,6 +158,7 @@ void Plot::Paint(wxDC &dc, PlotSettings &settings)
         if((*it)->Visible())
             (*it)->Bounds(min, max, settings, resolve);
 
+    // Draw Traces
     TraceSettings tracesettings;
     tracesettings.offset = round((min + max) / 2);
     tracesettings.scale = 2*wxMax(ceil(max - tracesettings.offset),
@@ -173,6 +177,7 @@ void Plot::Paint(wxDC &dc, PlotSettings &settings)
 
             dc.GetTextExtent((*it)->name, &textwidth, &textheight);
             dc.SetTextForeground(settings.colors.TraceColor[i]);
+
             dc.DrawText((*it)->name, so + j, y + h - textheight);
             j += 3*textwidth/2;
         }
@@ -180,16 +185,22 @@ void Plot::Paint(wxDC &dc, PlotSettings &settings)
     wxPen pen(settings.colors.GridColor, 1, wxUSER_DASH);
     wxDash dashes[2] = {1, 7};
     pen.SetDashes(2, dashes);
-    dc.SetPen(pen);
     dc.SetTextForeground(settings.colors.GridColor);
+    dc.SetBrush(settings.colors.BackgroundColor);
 
     // horizontal grid
     for(int i=0; i<5; i++) {
         double u = (double)i / 5 + .1;
         double v = (1 - u)*h + y;
+        dc.SetPen(pen);
         dc.DrawLine(x, v, w, v);
-        dc.DrawText(wxString::Format(_T("%4.1f"), tracesettings.offset + (u-.5)*tracesettings.scale),
-                    x, v - textheight/2);
+
+        dc.SetPen(*wxTRANSPARENT_PEN);
+        wxString text = wxString::Format(_T("%4.1f"), tracesettings.offset + (u-.5)*tracesettings.scale);
+        dc.GetTextExtent(text, &textwidth, &textheight);
+        v -= textheight/2;
+        dc.DrawRectangle(x, v, textwidth, textheight);
+        dc.DrawText(text, x, v);
     }
 }
 

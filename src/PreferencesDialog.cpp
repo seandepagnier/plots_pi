@@ -44,9 +44,9 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
     ADD_CB(PDS10);
     ADD_CB(PDS60);
     ADD_CB(SpeedSubtractionPlot);
-    ADD_CB(SOG);
-    ADD_CB(PDS10);
-    ADD_CB(PDS60);
+    ADD_CB(COG);
+    ADD_CB(PDC10);
+    ADD_CB(PDC60);
     ADD_CB(Heading);
     ADD_CB(CourseSubtractionPlot);
     ADD_CB(CourseFFTWPlot);
@@ -56,7 +56,7 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
     for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
         it->cb->SetValue(pConf->Read(_T("Plot ") + it->name, it->cb->GetValue()));
 
-    m_sPlotHeight->SetValue(pConf->Read(_T("PlotHeight"), m_sPlotHeight->GetValue()));
+    m_sPlotMinHeight->SetValue(pConf->Read(_T("PlotMinHeight"), m_sPlotMinHeight->GetValue()));
     m_sPlotTransparency->SetValue(pConf->Read(_T("PlotTransparency"), m_sPlotTransparency->GetValue()));
 
     bool bvalue;
@@ -83,7 +83,7 @@ PreferencesDialog::~PreferencesDialog()
     for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
         pConf->Write(_T("Plot ") + it->name, it->cb->GetValue());
 
-    pConf->Write(_T("PlotHeight"), m_sPlotHeight->GetValue());
+    pConf->Write(_T("PlotMinHeight"), m_sPlotMinHeight->GetValue());
     pConf->Write(_T("PlotTransparency"), m_sPlotTransparency->GetValue());
 
     pConf->Write(_T("CoursePrediction"), m_cbCoursePrediction->GetValue());

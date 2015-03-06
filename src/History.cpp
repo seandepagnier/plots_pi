@@ -107,9 +107,4 @@ void History::AddData(double value, time_t ticks)
     }
 }
 
-void History::ClearNewData() {
-    for(int i=0; i<2; i++)
-        data[i].newdata = false;
-}
-
 extern History g_history[];

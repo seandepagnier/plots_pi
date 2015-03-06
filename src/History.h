@@ -52,7 +52,6 @@ struct History
     time_t LastTicks();
     void AddData(int i, HistoryAtom state);
     void AddData(double value, time_t ticks);
-    void ClearNewData();
 };
 
 extern History g_history[];
