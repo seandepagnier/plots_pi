@@ -51,7 +51,13 @@ TrimPlotDialog::TrimPlotDialog(wxWindow* parent, trimplot_pi &_trimplot_pi, Pref
     coursePlot->PUSH_HISTORY_TRACE(COG);
     coursePlot->PUSH_HISTORY_TRACE(PDC10);
     coursePlot->PUSH_HISTORY_TRACE(PDC60);
+    coursePlot->PUSH_HISTORY_TRACE(HDG);
     m_plots.push_back(coursePlot);
+
+    Plot *courseFFTWPlot = new Plot(_("Course FFTW"), false);
+    courseFFTWPlot->traces.push_back
+        (new HistoryFFTWTrace(_T("Course FFTW"), m_preferences.m_cbCourseFFTWPlot, COG));
+    m_plots.push_back(courseFFTWPlot);
 }
 
 TrimPlotDialog::~TrimPlotDialog()

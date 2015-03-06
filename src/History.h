@@ -48,7 +48,8 @@ struct History
                           // with entrees averaged to each second
     bool resolve;
 
-    bool LastValue(double &value, int tick_diff=0);
+    bool LastValue(double &value) { int dummy = 0; return LastValue(value, dummy); }
+    bool LastValue(double &value, int &tick_diff);
     time_t LastTicks();
     void AddData(int i, HistoryAtom state);
     void AddData(double value, time_t ticks);

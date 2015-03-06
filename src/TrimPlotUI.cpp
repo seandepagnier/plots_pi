@@ -161,9 +161,6 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_cbPDS60 = new wxCheckBox( m_panel1, wxID_ANY, _("PDS 60"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer14->Add( m_cbPDS60, 0, wxALL, 5 );
 	
-	m_cbSpeedSubtractionPlot = new wxCheckBox( m_panel1, wxID_ANY, _("Subtraction Plot"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer14->Add( m_cbSpeedSubtractionPlot, 0, wxALL, 5 );
-	
 	
 	m_panel1->SetSizer( fgSizer14 );
 	m_panel1->Layout();
@@ -185,11 +182,8 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_cbPDC60 = new wxCheckBox( m_panel2, wxID_ANY, _("PDC 60"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer17->Add( m_cbPDC60, 0, wxALL, 5 );
 	
-	m_cbHeading = new wxCheckBox( m_panel2, wxID_ANY, _("Heading"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer17->Add( m_cbHeading, 0, wxALL, 5 );
-	
-	m_cbCourseSubtractionPlot = new wxCheckBox( m_panel2, wxID_ANY, _("Subtraction Plot"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer17->Add( m_cbCourseSubtractionPlot, 0, wxALL, 5 );
+	m_cbHDG = new wxCheckBox( m_panel2, wxID_ANY, _("Heading"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer17->Add( m_cbHDG, 0, wxALL, 5 );
 	
 	m_cbCourseFFTWPlot = new wxCheckBox( m_panel2, wxID_ANY, _("FFTW Plot"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer17->Add( m_cbCourseFFTWPlot, 0, wxALL, 5 );
@@ -306,8 +300,8 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_cbCoursePrediction->SetValue(true); 
 	fgSizer1021->Add( m_cbCoursePrediction, 0, wxALL, 5 );
 	
-	
-	fgSizer1021->Add( 0, 0, 1, wxEXPAND, 5 );
+	m_cbCoursePredictionBlended = new wxCheckBox( this, wxID_ANY, _("Blended (Requires OpenGL)"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer1021->Add( m_cbCoursePredictionBlended, 0, wxALL, 5 );
 	
 	
 	fgSizer1021->Add( 0, 0, 1, wxEXPAND, 5 );
@@ -327,7 +321,7 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_staticText721->Wrap( -1 );
 	fgSizer1021->Add( m_staticText721, 0, wxALL, 5 );
 	
-	m_sCoursePredictionSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 10 );
+	m_sCoursePredictionSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 100, 10 );
 	fgSizer1021->Add( m_sCoursePredictionSeconds, 0, wxALL, 5 );
 	
 	m_staticText2311 = new wxStaticText( this, wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );

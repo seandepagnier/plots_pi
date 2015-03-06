@@ -79,6 +79,15 @@ struct HistoryTrace : Trace
     enum HistoryEnum datai;
 };
 
+struct HistoryFFTWTrace : HistoryTrace
+{
+    HistoryFFTWTrace(wxString n, wxCheckBox *cb, enum HistoryEnum i)
+        : HistoryTrace(n, cb, i) {}
+
+    virtual void Bounds(double &min, double &max, PlotSettings &plotsettings, bool resolve);
+    virtual void Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tracesettings);
+};
+
 struct Plot
 {
     Plot(wxString n, bool r = false)

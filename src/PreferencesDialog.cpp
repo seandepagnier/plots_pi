@@ -43,12 +43,10 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
     ADD_CB(SOG);
     ADD_CB(PDS10);
     ADD_CB(PDS60);
-    ADD_CB(SpeedSubtractionPlot);
     ADD_CB(COG);
     ADD_CB(PDC10);
     ADD_CB(PDC60);
-    ADD_CB(Heading);
-    ADD_CB(CourseSubtractionPlot);
+    ADD_CB(HDG);
     ADD_CB(CourseFFTWPlot);
 
     pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
@@ -63,6 +61,9 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
     int ivalue;
     pConf->Read(_T("CoursePrediction"), &bvalue, false);
     m_cbCoursePrediction->SetValue(bvalue);
+
+    pConf->Read(_T("CoursePredictionBlended"), &bvalue, false);
+    m_cbCoursePredictionBlended->SetValue(bvalue);
 
     pConf->Read(_T("CoursePredictionLength"), &ivalue, 10);
     m_sCoursePredictionLength->SetValue(ivalue);
@@ -87,6 +88,7 @@ PreferencesDialog::~PreferencesDialog()
     pConf->Write(_T("PlotTransparency"), m_sPlotTransparency->GetValue());
 
     pConf->Write(_T("CoursePrediction"), m_cbCoursePrediction->GetValue());
+    pConf->Write(_T("CoursePredictionBlended"), m_cbCoursePredictionBlended->GetValue());
     pConf->Write(_T("CoursePredictionLength"), m_sCoursePredictionLength->GetValue());
     pConf->Write(_T("CoursePredictionSeconds"), m_sCoursePredictionSeconds->GetValue());
 }

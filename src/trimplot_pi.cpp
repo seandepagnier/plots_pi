@@ -246,23 +246,69 @@ void trimplot_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
     int length = m_Preferences->m_sCoursePredictionLength->GetValue();
 
     double lat0, lon0, lat1, lon1;
-    if(!g_history[LAT].LastValue(lat0) ||
-       !g_history[LON].LastValue(lon0) ||
-       !g_history[LAT].LastValue(lat1, ticks) ||
-       !g_history[LON].LastValue(lon1, ticks))
-        return;
+    double brg, dist, dlat, dlon;
+    wxPoint r0, r1, r2;
 
-    double brg, dist;
-    DistanceBearingMercator_Plugin(lat0, lon0, lat1, lon1, &brg, &dist);
+    if(m_Preferences->m_cbCoursePredictionBlended->GetValue()) {
+        if(dc.GetDC())
+            return;
 
-    double dlat, dlon;
-    PositionBearingDistanceMercator_Plugin(lat1, lon1, brg, dist * length * 60.0 / ticks, &dlat, &dlon);
-    wxPoint r1, r2;
-    GetCanvasPixLL(&vp, &r1, lat1, lon1);
-    GetCanvasPixLL(&vp, &r2, dlat, dlon);
+        if(!g_history[LAT].LastValue(lat0) ||
+           !g_history[LON].LastValue(lon0))
+            return;
+
+        glEnable( GL_POLYGON_SMOOTH );
+        glEnable( GL_BLEND );
+        glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+        glColor4f(1, 0, 0, 1.0/ticks);
+
+        glBegin(GL_TRIANGLES);
+
+        GetCanvasPixLL(&vp, &r0, lat0, lon0);
+
+        bool first = true;
+        for(int i=1; i<ticks; i++) {
+            if(!g_history[LAT].LastValue(lat1, i) ||
+               !g_history[LON].LastValue(lon1, i))
+                break;
+
+            DistanceBearingMercator_Plugin(lat0, lon0, lat1, lon1, &brg, &dist);
+            if(dist == 0)
+                continue;
+
+            PositionBearingDistanceMercator_Plugin(lat0, lon0, brg, dist * length * 60.0 / i, &dlat, &dlon);
+            GetCanvasPixLL(&vp, &r1, dlat, dlon);
+
+            if(first)
+                first = false;
+            else {
+                glVertex2i(r0.x, r0.y);
+                glVertex2i(r1.x, r1.y);
+                glVertex2i(r2.x, r2.y);
+            }
+            r2 = r1;
+        }
+
+        glEnd();
+
+        glDisable( GL_POLYGON_SMOOTH );
+        glDisable( GL_BLEND );
+    } else {
+        if(!g_history[LAT].LastValue(lat0) ||
+           !g_history[LON].LastValue(lon0) ||
+           !g_history[LAT].LastValue(lat1, ticks) ||
+           !g_history[LON].LastValue(lon1, ticks))
+            return;
+
+        DistanceBearingMercator_Plugin(lat0, lon0, lat1, lon1, &brg, &dist);
+        PositionBearingDistanceMercator_Plugin(lat0, lon0, brg, dist * length * 60.0 / ticks, &dlat, &dlon);
+        GetCanvasPixLL(&vp, &r0, lat0, lon0);
+        GetCanvasPixLL(&vp, &r1, dlat, dlon);
     
-    dc.SetPen(wxPen(*wxRED, 3));
-    dc.DrawLine( r1.x, r1.y, r2.x, r2.y);
+        dc.SetPen(wxPen(*wxRED, 3));
+        dc.DrawLine( r0.x, r0.y, r1.x, r1.y);
+    }
 }
 
 bool trimplot_pi::LoadConfig(void)

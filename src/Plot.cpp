@@ -118,6 +118,83 @@ void HistoryTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tr
     g_history[datai].data[HistoryIndex(plotsettings)].newdata = false;
 }
 
+void HistoryFFTWTrace::Bounds(double &min, double &max, PlotSettings &plotsettings, bool resolve)
+{
+    min = 0;
+    max = 100;
+}
+
+static void discrete_fourier_transform(double input[], double output[], int n)
+{
+    for(int i=0; i<n; i++) {
+        double k = -2*M_PI*i/n;
+        double totalr = 0, totali = 0;
+        for(int j=0; j<n; j++) {
+            totalr += input[j] * cos(k*j);
+            totali += input[j] * cos(k*j);
+        }
+
+        output[i] = sqrt(totalr*totalr + totali*totali);
+    }
+}
+
+void HistoryFFTWTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tracesettings)
+{
+    time_t first_ticks = wxDateTime::Now().GetTicks();
+    int w = plotsettings.rect.width, h = plotsettings.rect.height;
+
+    int count = 0;
+    for(std::list<HistoryAtom>::iterator it = g_history[datai].data[HistoryIndex(plotsettings)].data.begin();
+        it != g_history[datai].data[HistoryIndex(plotsettings)].data.end(); it++) {
+        count++;
+        int x = w*(first_ticks - it->ticks) / plotsettings.TotalSeconds;
+        if(x > w)
+            break;
+    }
+
+    if(count < 2)
+        return;
+
+    double *data = new double[count];
+    double *dft = new double[count];
+
+    int i=0;
+    for(std::list<HistoryAtom>::iterator it = g_history[datai].data[HistoryIndex(plotsettings)].data.begin();
+        it != g_history[datai].data[HistoryIndex(plotsettings)].data.end() && i < count; it++)
+        data[i++] = it->value;
+
+    discrete_fourier_transform(data, dft, count);
+
+    // normalize
+    double max = 0;
+    for(int i=1; i<count; i++)
+        if(dft[i] > max)
+            max = dft[i];
+
+    for(int i=1; i<count; i++)
+        dft[i] /= max;
+
+    int lu, lv;
+    for(int i=1; i<count; i++) {
+        int u = i*w / (count-1);
+        int v = h*(1-dft[i]);
+
+        if(i > 1) {
+            dc.DrawLine(plotsettings.rect.x + u,
+                        plotsettings.rect.y + v,
+                        plotsettings.rect.x + lu,
+                        plotsettings.rect.y + lv);
+        }
+        lu = u;
+        lv = v;
+    }
+
+    delete [] data;
+    delete [] dft;
+
+    g_history[datai].data[HistoryIndex(plotsettings)].newdata = false;
+}
+
 struct PlotColor PlotColorSchemes[] = {{{*wxGREEN, *wxRED, *wxBLUE, *wxCYAN}, wxColor(200, 180, 0), *wxWHITE, *wxBLACK},
                         {{*wxRED, *wxGREEN, *wxBLUE, wxColor(255, 196, 128)}, wxColor(40, 40, 40), *wxGREEN, *wxWHITE},
                       {{wxColor(255, 0, 255), wxColor(255, 255, 0), wxColor(0, 255, 255), wxColor(200, 180, 40)}, wxColor(200, 180, 0), *wxBLUE, *wxBLACK}};
@@ -150,7 +227,7 @@ void Plot::Paint(wxDC &dc, PlotSettings &settings)
     // Draw Plot Name Centered
     wxCoord textwidth, textheight;
     dc.GetTextExtent(name, &textwidth, &textheight);
-    dc.DrawText(name, x+w/2+textwidth/2, y);
+    dc.DrawText(name, x+w/2-textwidth/2, y);
 
     // Determine Scale and offset
     double min = INFINITY, max = -INFINITY;

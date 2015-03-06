@@ -36,7 +36,7 @@ const wxString HistoryName[] = {_T("tws"), _T("twd"), _T("twa"), _T("aws"),
 #define HISTORY_DIVISOR 60
 const int history_depths[] = {1440, 1440*60};
 
-bool History::LastValue(double &value, int tick_diff)
+bool History::LastValue(double &value, int &tick_diff)
 {
     if(!data[0].data.size())
         return false;
@@ -48,6 +48,7 @@ bool History::LastValue(double &value, int tick_diff)
             it != data[i].data.end(); it++)
             if(it->ticks + tick_diff <= first_ticks) {
                 value = it->value;
+                tick_diff = first_ticks - it->ticks;
                 return true;
             }
     }

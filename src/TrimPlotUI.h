@@ -115,16 +115,15 @@ class PreferencesDialogBase : public wxDialog
 		wxCheckBox* m_cbSOG;
 		wxCheckBox* m_cbPDS10;
 		wxCheckBox* m_cbPDS60;
-		wxCheckBox* m_cbSpeedSubtractionPlot;
 		wxCheckBox* m_cbCOG;
 		wxCheckBox* m_cbPDC10;
 		wxCheckBox* m_cbPDC60;
-		wxCheckBox* m_cbHeading;
-		wxCheckBox* m_cbCourseSubtractionPlot;
+		wxCheckBox* m_cbHDG;
 		wxCheckBox* m_cbCourseFFTWPlot;
 		wxChoice* m_cColors;
 		wxSpinCtrl* m_sPlotTransparency;
 		wxCheckBox* m_cbCoursePrediction;
+		wxCheckBox* m_cbCoursePredictionBlended;
 		wxSpinCtrl* m_sCoursePredictionLength;
 		wxSpinCtrl* m_sCoursePredictionSeconds;
 		
