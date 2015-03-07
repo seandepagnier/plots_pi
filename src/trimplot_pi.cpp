@@ -375,7 +375,7 @@ void trimplot_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
     if(pfix.FixTime && pfix.nSats) {
 
         AddData(SOG, pfix.Sog);
-        if(pfix.Sog > .25) // cog is very unreliable below this speed
+        if(pfix.Sog > .35) // cog is very unreliable below this speed
             AddData(COG, pfix.Cog);
 
         AddData(LAT, pfix.Lat);

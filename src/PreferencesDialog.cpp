@@ -55,6 +55,7 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
         it->cb->SetValue(pConf->Read(_T("Plot ") + it->name, it->cb->GetValue()));
 
     m_sPlotMinHeight->SetValue(pConf->Read(_T("PlotMinHeight"), m_sPlotMinHeight->GetValue()));
+    m_cColors->SetSelection(pConf->Read(_T("PlotColors"), m_cColors->GetSelection()));
     m_sPlotTransparency->SetValue(pConf->Read(_T("PlotTransparency"), m_sPlotTransparency->GetValue()));
 
     bool bvalue;
@@ -85,6 +86,7 @@ PreferencesDialog::~PreferencesDialog()
         pConf->Write(_T("Plot ") + it->name, it->cb->GetValue());
 
     pConf->Write(_T("PlotMinHeight"), m_sPlotMinHeight->GetValue());
+    pConf->Write(_T("PlotColors"), m_cColors->GetSelection());
     pConf->Write(_T("PlotTransparency"), m_sPlotTransparency->GetValue());
 
     pConf->Write(_T("CoursePrediction"), m_cbCoursePrediction->GetValue());
@@ -96,10 +98,14 @@ PreferencesDialog::~PreferencesDialog()
 void PreferencesDialog::OnPDS( wxCommandEvent& event )
 {
         wxMessageDialog mdlg(this, _("\
-Position Determined Speed finds the speed of the vessel by comparing current position to the position\
-from the past.  For example PDS10 (10 seconds) or PDS60 (60 seconds)\n\n\
-This method filters the data, and also gives a comparison to useful speed traveled rather than the speed\
-over a changing course (eg: downwind autosteering S curves)\n"),
+Position Determined Speed (PDS) finds the speed of the vessel by comparing the current position to the position \
+from the past.  For example PDS10 (10 seconds) takes the position from 10 seconds before, and determines the \
+vessel speed by taking the distance from where it was then.\n\n\
+This method filters the data giving a much steadier reading, but also shows a comparison of \
+useful speed traveled rather than the immediate gps speed.  Consider autosteering that is \
+under or over dampened, or the case of large waves, even with an ideal autopilot. \
+This will cause the boat to not travel in a straight line, but instead in an S curve.\
+The gps speed will read higher than the position determined speed."),
                              _("Positon Determined Speed"), wxOK | wxICON_INFORMATION);
         mdlg.ShowModal();
 }

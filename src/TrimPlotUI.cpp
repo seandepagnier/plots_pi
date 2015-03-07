@@ -266,7 +266,7 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_staticText121->Wrap( -1 );
 	fgSizer101->Add( m_staticText121, 0, wxALL, 5 );
 	
-	wxString m_cColorsChoices[] = { _("Standard"), _("Night"), _("Retro") };
+	wxString m_cColorsChoices[] = { _("Standard"), _("Light"), _("Retro"), _("Sky") };
 	int m_cColorsNChoices = sizeof( m_cColorsChoices ) / sizeof( wxString );
 	m_cColors = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cColorsNChoices, m_cColorsChoices, 0 );
 	m_cColors->SetSelection( 0 );

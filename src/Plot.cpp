@@ -195,9 +195,19 @@ void HistoryFFTWTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings
     g_history[datai].data[HistoryIndex(plotsettings)].newdata = false;
 }
 
-struct PlotColor PlotColorSchemes[] = {{{*wxGREEN, *wxRED, *wxBLUE, *wxCYAN}, wxColor(200, 180, 0), *wxWHITE, *wxBLACK},
-                        {{*wxRED, *wxGREEN, *wxBLUE, wxColor(255, 196, 128)}, wxColor(40, 40, 40), *wxGREEN, *wxWHITE},
-                      {{wxColor(255, 0, 255), wxColor(255, 255, 0), wxColor(0, 255, 255), wxColor(200, 180, 40)}, wxColor(200, 180, 0), *wxBLUE, *wxBLACK}};
+struct PlotColor PlotColorSchemes[] = {
+    {{*wxRED, *wxGREEN, *wxBLUE, wxColor(200, 180, 40)},
+     wxColor(128, 128, 128), *wxWHITE, *wxBLACK},
+    
+    {{*wxRED, *wxGREEN, *wxBLUE, wxColor(255, 196, 128)},
+     wxColor(40, 40, 40), *wxBLACK, *wxWHITE},
+
+    {{wxColor(255, 0, 255), wxColor(255, 255, 0), wxColor(0, 255, 255), wxColor(200, 180, 40)},
+     wxColor(200, 180, 0), *wxGREEN, *wxBLACK},
+
+    {{wxColor(255, 0, 0), wxColor(128, 64, 64), wxColor(196, 255, 0), wxColor(196, 0, 0)},
+     wxColor(200, 0, 0), *wxRED, wxColor(0, 255, 255)},
+};
 
 Plot::~Plot()
 {
