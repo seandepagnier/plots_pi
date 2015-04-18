@@ -29,6 +29,10 @@
 enum HistoryEnum {TWS, TWD, TWA, AWS, AWA, SOG, COG, HDG, XTE, LAT, LON,
                   PDS10, PDS60, PDC10, PDC60, HISTORY_COUNT};
 
+// three buffers, one for current data, and one
+// with entrees averaged to each minute, and hour
+#define HISTORY_BUCKETS 3
+
 struct HistoryAtom
 {
     HistoryAtom(double v, time_t t) : value(v), ticks(t) {}
@@ -44,8 +48,7 @@ struct HistoryData
 
 struct History
 {
-    HistoryData data[2];  // two buffers, one for current data, and one
-                          // with entrees averaged to each second
+    HistoryData data[HISTORY_BUCKETS];
     bool resolve;
 
     bool LastValue(double &value) { int dummy = 0; return LastValue(value, dummy); }
@@ -53,6 +56,8 @@ struct History
     time_t LastTicks();
     void AddData(int i, HistoryAtom state);
     void AddData(double value, time_t ticks);
+
+    static int Depth(int i);
 };
 
 extern History g_history[];

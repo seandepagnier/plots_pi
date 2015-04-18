@@ -106,6 +106,32 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
                                window->GetSize().x, PlotHeight);
         (*it)->Paint(dc, settings);
     }
+
+    // Print period in lower right
+    dc.SetTextForeground(settings.colors.TextColor);
+    wxString period;
+    int t = TotalSeconds();
+    if(t < 60)
+        period = _T("s");
+    else {
+        t /= 60;
+        if(t < 60)
+            period = _T("m");
+        else {
+            t /= 60;
+            if(t < 24)
+                period = _T("h");
+            else {
+                t /= 24;
+                period = _T("d");
+            }
+        }
+    }
+
+    period = wxString::Format(_T("%d "), t) + period;
+    int w, h;
+    dc.GetTextExtent(period, &w, &h);
+    dc.DrawText(period, window->GetSize().x - w, window->GetSize().y - h);
 }
 
 void TrimPlotDialog::SetupPlot()
@@ -157,8 +183,8 @@ int TrimPlotDialog::PlotCount()
 
 int TrimPlotDialog::TotalSeconds()
 {
-    const int cts[] = {5, 20, 60, 4*60, 8*60, 24*60};
-    wxMenuItem *items[] = {m_mt1, m_mt2, m_mt3, m_mt4, m_mt5, m_mt6};
+    const int cts[] = {5, 20, 60, 4*60, 8*60, 24*60, 3*24*60, 10*24*60, 30*24*60, 60*24*60};
+    wxMenuItem *items[] = {m_mt1, m_mt2, m_mt3, m_mt4, m_mt5, m_mt6, m_mt7, m_mt8, m_mt9, m_mt10};
 
     for(unsigned int i=0; i<sizeof cts / sizeof *cts; i++)
         if(items[i]->IsChecked())

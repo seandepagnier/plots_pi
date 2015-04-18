@@ -33,7 +33,12 @@ double heading_resolve(double degrees, double ref=0);
 
 int HistoryTrace::HistoryIndex(int TotalSeconds)
 {
-    return TotalSeconds > history_depths[0];
+    int i = 0;
+    while(TotalSeconds > History::Depth(i))
+        i++;
+
+    wxASSERT(i < HISTORY_COUNT);
+    return i;
 }
 
 int HistoryTrace::HistoryIndex(PlotSettings &plotsettings)
@@ -283,7 +288,11 @@ void Plot::Paint(wxDC &dc, PlotSettings &settings)
         dc.DrawLine(x, v, w, v);
 
         dc.SetPen(*wxTRANSPARENT_PEN);
-        wxString text = wxString::Format(_T("%4.1f"), tracesettings.offset + (u-.5)*tracesettings.scale);
+        double g = tracesettings.offset + (u-.5)*tracesettings.scale;
+        if(resolve)
+            g = heading_resolve(g);
+
+        wxString text = wxString::Format(_T("%4.1f"), g);
         dc.GetTextExtent(text, &textwidth, &textheight);
         v -= textheight/2;
         dc.DrawRectangle(x, v, textwidth, textheight);

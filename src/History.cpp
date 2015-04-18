@@ -34,7 +34,7 @@ const wxString HistoryName[] = {_T("tws"), _T("twd"), _T("twa"), _T("aws"),
                                 _T("lat"), _T("lon")};
 
 #define HISTORY_DIVISOR 60
-const int history_depths[] = {1440, 1440*60};
+#define HISTORY_DEPTH 1440
 
 bool History::LastValue(double &value, int &tick_diff)
 {
@@ -43,7 +43,7 @@ bool History::LastValue(double &value, int &tick_diff)
 
     time_t first_ticks = data[0].data.front().ticks;
 
-    for(int i=0; i<2; i++) {
+    for(int i=0; i<HISTORY_BUCKETS; i++) {
         for(std::list<HistoryAtom>::iterator it = data[i].data.begin();
             it != data[i].data.end(); it++)
             if(it->ticks + tick_diff <= first_ticks) {
@@ -69,7 +69,7 @@ void History::AddData(int i, HistoryAtom state)
     data[i].data.push_front(state);
     data[i].newdata = true;
 
-    while(state.ticks - data[i].data.back().ticks > history_depths[i])
+    while(state.ticks - data[i].data.back().ticks > Depth(i))
         data[i].data.pop_back();
 }
 
@@ -87,25 +87,33 @@ void History::AddData(double value, time_t ticks)
     AddData(0, HistoryAtom(value, ticks));
 
     // push data into average buffer?
-    time_t lticks;
-    if(data[1].data.size())
-        lticks = data[1].data.front().ticks;
-    else
-        lticks = data[0].data.back().ticks;
+    for(int i=1; i<HISTORY_BUCKETS; i++) {
+        time_t lticks;
+        if(data[i].data.size())
+            lticks = data[i].data.front().ticks;
+        else
+            lticks = data[i-1].data.back().ticks;
 
-    double total = 0, count = 0;
-    if(ticks - lticks > HISTORY_DIVISOR) {
-        for(std::list<HistoryAtom>::iterator it = data[0].data.begin();
-            it != data[0].data.end(); it++) {
-            if(it->ticks <= lticks)
-                break;
+        double total = 0, count = 0;
+        if(ticks - lticks > HISTORY_DIVISOR) {
+            for(std::list<HistoryAtom>::iterator it = data[i-1].data.begin();
+                it != data[i-1].data.end(); it++) {
+                if(it->ticks <= lticks)
+                    break;
 
-            total += it->value;
-            count++;
+                total += it->value;
+                count++;
+            }
+
+            AddData(i, HistoryAtom(total / count, ticks));
         }
-
-        AddData(1, HistoryAtom(total / count, ticks));
     }
 }
 
-extern History g_history[];
+int History::Depth(int i)
+{
+    if(i == 0)
+        return HISTORY_DEPTH;
+    else
+        return HISTORY_DIVISOR * Depth(i-1);
+}
