@@ -29,6 +29,31 @@
 #include "History.h"
 #include "Plot.h"
 
+#ifdef __MSVC__
+#include <float.h>
+#include <iostream>
+#include <limits>
+
+# if !defined(M_PI)
+# define M_PI		3.14159265358979323846	/* pi */
+# endif
+
+# if !defined(NAN)
+# define NAN std::numeric_limits<double>::quiet_NaN ()
+# endif
+
+# if !defined(INFINITY)
+# define INFINITY std::numeric_limits<double>::infinity ()
+# endif
+
+#define isnan _isnan
+#define isinf(x) (!_finite(x) && !_isnan(x))
+
+inline double trunc(double d){ return (d>0) ? floor(d) : ceil(d) ; }
+inline double round(double n) { return n < 0.0 ? ceil(n - 0.5) : floor(n + 0.5); }
+
+#endif
+
 double heading_resolve(double degrees, double ref=0);
 
 int HistoryTrace::HistoryIndex(int TotalSeconds)
