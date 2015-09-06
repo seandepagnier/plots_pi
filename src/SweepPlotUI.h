@@ -5,8 +5,8 @@
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __TRIMPLOTUI_H__
-#define __TRIMPLOTUI_H__
+#ifndef __SWEEPPLOTUI_H__
+#define __SWEEPPLOTUI_H__
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
@@ -37,9 +37,9 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class TrimPlotDialogBase
+/// Class SweepPlotDialogBase
 ///////////////////////////////////////////////////////////////////////////////
-class TrimPlotDialogBase : public wxDialog 
+class SweepPlotDialogBase : public wxDialog 
 {
 	private:
 	
@@ -68,8 +68,8 @@ class TrimPlotDialogBase : public wxDialog
 	public:
 		wxScrolledWindow* m_scrollWindow;
 		
-		TrimPlotDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSUNKEN_BORDER|wxWANTS_CHARS ); 
-		~TrimPlotDialogBase();
+		SweepPlotDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSUNKEN_BORDER|wxWANTS_CHARS ); 
+		~SweepPlotDialogBase();
 		
 		void m_swPlotsOnContextMenu( wxMouseEvent &event )
 		{
@@ -99,6 +99,7 @@ class PreferencesDialogBase : public wxDialog
 		wxSpinCtrl* m_sPlotMinHeight;
 		wxStaticText* m_staticText121;
 		wxStaticText* m_staticText11;
+		wxStaticText* m_staticText122;
 		wxStaticText* m_staticText1411;
 		wxStaticText* m_staticText1511;
 		wxStaticText* m_staticText721;
@@ -126,12 +127,13 @@ class PreferencesDialogBase : public wxDialog
 		wxCheckBox* m_cbCourseFFTWPlot;
 		wxChoice* m_cColors;
 		wxSpinCtrl* m_sPlotTransparency;
+		wxChoice* m_cPlotStyle;
 		wxCheckBox* m_cbCoursePrediction;
 		wxCheckBox* m_cbCoursePredictionBlended;
 		wxSpinCtrl* m_sCoursePredictionLength;
 		wxSpinCtrl* m_sCoursePredictionSeconds;
 		
-		PreferencesDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("TrimPlot Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE ); 
+		PreferencesDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("SweepPlot Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE ); 
 		~PreferencesDialogBase();
 	
 };
@@ -155,9 +157,9 @@ class AboutDialogBase : public wxDialog
 	
 	public:
 		
-		AboutDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About TrimPlot"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		AboutDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About SweepPlot"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
 		~AboutDialogBase();
 	
 };
 
-#endif //__TRIMPLOTUI_H__
+#endif //__SWEEPPLOTUI_H__

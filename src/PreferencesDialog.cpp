@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  trimplot Plugin
+ * Purpose:  sweepplot Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -24,13 +24,13 @@
  ***************************************************************************
  */
 
-#include "trimplot_pi.h"
-#include "TrimPlotDialog.h"
+#include "sweepplot_pi.h"
+#include "SweepPlotDialog.h"
 #include "PreferencesDialog.h"
 #include "AboutDialog.h"
 
-PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi)
-    : PreferencesDialogBase(parent), m_trimplot_pi(_trimplot_pi)
+PreferencesDialog::PreferencesDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi)
+    : PreferencesDialogBase(parent), m_sweepplot_pi(_sweepplot_pi)
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
 
@@ -49,7 +49,7 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
     ADD_CB(HDG);
     ADD_CB(CourseFFTWPlot);
 
-    pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
+    pConf->SetPath ( _T ( "/Settings/SweepPlot" ) );
 
     for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
         it->cb->SetValue(pConf->Read(_T("Plot ") + it->name, it->cb->GetValue()));
@@ -57,6 +57,7 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi
     m_sPlotMinHeight->SetValue(pConf->Read(_T("PlotMinHeight"), m_sPlotMinHeight->GetValue()));
     m_cColors->SetSelection(pConf->Read(_T("PlotColors"), m_cColors->GetSelection()));
     m_sPlotTransparency->SetValue(pConf->Read(_T("PlotTransparency"), m_sPlotTransparency->GetValue()));
+    m_cPlotStyle->SetSelection(pConf->Read(_T("PlotStyle"), m_cPlotStyle->GetSelection()));
 
     bool bvalue;
     int ivalue;
@@ -80,7 +81,7 @@ PreferencesDialog::~PreferencesDialog()
     if(!pConf)
         return;
 
-    pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
+    pConf->SetPath ( _T ( "/Settings/SweepPlot" ) );
 
     for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
         pConf->Write(_T("Plot ") + it->name, it->cb->GetValue());
@@ -88,6 +89,7 @@ PreferencesDialog::~PreferencesDialog()
     pConf->Write(_T("PlotMinHeight"), m_sPlotMinHeight->GetValue());
     pConf->Write(_T("PlotColors"), m_cColors->GetSelection());
     pConf->Write(_T("PlotTransparency"), m_sPlotTransparency->GetValue());
+    pConf->Write(_T("PlotStyle"), m_cPlotStyle->GetSelection());
 
     pConf->Write(_T("CoursePrediction"), m_cbCoursePrediction->GetValue());
     pConf->Write(_T("CoursePredictionBlended"), m_cbCoursePredictionBlended->GetValue());
@@ -118,6 +120,6 @@ void PreferencesDialog::OnAbout( wxCommandEvent& event )
 
 void PreferencesDialog::PlotChange()
 {
-    m_trimplot_pi.m_TrimPlotDialog->Refresh();
-    m_trimplot_pi.m_TrimPlotDialog->SetupPlot();
+    m_sweepplot_pi.m_SweepPlotDialog->Refresh();
+    m_sweepplot_pi.m_SweepPlotDialog->SetupPlot();
 }

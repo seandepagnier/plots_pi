@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  trimplot Plugin
+ * Purpose:  sweepplot Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -24,9 +24,9 @@
  ***************************************************************************
  */
 
-#include "TrimPlotUI.h"
+#include "SweepPlotUI.h"
 
-class trimplot_pi;
+class sweepplot_pi;
 
 class AboutDialog: public AboutDialogBase
 {

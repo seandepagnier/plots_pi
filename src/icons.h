@@ -9,6 +9,6 @@
 
 extern void initialize_images(void);
 
-extern wxBitmap *_img_trimplot;
+extern wxBitmap *_img_sweepplot;
 
 #endif /* ICONS_H */

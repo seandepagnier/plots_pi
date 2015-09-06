@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  trimplot Plugin
+ * Purpose:  sweepplot Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -32,13 +32,17 @@ struct PlotColor
     wxColor BackgroundColor;
 } extern PlotColorSchemes[];
 
+enum PlotStyle { CONTINUOUS, SWEEP };
+
 struct PlotSettings
 {
-    PlotSettings(PlotColor &c, int totalseconds) : colors(c), TotalSeconds(totalseconds) {}
+    PlotSettings(PlotColor &c, int totalseconds, PlotStyle s)
+    : colors(c), TotalSeconds(totalseconds), style(s) {}
 
     wxRect rect;
     PlotColor &colors;
     int TotalSeconds;
+    enum PlotStyle style;
 };
 
 struct TraceSettings

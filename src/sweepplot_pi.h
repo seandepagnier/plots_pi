@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  trimplot Plugin
+ * Purpose:  sweepplot Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -24,8 +24,8 @@
  ***************************************************************************
  */
 
-#ifndef _TRIMPLOTPI_H_
-#define _TRIMPLOTPI_H_
+#ifndef _SWEEPPLOTPI_H_
+#define _SWEEPPLOTPI_H_
 
 #include <list>
 
@@ -85,15 +85,15 @@ double heading_resolve(double degrees, double ref=0);
 //    The PlugIn Class Definition
 //----------------------------------------------------------------------------------------------------------
 
-#define TRIMPLOT_TOOL_POSITION    -1          // Request default positioning of toolbar tool
+#define SWEEPPLOT_TOOL_POSITION    -1          // Request default positioning of toolbar tool
 class ocpnDC;
-class TrimPlotDialog;
+class SweepPlotDialog;
 class PreferencesDialog;
 
-class trimplot_pi : public wxEvtHandler, public opencpn_plugin_110
+class sweepplot_pi : public wxEvtHandler, public opencpn_plugin_110
 {
 public:
-      trimplot_pi(void *ppimgr);
+      sweepplot_pi(void *ppimgr);
 
 //    The required PlugIn Methods
       int Init(void);
@@ -121,7 +121,7 @@ public:
 
       wxWindow         *m_parent_window;
 
-      TrimPlotDialog   *m_TrimPlotDialog;
+      SweepPlotDialog   *m_SweepPlotDialog;
       PreferencesDialog *m_Preferences;
       
 private:

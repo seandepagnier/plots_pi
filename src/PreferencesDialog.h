@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  trimplot Plugin
+ * Purpose:  sweepplot Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -24,14 +24,14 @@
  ***************************************************************************
  */
 
-#include "TrimPlotUI.h"
+#include "SweepPlotUI.h"
 
-class trimplot_pi;
+class sweepplot_pi;
 
 class PreferencesDialog: public PreferencesDialogBase
 {
 public:
-    PreferencesDialog(wxWindow* parent, trimplot_pi &_trimplot_pi);
+    PreferencesDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi);
     ~PreferencesDialog();
 
     void OnPlotChange( wxCommandEvent& event ) { PlotChange(); }
@@ -45,7 +45,7 @@ public:
 private:
     void PlotChange();
 
-    trimplot_pi &m_trimplot_pi;
+    sweepplot_pi &m_sweepplot_pi;
 
     struct cbState {
        cbState(wxCheckBox *a, wxString n) : cb(a), name(n) { }

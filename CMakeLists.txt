@@ -7,32 +7,32 @@
 # define minimum cmake version
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6.2)
 
-PROJECT(trimplot_pi)
-SET(PACKAGE_NAME trimplot_pi)
+PROJECT(sweepplot_pi)
+SET(PACKAGE_NAME sweepplot_pi)
 SET(CPACK_PACKAGE_CONTACT "Sean D'Epagnier ")
 
 MESSAGE (STATUS "*** Building ${PACKAGE_NAME} ***")
 
 SET(VERSION_MAJOR "0")
-SET(VERSION_MINOR "6")
+SET(VERSION_MINOR "7")
 
 INCLUDE("cmake/PluginConfigure.cmake")
 
-SET(SRC_TRIMPLOT
-            src/trimplot_pi.cpp
-            src/TrimPlotDialog.cpp
+SET(SRC_SWEEPPLOT
+            src/sweepplot_pi.cpp
+            src/SweepPlotDialog.cpp
             src/PreferencesDialog.cpp
             src/AboutDialog.cpp
             src/History.cpp
             src/Plot.cpp
-            src/TrimPlotUI.cpp
+            src/SweepPlotUI.cpp
             src/icons.cpp
 	)
 
 INCLUDE("cmake/PluginNMEA.cmake")
 INCLUDE("cmake/PluginJSON.cmake")
 
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_TRIMPLOT} ${SRC_NMEA0183} ${SRC_JSON})
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_SWEEPPLOT} ${SRC_NMEA0183} ${SRC_JSON})
 
 INCLUDE("cmake/PluginInstall.cmake")
 INCLUDE("cmake/PluginLocalization.cmake")

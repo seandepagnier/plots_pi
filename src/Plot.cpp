@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  trimplot Plugin
+ * Purpose:  sweepplot Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -111,7 +111,7 @@ void HistoryTrace::Bounds(double &min, double &max, PlotSettings &plotsettings, 
 
 void HistoryTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tracesettings)
 {
-    time_t first_ticks = wxDateTime::Now().GetTicks();
+    time_t first_ticks = wxDateTime::Now().GetTicks(), lticks = 0;
 
     int lx = 0;
 
@@ -123,25 +123,40 @@ void HistoryTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tr
 
         double v = it->value;
 
-        int x = w*(first_ticks - it->ticks) / plotsettings.TotalSeconds;
+        int x;
+        if(plotsettings.style == CONTINUOUS)
+            x = w*(first_ticks - it->ticks) / plotsettings.TotalSeconds;
+        else {
+            x = w*fmod(it->ticks, plotsettings.TotalSeconds) / plotsettings.TotalSeconds;
+            lx = x - w*(it->ticks - lticks) / plotsettings.TotalSeconds;
+        }
 
         if(!isnan(v)) {
             if(tracesettings.resolve)
                 v = heading_resolve(v, tracesettings.offset);
 
             // apply scale
-            v =h*(.5 + (tracesettings.offset - v)/tracesettings.scale);
+            v = h*(.5 + (tracesettings.offset - v)/tracesettings.scale);
 
-            if(!isnan(u))
-                dc.DrawLine(plotsettings.rect.x + w-x,
+            if(!isnan(u)) {
+                int x1, x2;
+                if(plotsettings.style == CONTINUOUS)
+                    x1 = w-x, x2 = w-lx;
+                else
+                    x1 = x, x2 = lx;
+
+                dc.DrawLine(plotsettings.rect.x + x1,
                             plotsettings.rect.y + v,
-                            plotsettings.rect.x + w-lx,
+                            plotsettings.rect.x + x2,
                             plotsettings.rect.y + u);
+            }
+
             u = v;
             lx = x;
+            lticks = it->ticks;
         }
 
-        if(x > w)
+        if(first_ticks - it->ticks  > plotsettings.TotalSeconds)
             break;
     }
 
@@ -299,7 +314,17 @@ void Plot::Paint(wxDC &dc, PlotSettings &settings)
             j += 3*textwidth/2;
         }
 
-    wxPen pen(settings.colors.GridColor, 1, wxUSER_DASH);
+    if(settings.style == SWEEP) {
+        time_t first_ticks = wxDateTime::Now().GetTicks();
+        int x = w*fmod(first_ticks, settings.TotalSeconds) / settings.TotalSeconds;
+        dc.SetPen(wxPen(*wxWHITE, 2));
+        dc.DrawLine(settings.rect.x + x + 2,
+                    settings.rect.y,
+                    settings.rect.x + x + 2,
+                    settings.rect.y + h);
+    }
+
+    wxPen pen(settings.colors.GridColor, 1, wxPENSTYLE_USER_DASH);
     wxDash dashes[2] = {1, 7};
     pen.SetDashes(2, dashes);
     dc.SetTextForeground(settings.colors.GridColor);
@@ -315,7 +340,7 @@ void Plot::Paint(wxDC &dc, PlotSettings &settings)
         dc.SetPen(*wxTRANSPARENT_PEN);
         double g = tracesettings.offset + (u-.5)*tracesettings.scale;
         if(resolve)
-            g = heading_resolve(g);
+            g = heading_resolve(g, 180);
 
         wxString text = wxString::Format(_T("%4.1f"), g);
         dc.GetTextExtent(text, &textwidth, &textheight);

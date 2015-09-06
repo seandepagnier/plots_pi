@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  trimplot Plugin
+ * Purpose:  sweepplot Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -24,19 +24,19 @@
  ***************************************************************************
  */
 
-#include "trimplot_pi.h"
-#include "TrimPlotDialog.h"
+#include "sweepplot_pi.h"
+#include "SweepPlotDialog.h"
 #include "PreferencesDialog.h"
 
 #include "Plot.h"
 
-TrimPlotDialog::TrimPlotDialog(wxWindow* parent, trimplot_pi &_trimplot_pi, PreferencesDialog &preferences)
-    : TrimPlotDialogBase( parent ), m_trimplot_pi(_trimplot_pi), m_preferences(preferences),
+SweepPlotDialog::SweepPlotDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi, PreferencesDialog &preferences)
+    : SweepPlotDialogBase( parent ), m_sweepplot_pi(_sweepplot_pi), m_preferences(preferences),
       m_lastTimerTotalSeconds(0)
 {
     m_tRefreshTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
-                            ( TrimPlotDialog::OnRefreshTimer ), NULL, this);
-    m_tRefreshTimer.Start();
+                            ( SweepPlotDialog::OnRefreshTimer ), NULL, this);
+    m_tRefreshTimer.Start(1000);
 
 #define PUSH_HISTORY_TRACE(NAME) \
     traces.push_back(new HistoryTrace(_T(#NAME), m_preferences.m_cb##NAME, NAME));
@@ -60,23 +60,23 @@ TrimPlotDialog::TrimPlotDialog(wxWindow* parent, trimplot_pi &_trimplot_pi, Pref
     m_plots.push_back(courseFFTWPlot);
 }
 
-TrimPlotDialog::~TrimPlotDialog()
+SweepPlotDialog::~SweepPlotDialog()
 {
     for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++)
         delete *it;
 }
 
-void TrimPlotDialog::Relay( wxKeyEvent& event )
+void SweepPlotDialog::Relay( wxKeyEvent& event )
 {
     GetOCPNCanvasWindow()->GetEventHandler()->AddPendingEvent( event );
 }
 
-void TrimPlotDialog::OnDoubleClick( wxMouseEvent& event )
+void SweepPlotDialog::OnDoubleClick( wxMouseEvent& event )
 {
-    m_trimplot_pi.m_Preferences->Show();
+    m_sweepplot_pi.m_Preferences->Show();
 }
 
-void TrimPlotDialog::OnPaint( wxPaintEvent& event )
+void SweepPlotDialog::OnPaint( wxPaintEvent& event )
 {
     wxWindow *window = dynamic_cast<wxWindow*>(event.GetEventObject());
     if(!window)
@@ -85,7 +85,8 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
     wxPaintDC dc( window );
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
-    PlotSettings settings(PlotColorSchemes[m_preferences.m_cColors->GetSelection()], TotalSeconds());
+    PlotSettings settings(PlotColorSchemes[m_preferences.m_cColors->GetSelection()],
+                          TotalSeconds(), (PlotStyle)m_preferences.m_cPlotStyle->GetSelection());
 
     window->SetBackgroundColour(settings.colors.BackgroundColor);
 
@@ -134,7 +135,7 @@ void TrimPlotDialog::OnPaint( wxPaintEvent& event )
     dc.DrawText(period, window->GetSize().x - w, window->GetSize().y - h);
 }
 
-void TrimPlotDialog::SetupPlot()
+void SweepPlotDialog::SetupPlot()
 {
     int count = wxMax(PlotCount(), 1); // even with no plots, make size of one plot
     int minh = m_preferences.PlotMinHeight() * count;
@@ -145,7 +146,7 @@ void TrimPlotDialog::SetupPlot()
 
     if(h < minh) {
         // hack needed to make scrollbar appear
-        wxSize s = m_trimplot_pi.m_TrimPlotDialog->GetSize();
+        wxSize s = m_sweepplot_pi.m_SweepPlotDialog->GetSize();
         SetSize(s.x+1, s.y);
         SetSize(s.x, s.y);
     }
@@ -153,12 +154,12 @@ void TrimPlotDialog::SetupPlot()
     SetTransparent(255 - 255*m_preferences.m_sPlotTransparency->GetValue()/100);
 }
 
-void TrimPlotDialog::OnSetup( wxCommandEvent& event )
+void SweepPlotDialog::OnSetup( wxCommandEvent& event )
 {
     m_preferences.Show();
 }
 
-void TrimPlotDialog::OnRefreshTimer( wxTimerEvent & )
+void SweepPlotDialog::OnRefreshTimer( wxTimerEvent & )
 {
     if(m_lastTimerTotalSeconds != TotalSeconds())
         Refresh();
@@ -172,16 +173,17 @@ void TrimPlotDialog::OnRefreshTimer( wxTimerEvent & )
     m_lastTimerTotalSeconds = TotalSeconds();
 }
 
-int TrimPlotDialog::PlotCount()
+int SweepPlotDialog::PlotCount()
 {
     int count = 0;
+
     for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++)
         count += (*it)->Visible();
 
     return count;
 }
 
-int TrimPlotDialog::TotalSeconds()
+int SweepPlotDialog::TotalSeconds()
 {
     const int cts[] = {5, 20, 60, 4*60, 8*60, 24*60, 3*24*60, 10*24*60, 30*24*60, 60*24*60};
     wxMenuItem *items[] = {m_mt1, m_mt2, m_mt3, m_mt4, m_mt5, m_mt6, m_mt7, m_mt8, m_mt9, m_mt10};

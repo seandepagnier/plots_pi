@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  trimplot Plugin
+ * Purpose:  sweepplot Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -24,16 +24,16 @@
  ***************************************************************************
  */
 
-#include "TrimPlotUI.h"
+#include "SweepPlotUI.h"
 
-class trimplot_pi;
+class sweepplot_pi;
 class Plot;
 
-class TrimPlotDialog: public TrimPlotDialogBase
+class SweepPlotDialog: public SweepPlotDialogBase
 {
 public:
-    TrimPlotDialog(wxWindow* parent, trimplot_pi &_trimplot_pi, PreferencesDialog &preferences);
-    ~TrimPlotDialog();
+    SweepPlotDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi, PreferencesDialog &preferences);
+    ~SweepPlotDialog();
 
     void Relay( wxKeyEvent& event );
     void OnSize(wxSizeEvent& event) { Refresh(); event.Skip(); }
@@ -51,7 +51,7 @@ private:
     int PlotCount();
     int TotalSeconds();
 
-    trimplot_pi &m_trimplot_pi;
+    sweepplot_pi &m_sweepplot_pi;
     PreferencesDialog &m_preferences;
 
     wxTimer m_tRefreshTimer;

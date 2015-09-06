@@ -5,11 +5,11 @@
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#include "TrimPlotUI.h"
+#include "SweepPlotUI.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
-TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+SweepPlotDialogBase::SweepPlotDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
@@ -69,7 +69,7 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_mSetup = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("Setup") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu1->Append( m_mSetup );
 	
-	m_swPlots->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( TrimPlotDialogBase::m_swPlotsOnContextMenu ), NULL, this ); 
+	m_swPlots->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( SweepPlotDialogBase::m_swPlotsOnContextMenu ), NULL, this ); 
 	
 	fgSizer10->Add( m_swPlots, 1, wxEXPAND | wxALL, 5 );
 	
@@ -79,25 +79,6 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer10->Fit( m_scrollWindow );
 	fgSizer8->Add( m_scrollWindow, 1, wxEXPAND | wxALL, 5 );
 	
-	wxFlexGridSizer* fgSizer14;
-	fgSizer14 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer14->AddGrowableCol( 0 );
-	fgSizer14->AddGrowableRow( 0 );
-	fgSizer14->AddGrowableRow( 1 );
-	fgSizer14->SetFlexibleDirection( wxBOTH );
-	fgSizer14->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	
-	fgSizer8->Add( fgSizer14, 1, wxEXPAND, 5 );
-	
-	wxFlexGridSizer* fgSizer12;
-	fgSizer12 = new wxFlexGridSizer( 1, 0, 0, 0 );
-	fgSizer12->SetFlexibleDirection( wxBOTH );
-	fgSizer12->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	
-	fgSizer8->Add( fgSizer12, 1, wxEXPAND, 5 );
-	
 	
 	this->SetSizer( fgSizer8 );
 	this->Layout();
@@ -106,25 +87,25 @@ TrimPlotDialogBase::TrimPlotDialogBase( wxWindow* parent, wxWindowID id, const w
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	this->Connect( wxEVT_SIZE, wxSizeEventHandler( TrimPlotDialogBase::OnSize ) );
-	m_swPlots->Connect( wxEVT_CHAR, wxKeyEventHandler( TrimPlotDialogBase::Relay ), NULL, this );
-	m_swPlots->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( TrimPlotDialogBase::Relay ), NULL, this );
-	m_swPlots->Connect( wxEVT_KEY_UP, wxKeyEventHandler( TrimPlotDialogBase::Relay ), NULL, this );
-	m_swPlots->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
-	m_swPlots->Connect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
-	this->Connect( m_mSetup->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( TrimPlotDialogBase::OnSetup ) );
+	this->Connect( wxEVT_SIZE, wxSizeEventHandler( SweepPlotDialogBase::OnSize ) );
+	m_swPlots->Connect( wxEVT_CHAR, wxKeyEventHandler( SweepPlotDialogBase::Relay ), NULL, this );
+	m_swPlots->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( SweepPlotDialogBase::Relay ), NULL, this );
+	m_swPlots->Connect( wxEVT_KEY_UP, wxKeyEventHandler( SweepPlotDialogBase::Relay ), NULL, this );
+	m_swPlots->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( SweepPlotDialogBase::OnDoubleClick ), NULL, this );
+	m_swPlots->Connect( wxEVT_PAINT, wxPaintEventHandler( SweepPlotDialogBase::OnPaint ), NULL, this );
+	this->Connect( m_mSetup->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( SweepPlotDialogBase::OnSetup ) );
 }
 
-TrimPlotDialogBase::~TrimPlotDialogBase()
+SweepPlotDialogBase::~SweepPlotDialogBase()
 {
 	// Disconnect Events
-	this->Disconnect( wxEVT_SIZE, wxSizeEventHandler( TrimPlotDialogBase::OnSize ) );
-	m_swPlots->Disconnect( wxEVT_CHAR, wxKeyEventHandler( TrimPlotDialogBase::Relay ), NULL, this );
-	m_swPlots->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler( TrimPlotDialogBase::Relay ), NULL, this );
-	m_swPlots->Disconnect( wxEVT_KEY_UP, wxKeyEventHandler( TrimPlotDialogBase::Relay ), NULL, this );
-	m_swPlots->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( TrimPlotDialogBase::OnDoubleClick ), NULL, this );
-	m_swPlots->Disconnect( wxEVT_PAINT, wxPaintEventHandler( TrimPlotDialogBase::OnPaint ), NULL, this );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( TrimPlotDialogBase::OnSetup ) );
+	this->Disconnect( wxEVT_SIZE, wxSizeEventHandler( SweepPlotDialogBase::OnSize ) );
+	m_swPlots->Disconnect( wxEVT_CHAR, wxKeyEventHandler( SweepPlotDialogBase::Relay ), NULL, this );
+	m_swPlots->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler( SweepPlotDialogBase::Relay ), NULL, this );
+	m_swPlots->Disconnect( wxEVT_KEY_UP, wxKeyEventHandler( SweepPlotDialogBase::Relay ), NULL, this );
+	m_swPlots->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( SweepPlotDialogBase::OnDoubleClick ), NULL, this );
+	m_swPlots->Disconnect( wxEVT_PAINT, wxPaintEventHandler( SweepPlotDialogBase::OnPaint ), NULL, this );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( SweepPlotDialogBase::OnSetup ) );
 	
 	delete m_menu1; 
 }
@@ -291,6 +272,16 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_sPlotTransparency = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 20 );
 	fgSizer101->Add( m_sPlotTransparency, 0, wxALL, 5 );
 	
+	m_staticText122 = new wxStaticText( this, wxID_ANY, _("Style"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText122->Wrap( -1 );
+	fgSizer101->Add( m_staticText122, 0, wxALL, 5 );
+	
+	wxString m_cPlotStyleChoices[] = { _("Continuous"), _("Sweep") };
+	int m_cPlotStyleNChoices = sizeof( m_cPlotStyleChoices ) / sizeof( wxString );
+	m_cPlotStyle = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cPlotStyleNChoices, m_cPlotStyleChoices, 0 );
+	m_cPlotStyle->SetSelection( 0 );
+	fgSizer101->Add( m_cPlotStyle, 0, wxALL, 5 );
+	
 	
 	fgSizer111->Add( fgSizer101, 1, wxEXPAND, 5 );
 	
@@ -399,7 +390,7 @@ AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer90->SetFlexibleDirection( wxBOTH );
 	fgSizer90->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText110 = new wxStaticText( this, wxID_ANY, _("The trimplot plugin for opencpn is\ndesigned to monitor speed and course to make the results of changes to sail trim obvious.  It may be used to better understand the sailing characteristics of a particular vessel, or for fine tuning to give optimal results.\n\nFor example, tightening a vang or adjusting a traveler may produce such a slight result it is difficult to gauge the outcome.  This plugin can make gps speed feedback visible.\n\nThe predictor line allows setting the sample time for smoother prediction than the builtin predictor.\n\nLicense: GPLv3+\n\nSource Code:\nhttps://github.com/seandepagnier/trimplot_pi\n\nAuthor:\nSean D'Epagnier\n\nMany thanks to all of the translators and testers."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText110 = new wxStaticText( this, wxID_ANY, _("The sweepplot plugin for opencpn is\ndesigned to monitor speed and course to make the results of changes to sail sweep obvious.  It may be used to better understand the sailing characteristics of a particular vessel, or for fine tuning to give optimal results.\n\nFor example, tightening a vang or adjusting a traveler may produce such a slight result it is difficult to gauge the outcome.  This plugin can make gps speed feedback visible.\n\nThe predictor line allows setting the sample time for smoother prediction than the builtin predictor.\n\nLicense: GPLv3+\n\nSource Code:\nhttps://github.com/seandepagnier/sweepplot_pi\n\nAuthor:\nSean D'Epagnier\n\nMany thanks to all of the translators and testers."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText110->Wrap( 400 );
 	fgSizer90->Add( m_staticText110, 0, wxALL, 5 );
 	

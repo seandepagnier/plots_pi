@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  trimplot Plugin
+ * Purpose:  sweepplot Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -29,8 +29,8 @@
 
 #include "ocpndc.h"
 
-#include "trimplot_pi.h"
-#include "TrimPlotDialog.h"
+#include "sweepplot_pi.h"
+#include "SweepPlotDialog.h"
 #include "PreferencesDialog.h"
 #include "icons.h"
 
@@ -49,7 +49,7 @@ double heading_resolve(double degrees, double ref)
 
 extern "C" DECL_EXP opencpn_plugin* create_pi(void *ppimgr)
 {
-    return new trimplot_pi(ppimgr);
+    return new sweepplot_pi(ppimgr);
 }
 
 extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
@@ -59,11 +59,11 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 
 //---------------------------------------------------------------------------------------------------------
 //
-//    TrimPlot PlugIn Implementation
+//    SweepPlot PlugIn Implementation
 //
 //---------------------------------------------------------------------------------------------------------
 
-trimplot_pi::trimplot_pi(void *ppimgr)
+sweepplot_pi::sweepplot_pi(void *ppimgr)
     : opencpn_plugin_110(ppimgr)
 {
     // Create the PlugIn icons
@@ -76,9 +76,9 @@ trimplot_pi::trimplot_pi(void *ppimgr)
 //
 //---------------------------------------------------------------------------------------------------------
 
-int trimplot_pi::Init(void)
+int sweepplot_pi::Init(void)
 {
-    AddLocaleCatalog( _T("opencpn-trimplot_pi") );
+    AddLocaleCatalog( _T("opencpn-sweepplot_pi") );
 
     //    Get a pointer to the opencpn display canvas, to use as a parent for the POI Manager dialog
     m_parent_window = GetOCPNCanvasWindow();
@@ -88,10 +88,10 @@ int trimplot_pi::Init(void)
     LoadConfig(); //    And load the configuration items
     
     m_leftclick_tool_id  = InsertPlugInTool
-        (_T(""), _img_trimplot, _img_trimplot, wxITEM_NORMAL,
-         _("TrimPlot"), _T(""), NULL, TRIMPLOT_TOOL_POSITION, 0, this);
+        (_T(""), _img_sweepplot, _img_sweepplot, wxITEM_NORMAL,
+         _("SweepPlot"), _T(""), NULL, SWEEPPLOT_TOOL_POSITION, 0, this);
     
-    m_TrimPlotDialog = NULL;
+    m_SweepPlotDialog = NULL;
     
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
@@ -101,15 +101,15 @@ int trimplot_pi::Init(void)
             WANTS_CONFIG);
 }
 
-bool trimplot_pi::DeInit(void)
+bool sweepplot_pi::DeInit(void)
 {
     SaveConfig();
 
-    if (m_TrimPlotDialog)
+    if (m_SweepPlotDialog)
     {
-        m_TrimPlotDialog->Close();
-        delete m_TrimPlotDialog;
-        m_TrimPlotDialog = NULL;
+        m_SweepPlotDialog->Close();
+        delete m_SweepPlotDialog;
+        m_SweepPlotDialog = NULL;
     }
 
     delete m_Preferences;
@@ -119,110 +119,110 @@ bool trimplot_pi::DeInit(void)
     return true;
 }
 
-int trimplot_pi::GetAPIVersionMajor()
+int sweepplot_pi::GetAPIVersionMajor()
 {
     return MY_API_VERSION_MAJOR;
 }
 
-int trimplot_pi::GetAPIVersionMinor()
+int sweepplot_pi::GetAPIVersionMinor()
 {
     return MY_API_VERSION_MINOR;
 }
 
-int trimplot_pi::GetPlugInVersionMajor()
+int sweepplot_pi::GetPlugInVersionMajor()
 {
     return PLUGIN_VERSION_MAJOR;
 }
 
-int trimplot_pi::GetPlugInVersionMinor()
+int sweepplot_pi::GetPlugInVersionMinor()
 {
     return PLUGIN_VERSION_MINOR;
 }
 
-wxBitmap *trimplot_pi::GetPlugInBitmap()
+wxBitmap *sweepplot_pi::GetPlugInBitmap()
 {
-    return new wxBitmap(_img_trimplot->ConvertToImage().Copy());
+    return new wxBitmap(_img_sweepplot->ConvertToImage().Copy());
 }
 
-wxString trimplot_pi::GetCommonName()
+wxString sweepplot_pi::GetCommonName()
 {
-    return _("TrimPlot");
+    return _("SweepPlot");
 }
 
 
-wxString trimplot_pi::GetShortDescription()
+wxString sweepplot_pi::GetShortDescription()
 {
-    return _("TrimPlot PlugIn for OpenCPN");
+    return _("SweepPlot PlugIn for OpenCPN");
 }
 
-wxString trimplot_pi::GetLongDescription()
+wxString sweepplot_pi::GetLongDescription()
 {
-    return _("TrimPlot PlugIn for OpenCPN\n\
-Plot trim and course over ground to make the result of \
-small sail trim changes evident.\n\
-The TrimPlot plugin was written by Sean D'Epagnier\n");
+    return _("SweepPlot PlugIn for OpenCPN\n\
+Plot sweep and course over ground to make the result of \
+small sail sweep changes evident.\n\
+The SweepPlot plugin was written by Sean D'Epagnier\n");
 }
 
-int trimplot_pi::GetToolbarToolCount(void)
+int sweepplot_pi::GetToolbarToolCount(void)
 {
     return 1;
 }
 
-void trimplot_pi::SetColorScheme(PI_ColorScheme cs)
+void sweepplot_pi::SetColorScheme(PI_ColorScheme cs)
 {
-    if (NULL == m_TrimPlotDialog)
+    if (NULL == m_SweepPlotDialog)
         return;
 
-    DimeWindow(m_TrimPlotDialog);
+    DimeWindow(m_SweepPlotDialog);
 }
 
-void trimplot_pi::RearrangeWindow()
+void sweepplot_pi::RearrangeWindow()
 {
-    if (NULL == m_TrimPlotDialog)
+    if (NULL == m_SweepPlotDialog)
         return;
 
     SetColorScheme(PI_ColorScheme());
 }
 
-void trimplot_pi::OnToolbarToolCallback(int id)
+void sweepplot_pi::OnToolbarToolCallback(int id)
 {
-    if(!m_TrimPlotDialog)
+    if(!m_SweepPlotDialog)
     {
-        m_TrimPlotDialog = new TrimPlotDialog(m_parent_window, *this, *m_Preferences);
+        m_SweepPlotDialog = new SweepPlotDialog(m_parent_window, *this, *m_Preferences);
 
         wxFileConfig *pConf = GetOCPNConfigObject();
-        pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
+        pConf->SetPath ( _T ( "/Settings/SweepPlot" ) );
 
-        m_TrimPlotDialog->Move(pConf->Read ( _T ( "DialogPosX" ), 20L ),
+        m_SweepPlotDialog->Move(pConf->Read ( _T ( "DialogPosX" ), 20L ),
                                pConf->Read ( _T ( "DialogPosY" ), 20L ));
-        m_TrimPlotDialog->SetSize(pConf->Read ( _T ( "DialogW" ), 400L ),
+        m_SweepPlotDialog->SetSize(pConf->Read ( _T ( "DialogW" ), 400L ),
                                   pConf->Read ( _T ( "DialogH" ), 300L ));
 
         wxIcon icon;
-        icon.CopyFromBitmap(*_img_trimplot);
-        m_TrimPlotDialog->SetIcon(icon);
+        icon.CopyFromBitmap(*_img_sweepplot);
+        m_SweepPlotDialog->SetIcon(icon);
         m_Preferences->SetIcon(icon);
     }
 
     RearrangeWindow();
-    m_TrimPlotDialog->Show(!m_TrimPlotDialog->IsShown());
+    m_SweepPlotDialog->Show(!m_SweepPlotDialog->IsShown());
 
-    if(m_TrimPlotDialog->IsShown())
-        m_TrimPlotDialog->SetupPlot();
+    if(m_SweepPlotDialog->IsShown())
+        m_SweepPlotDialog->SetupPlot();
 
-    wxPoint p = m_TrimPlotDialog->GetPosition();
-    m_TrimPlotDialog->Move(0, 0);        // workaround for gtk autocentre dialog behavior
-    m_TrimPlotDialog->Move(p);
+    wxPoint p = m_SweepPlotDialog->GetPosition();
+    m_SweepPlotDialog->Move(0, 0);        // workaround for gtk autocentre dialog behavior
+    m_SweepPlotDialog->Move(p);
 }
 
-bool trimplot_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
+bool sweepplot_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
 {
     ocpnDC odc(dc);
     Render(odc, *vp);
     return true;
 }
 
-bool trimplot_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
+bool sweepplot_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 {
     glPushAttrib(GL_LINE_BIT | GL_ENABLE_BIT | GL_HINT_BIT ); //Save state
     glEnable( GL_LINE_SMOOTH );
@@ -237,7 +237,7 @@ bool trimplot_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
     return true;
 }
 
-void trimplot_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
+void sweepplot_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
 {
     if(!m_Preferences->m_cbCoursePrediction->GetValue())
         return;
@@ -311,26 +311,26 @@ void trimplot_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
     }
 }
 
-bool trimplot_pi::LoadConfig(void)
+bool sweepplot_pi::LoadConfig(void)
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
 
     if(!pConf)
         return false;
 
-    pConf->SetPath ( _T( "/Settings/TrimPlot" ) );
+    pConf->SetPath ( _T( "/Settings/SweepPlot" ) );
 
     return true;
 }
 
-bool trimplot_pi::SaveConfig(void)
+bool sweepplot_pi::SaveConfig(void)
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
-    pConf->SetPath ( _T ( "/Settings/TrimPlot" ) );
+    pConf->SetPath ( _T ( "/Settings/SweepPlot" ) );
 
-    if(m_TrimPlotDialog) {
-        wxPoint p = m_TrimPlotDialog->GetPosition();
-        wxSize s = m_TrimPlotDialog->GetSize();
+    if(m_SweepPlotDialog) {
+        wxPoint p = m_SweepPlotDialog->GetPosition();
+        wxSize s = m_SweepPlotDialog->GetSize();
 
         pConf->Write ( _T ( "DialogPosX" ), p.x);
         pConf->Write ( _T ( "DialogPosY" ), p.y);
@@ -341,7 +341,7 @@ bool trimplot_pi::SaveConfig(void)
     return true;
 }
 
-void trimplot_pi::SetNMEASentence( wxString &sentence )
+void sweepplot_pi::SetNMEASentence( wxString &sentence )
 {
     m_NMEA0183 << sentence;
 
@@ -370,7 +370,7 @@ void trimplot_pi::SetNMEASentence( wxString &sentence )
     }
 }
 
-void trimplot_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
+void sweepplot_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 {
     if(pfix.FixTime && pfix.nSats) {
 
@@ -386,7 +386,7 @@ void trimplot_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
     }
 }
 
-void trimplot_pi::UpdatePositionDetermined(enum HistoryEnum speed, enum HistoryEnum course, int tick_diff)
+void sweepplot_pi::UpdatePositionDetermined(enum HistoryEnum speed, enum HistoryEnum course, int tick_diff)
 {
     if(g_history[speed].LastTicks() + tick_diff > g_history[LAT].LastTicks())
         return;
@@ -406,7 +406,7 @@ void trimplot_pi::UpdatePositionDetermined(enum HistoryEnum speed, enum HistoryE
     AddData(course, brg, ticks);
 }
 
-void trimplot_pi::AddData(enum HistoryEnum e, double value, time_t ticks)
+void sweepplot_pi::AddData(enum HistoryEnum e, double value, time_t ticks)
 {
     g_history[e].AddData(value, ticks);
 }

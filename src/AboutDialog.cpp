@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  trimplot Plugin
+ * Purpose:  sweepplot Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -24,7 +24,7 @@
  ***************************************************************************
  */
 
-#include "trimplot_pi.h"
+#include "sweepplot_pi.h"
 #include "AboutDialog.h"
 
 void AboutDialog::OnAboutAuthor( wxCommandEvent& event )
