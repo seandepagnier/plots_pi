@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Oct 12 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -62,7 +62,7 @@ class SweepPlotDialogBase : public wxDialog
 		virtual void Relay( wxKeyEvent& event ) { event.Skip(); }
 		virtual void OnDoubleClick( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnPaint( wxPaintEvent& event ) { event.Skip(); }
-		virtual void OnSetup( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnConfiguration( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

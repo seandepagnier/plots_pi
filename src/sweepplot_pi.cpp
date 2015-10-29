@@ -27,7 +27,6 @@
 #include <wx/wx.h>
 #include <wx/process.h>
 
-#include "ocpndc.h"
 
 #include "sweepplot_pi.h"
 #include "SweepPlotDialog.h"
@@ -217,27 +216,24 @@ void sweepplot_pi::OnToolbarToolCallback(int id)
 
 bool sweepplot_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
 {
-    ocpnDC odc(dc);
-    Render(odc, *vp);
+    Render(&dc, *vp);
     return true;
 }
 
 bool sweepplot_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 {
-    glPushAttrib(GL_LINE_BIT | GL_ENABLE_BIT | GL_HINT_BIT ); //Save state
     glEnable( GL_LINE_SMOOTH );
     glEnable( GL_BLEND );
-    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
 
-    ocpnDC odc;
-    Render(odc, *vp);
+    Render(NULL, *vp);
 
-    glPopAttrib();
+    glDisable( GL_BLEND );
+    glDisable( GL_LINE_SMOOTH );
+
     return true;
 }
 
-void sweepplot_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
+void sweepplot_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
 {
     if(!m_Preferences->m_cbCoursePrediction->GetValue())
         return;
@@ -250,16 +246,14 @@ void sweepplot_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
     wxPoint r0, r1, r2;
 
     if(m_Preferences->m_cbCoursePredictionBlended->GetValue()) {
-        if(dc.GetDC())
+        if(dc)
             return;
 
         if(!g_history[LAT].LastValue(lat0) ||
            !g_history[LON].LastValue(lon0))
             return;
 
-        glEnable( GL_POLYGON_SMOOTH );
-        glEnable( GL_BLEND );
-        glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+        GetCanvasPixLL(&vp, &r0, lat0, lon0);
 
         glColor4f(1, 0, 0, 1.0/ticks);
 
@@ -268,32 +262,33 @@ void sweepplot_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
         GetCanvasPixLL(&vp, &r0, lat0, lon0);
 
         bool first = true;
-        for(int i=1; i<ticks; i++) {
-            if(!g_history[LAT].LastValue(lat1, i) ||
-               !g_history[LON].LastValue(lon1, i))
-                break;
 
-            DistanceBearingMercator_Plugin(lat0, lon0, lat1, lon1, &brg, &dist);
-            if(dist == 0)
+        for(int i=1; i<ticks; i++) {
+            int t = i;
+            if(!g_history[LAT].LastValue(lat1, t) ||
+               !g_history[LON].LastValue(lon1, t))
                 continue;
 
-            PositionBearingDistanceMercator_Plugin(lat0, lon0, brg, dist * length * 60.0 / i, &dlat, &dlon);
+            DistanceBearingMercator_Plugin(lat0, lon0, lat1, lon1, &brg, &dist);
+            PositionBearingDistanceMercator_Plugin(lat0, lon0, brg, dist * length * 60.0 / t, &dlat, &dlon);
             GetCanvasPixLL(&vp, &r1, dlat, dlon);
 
             if(first)
                 first = false;
             else {
-                glVertex2i(r0.x, r0.y);
-                glVertex2i(r1.x, r1.y);
-                glVertex2i(r2.x, r2.y);
+                if(dc) {
+//                dc->SetPen(wxPen(*wxRED, 3));
+//                dc->DrawLine( r0.x, r0.y, r1.x, r1.y);
+                } else {
+                    glVertex2i(r0.x, r0.y);
+                    glVertex2i(r1.x, r1.y);
+                    glVertex2i(r2.x, r2.y);
+                }
             }
             r2 = r1;
         }
 
         glEnd();
-
-        glDisable( GL_POLYGON_SMOOTH );
-        glDisable( GL_BLEND );
     } else {
         if(!g_history[LAT].LastValue(lat0) ||
            !g_history[LON].LastValue(lon0) ||
@@ -305,9 +300,18 @@ void sweepplot_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
         PositionBearingDistanceMercator_Plugin(lat0, lon0, brg, dist * length * 60.0 / ticks, &dlat, &dlon);
         GetCanvasPixLL(&vp, &r0, lat0, lon0);
         GetCanvasPixLL(&vp, &r1, dlat, dlon);
-    
-        dc.SetPen(wxPen(*wxRED, 3));
-        dc.DrawLine( r0.x, r0.y, r1.x, r1.y);
+
+        if(dc) {
+            dc->SetPen(wxPen(*wxRED, 3));
+            dc->DrawLine( r0.x, r0.y, r1.x, r1.y);
+        } else {
+            glColor3ub(255, 0, 0);
+            glLineWidth(3.0);
+            glBegin(GL_LINES);
+            glVertex2i(r0.x, r0.y);
+            glVertex2i(r1.x, r1.y);
+            glEnd();
+        }
     }
 }
 

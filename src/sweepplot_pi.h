@@ -86,7 +86,7 @@ double heading_resolve(double degrees, double ref=0);
 //----------------------------------------------------------------------------------------------------------
 
 #define SWEEPPLOT_TOOL_POSITION    -1          // Request default positioning of toolbar tool
-class ocpnDC;
+
 class SweepPlotDialog;
 class PreferencesDialog;
 
@@ -114,7 +114,7 @@ public:
 
       bool RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp);
       bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp);
-      void Render(ocpnDC &dc, PlugIn_ViewPort &vp);
+      void Render(wxDC *dc, PlugIn_ViewPort &vp);
 
 //    Optional plugin overrides
       void SetColorScheme(PI_ColorScheme cs);

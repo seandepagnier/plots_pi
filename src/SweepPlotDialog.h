@@ -44,7 +44,7 @@ public:
 
 private:
     void OnTimeChoice( wxCommandEvent& event ) { Refresh(); }
-    void OnSetup( wxCommandEvent& event );
+    void OnConfiguration( wxCommandEvent& event );
 
     void OnRefreshTimer( wxTimerEvent & );
 

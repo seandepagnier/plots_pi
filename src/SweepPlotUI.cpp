@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Oct 12 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -65,9 +65,9 @@ SweepPlotDialogBase::SweepPlotDialogBase( wxWindow* parent, wxWindowID id, const
 	
 	m_menu1->AppendSeparator();
 	
-	wxMenuItem* m_mSetup;
-	m_mSetup = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("Setup") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu1->Append( m_mSetup );
+	wxMenuItem* m_mConfiguration;
+	m_mConfiguration = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("Configuration") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu1->Append( m_mConfiguration );
 	
 	m_swPlots->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( SweepPlotDialogBase::m_swPlotsOnContextMenu ), NULL, this ); 
 	
@@ -93,7 +93,7 @@ SweepPlotDialogBase::SweepPlotDialogBase( wxWindow* parent, wxWindowID id, const
 	m_swPlots->Connect( wxEVT_KEY_UP, wxKeyEventHandler( SweepPlotDialogBase::Relay ), NULL, this );
 	m_swPlots->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( SweepPlotDialogBase::OnDoubleClick ), NULL, this );
 	m_swPlots->Connect( wxEVT_PAINT, wxPaintEventHandler( SweepPlotDialogBase::OnPaint ), NULL, this );
-	this->Connect( m_mSetup->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( SweepPlotDialogBase::OnSetup ) );
+	this->Connect( m_mConfiguration->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( SweepPlotDialogBase::OnConfiguration ) );
 }
 
 SweepPlotDialogBase::~SweepPlotDialogBase()
@@ -105,7 +105,7 @@ SweepPlotDialogBase::~SweepPlotDialogBase()
 	m_swPlots->Disconnect( wxEVT_KEY_UP, wxKeyEventHandler( SweepPlotDialogBase::Relay ), NULL, this );
 	m_swPlots->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( SweepPlotDialogBase::OnDoubleClick ), NULL, this );
 	m_swPlots->Disconnect( wxEVT_PAINT, wxPaintEventHandler( SweepPlotDialogBase::OnPaint ), NULL, this );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( SweepPlotDialogBase::OnSetup ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( SweepPlotDialogBase::OnConfiguration ) );
 	
 	delete m_menu1; 
 }
@@ -231,10 +231,13 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_panel5->Layout();
 	fgSizer201->Fit( m_panel5 );
 	m_listbook1->AddPage( m_panel5, _("Cross Track Error"), false );
-	#ifndef __WXGTK__ // Small icon style not supported in GTK
+	#ifdef __WXGTK__ // Small icon style not supported in GTK
 	wxListView* m_listbook1ListView = m_listbook1->GetListView();
 	long m_listbook1Flags = m_listbook1ListView->GetWindowStyleFlag();
-	m_listbook1Flags = ( m_listbook1Flags & ~wxLC_ICON ) | wxLC_SMALL_ICON;
+	if( m_listbook1Flags & wxLC_SMALL_ICON )
+	{
+		m_listbook1Flags = ( m_listbook1Flags & ~wxLC_SMALL_ICON ) | wxLC_ICON;
+	}
 	m_listbook1ListView->SetWindowStyleFlag( m_listbook1Flags );
 	#endif
 	
@@ -390,7 +393,7 @@ AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer90->SetFlexibleDirection( wxBOTH );
 	fgSizer90->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText110 = new wxStaticText( this, wxID_ANY, _("The sweepplot plugin for opencpn is\ndesigned to monitor speed and course to make the results of changes to sail sweep obvious.  It may be used to better understand the sailing characteristics of a particular vessel, or for fine tuning to give optimal results.\n\nFor example, tightening a vang or adjusting a traveler may produce such a slight result it is difficult to gauge the outcome.  This plugin can make gps speed feedback visible.\n\nThe predictor line allows setting the sample time for smoother prediction than the builtin predictor.\n\nLicense: GPLv3+\n\nSource Code:\nhttps://github.com/seandepagnier/sweepplot_pi\n\nAuthor:\nSean D'Epagnier\n\nMany thanks to all of the translators and testers."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText110 = new wxStaticText( this, wxID_ANY, _("The sweepplot plugin for opencpn is\ndesigned to monitor speed and course to make the results of changes to sail sweep obvious.  It may be used to better understand the sailing characteristics of a particular vessel, or for fine tuning to give optimal results.\n\nFor example, tightening a vang or adjusting a traveler may produce such a slight result that it is difficult to gauge the result.  This plugin can make gps speed feedback visible.\n\nThe predictor line allows setting the sample time for smoother prediction than the builtin predictor.  This is especially useful when traveling relatively slowly in areas with large waves.\n\nLicense: GPLv3+\n\nSource Code:\nhttps://github.com/seandepagnier/sweepplot_pi\n\nAuthor:\nSean D'Epagnier\n\nMany thanks to all of the translators and testers."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText110->Wrap( 400 );
 	fgSizer90->Add( m_staticText110, 0, wxALL, 5 );
 	

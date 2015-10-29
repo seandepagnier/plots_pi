@@ -60,6 +60,7 @@ struct Trace
     virtual bool NewData(int TotalSeconds) = 0;
     virtual void Bounds(double &min, double &max, PlotSettings &plotsettings, bool resolve) = 0;
     virtual void Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tracesettings) = 0;
+    virtual bool LastValue(double &value) { return false; }
 
     virtual bool Visible() { return CheckBox->GetValue(); }
 
@@ -79,7 +80,8 @@ struct HistoryTrace : Trace
 
     virtual void Bounds(double &min, double &max, PlotSettings &plotsettings, bool resolve);
     virtual void Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tracesettings);
-
+    virtual bool LastValue(double &value);
+    
     enum HistoryEnum datai;
 };
 

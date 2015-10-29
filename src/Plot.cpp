@@ -163,6 +163,11 @@ void HistoryTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tr
     g_history[datai].data[HistoryIndex(plotsettings)].newdata = false;
 }
 
+bool HistoryTrace::LastValue(double &value)
+{
+    return g_history[datai].LastValue(value);
+}
+
 void HistoryFFTWTrace::Bounds(double &min, double &max, PlotSettings &plotsettings, bool resolve)
 {
     min = 0;
@@ -307,22 +312,17 @@ void Plot::Paint(wxDC &dc, PlotSettings &settings)
             dc.SetPen(wxPen(settings.colors.TraceColor[i]));
             (*it)->Paint(dc, settings, tracesettings);
 
-            dc.GetTextExtent((*it)->name, &textwidth, &textheight);
+            wxString text = (*it)->name;
+            double value;
+            if((*it)->LastValue(value))
+                text += wxString::Format(_T(" %4.1f"), value);
+                        
+            dc.GetTextExtent(text, &textwidth, &textheight);
             dc.SetTextForeground(settings.colors.TraceColor[i]);
 
-            dc.DrawText((*it)->name, so + j, y + h - textheight);
+            dc.DrawText(text, so + j, y + h - textheight);
             j += 3*textwidth/2;
         }
-
-    if(settings.style == SWEEP) {
-        time_t first_ticks = wxDateTime::Now().GetTicks();
-        int x = w*fmod(first_ticks, settings.TotalSeconds) / settings.TotalSeconds;
-        dc.SetPen(wxPen(*wxWHITE, 2));
-        dc.DrawLine(settings.rect.x + x + 2,
-                    settings.rect.y,
-                    settings.rect.x + x + 2,
-                    settings.rect.y + h);
-    }
 
     wxPen pen(settings.colors.GridColor, 1, wxPENSTYLE_USER_DASH);
     wxDash dashes[2] = {1, 7};
@@ -347,6 +347,16 @@ void Plot::Paint(wxDC &dc, PlotSettings &settings)
         v -= textheight/2;
         dc.DrawRectangle(x, v, textwidth, textheight);
         dc.DrawText(text, x, v);
+    }
+
+    if(settings.style == SWEEP) {
+        time_t first_ticks = wxDateTime::Now().GetTicks();
+        int x = w*fmod(first_ticks, settings.TotalSeconds) / settings.TotalSeconds;
+        dc.SetPen(wxPen(*wxWHITE, 2));
+        dc.DrawLine(settings.rect.x + x + 2,
+                    settings.rect.y,
+                    settings.rect.x + x + 2,
+                    settings.rect.y + h);
     }
 }
 

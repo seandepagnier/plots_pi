@@ -154,7 +154,7 @@ void SweepPlotDialog::SetupPlot()
     SetTransparent(255 - 255*m_preferences.m_sPlotTransparency->GetValue()/100);
 }
 
-void SweepPlotDialog::OnSetup( wxCommandEvent& event )
+void SweepPlotDialog::OnConfiguration( wxCommandEvent& event )
 {
     m_preferences.Show();
 }
