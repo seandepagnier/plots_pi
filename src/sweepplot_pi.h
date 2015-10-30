@@ -129,6 +129,8 @@ private:
       bool    LoadConfig(void);
       bool    SaveConfig(void);
 
+      wxString StandardPath();
+
       void SetNMEASentence( wxString &sentence );
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 

@@ -185,7 +185,8 @@ int SweepPlotDialog::PlotCount()
 
 int SweepPlotDialog::TotalSeconds()
 {
-    const int cts[] = {5, 20, 60, 4*60, 8*60, 24*60, 3*24*60, 10*24*60, 30*24*60, 60*24*60};
+    const int h = 60, d = 24*h;
+    const int cts[] = {5, 20, h, 4*h, 8*h, d, 3*d, 10*d, 30*d, 60*d};
     wxMenuItem *items[] = {m_mt1, m_mt2, m_mt3, m_mt4, m_mt5, m_mt6, m_mt7, m_mt8, m_mt9, m_mt10};
 
     for(unsigned int i=0; i<sizeof cts / sizeof *cts; i++)

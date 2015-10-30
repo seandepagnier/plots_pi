@@ -35,6 +35,7 @@ enum HistoryEnum {TWS, TWD, TWA, AWS, AWA, SOG, COG, HDG, XTE, LAT, LON,
 
 struct HistoryAtom
 {
+    HistoryAtom() {}
     HistoryAtom(double v, time_t t) : value(v), ticks(t) {}
     double value;
     time_t ticks;
@@ -57,9 +58,9 @@ struct History
     void AddData(int i, HistoryAtom state);
     void AddData(double value, time_t ticks);
 
+    static void Read(wxString filename);
+    static void Write(wxString filename);
     static int Depth(int i);
 };
 
 extern History g_history[];
-extern const int history_depths[];
-extern const wxString HistoryName[];

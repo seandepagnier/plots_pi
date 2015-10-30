@@ -25,8 +25,7 @@
  */
 
 #include <wx/wx.h>
-#include <wx/process.h>
-
+#include <wx/stdpaths.h>
 
 #include "sweepplot_pi.h"
 #include "SweepPlotDialog.h"
@@ -85,6 +84,10 @@ int sweepplot_pi::Init(void)
     m_Preferences = new PreferencesDialog(m_parent_window, *this);
     
     LoadConfig(); //    And load the configuration items
+
+    // read history
+    wxString data = StandardPath() + "data";
+    History::Read(data);
     
     m_leftclick_tool_id  = InsertPlugInTool
         (_T(""), _img_sweepplot, _img_sweepplot, wxITEM_NORMAL,
@@ -103,6 +106,16 @@ int sweepplot_pi::Init(void)
 bool sweepplot_pi::DeInit(void)
 {
     SaveConfig();
+
+    // write history
+    wxString data = StandardPath() + "data";
+    wxFileName fn = data;
+    wxFileName fn2 = fn.GetPath();
+    if(!fn.DirExists()) {
+        fn2.Mkdir();
+        fn.Mkdir();
+    }
+    History::Write(data);
 
     if (m_SweepPlotDialog)
     {
@@ -157,9 +170,8 @@ wxString sweepplot_pi::GetShortDescription()
 wxString sweepplot_pi::GetLongDescription()
 {
     return _("SweepPlot PlugIn for OpenCPN\n\
-Plot sweep and course over ground to make the result of \
-small sail sweep changes evident.\n\
-The SweepPlot plugin was written by Sean D'Epagnier\n");
+Plot speed and course over ground to make the result of \
+small adjustments evident.");
 }
 
 int sweepplot_pi::GetToolbarToolCount(void)
@@ -343,6 +355,24 @@ bool sweepplot_pi::SaveConfig(void)
     }
     
     return true;
+}
+
+wxString sweepplot_pi::StandardPath()
+{
+    wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
+#ifdef __WXMSW__
+    wxString stdPath  = std_path.GetConfigDir();
+#endif
+#ifdef __WXGTK__
+    wxString stdPath  = std_path.GetUserDataDir();
+#endif
+#ifdef __WXOSX__
+    wxString stdPath  = std_path.GetUserConfigDir();   // should be ~/Library/Preferences	
+#endif
+
+    return stdPath + wxFileName::GetPathSeparator() +
+        _T("plugins") + wxFileName::GetPathSeparator() +
+        _T("sweepplot") +  wxFileName::GetPathSeparator();
 }
 
 void sweepplot_pi::SetNMEASentence( wxString &sentence )

@@ -25,13 +25,9 @@
  */
 
 #include <wx/wx.h>
+#include <wx/wfstream.h>
 
 #include "History.h"
-
-const wxString HistoryName[] = {_T("tws"), _T("twd"), _T("twa"), _T("aws"),
-                                _T("awa"), _T("sog"), _T("cog"), _T("aog"),
-                                _T("ccg"), _T("hdg"), _T("xte"), _T("hel"),
-                                _T("lat"), _T("lon")};
 
 #define HISTORY_DIVISOR 60
 #define HISTORY_DEPTH 1440
@@ -108,6 +104,52 @@ void History::AddData(double value, time_t ticks)
             AddData(i, HistoryAtom(total / count, ticks));
         }
     }
+}
+
+const int history_magic = 0xfe01;
+
+void History::Read(wxString filename)
+{
+    wxFFileInputStream is(filename);
+    if(!is.IsOk())
+        return;
+
+    int magic;
+    is.Read(&magic, sizeof magic);
+    if(magic != history_magic)
+        return;
+    
+    for(int i=0; i<HISTORY_COUNT; i++)
+        for(int j=0; j<HISTORY_BUCKETS; j++) {
+            std::list<HistoryAtom> &data = g_history[i].data[j].data;
+            int size;
+            is.Read(&size, sizeof size);                    
+            for(int k=0; k<size; k++) {
+                HistoryAtom atom;
+                is.Read(&atom, sizeof atom);
+                data.push_back(atom);
+            }
+        }
+}
+
+void History::Write(wxString filename)
+{
+    wxFFileOutputStream os(filename);
+    if(!os.IsOk())
+        return;
+
+    os.Write(&history_magic, sizeof history_magic);
+    
+    for(int i=0; i<HISTORY_COUNT; i++)
+        for(int j=0; j<HISTORY_BUCKETS; j++) {
+            std::list<HistoryAtom> &data = g_history[i].data[j].data;
+            int size = data.size();
+            os.Write(&size, sizeof size);                    
+            for(std::list<HistoryAtom>::iterator it = data.begin(); it!=data.end(); it++) {
+                HistoryAtom atom = *it;
+                os.Write(&atom, sizeof atom);
+            }
+        }
 }
 
 int History::Depth(int i)

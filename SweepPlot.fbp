@@ -372,7 +372,7 @@
                                             <property name="enabled">1</property>
                                             <property name="help"></property>
                                             <property name="id">wxID_ANY</property>
-                                            <property name="kind">wxITEM_NORMAL</property>
+                                            <property name="kind">wxITEM_RADIO</property>
                                             <property name="label">3 d</property>
                                             <property name="name">m_mt7</property>
                                             <property name="permission">protected</property>
@@ -387,7 +387,7 @@
                                             <property name="enabled">1</property>
                                             <property name="help"></property>
                                             <property name="id">wxID_ANY</property>
-                                            <property name="kind">wxITEM_NORMAL</property>
+                                            <property name="kind">wxITEM_RADIO</property>
                                             <property name="label">10 d</property>
                                             <property name="name">m_mt8</property>
                                             <property name="permission">protected</property>
@@ -402,7 +402,7 @@
                                             <property name="enabled">1</property>
                                             <property name="help"></property>
                                             <property name="id">wxID_ANY</property>
-                                            <property name="kind">wxITEM_NORMAL</property>
+                                            <property name="kind">wxITEM_RADIO</property>
                                             <property name="label">30 d</property>
                                             <property name="name">m_mt9</property>
                                             <property name="permission">protected</property>
@@ -417,7 +417,7 @@
                                             <property name="enabled">1</property>
                                             <property name="help"></property>
                                             <property name="id">wxID_ANY</property>
-                                            <property name="kind">wxITEM_NORMAL</property>
+                                            <property name="kind">wxITEM_RADIO</property>
                                             <property name="label">60 d</property>
                                             <property name="name">m_mt10</property>
                                             <property name="permission">protected</property>

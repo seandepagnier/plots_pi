@@ -51,16 +51,16 @@ SweepPlotDialogBase::SweepPlotDialogBase( wxWindow* parent, wxWindowID id, const
 	m_mt6 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("24 h") ) , wxEmptyString, wxITEM_RADIO );
 	m_menu1->Append( m_mt6 );
 	
-	m_mt7 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("3 d") ) , wxEmptyString, wxITEM_NORMAL );
+	m_mt7 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("3 d") ) , wxEmptyString, wxITEM_RADIO );
 	m_menu1->Append( m_mt7 );
 	
-	m_mt8 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("10 d") ) , wxEmptyString, wxITEM_NORMAL );
+	m_mt8 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("10 d") ) , wxEmptyString, wxITEM_RADIO );
 	m_menu1->Append( m_mt8 );
 	
-	m_mt9 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("30 d") ) , wxEmptyString, wxITEM_NORMAL );
+	m_mt9 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("30 d") ) , wxEmptyString, wxITEM_RADIO );
 	m_menu1->Append( m_mt9 );
 	
-	m_mt10 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("60 d") ) , wxEmptyString, wxITEM_NORMAL );
+	m_mt10 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("60 d") ) , wxEmptyString, wxITEM_RADIO );
 	m_menu1->Append( m_mt10 );
 	
 	m_menu1->AppendSeparator();
