@@ -91,7 +91,7 @@ void History::AddData(double value, time_t ticks)
             lticks = data[i-1].data.back().ticks;
 
         double total = 0, count = 0;
-        if(ticks - lticks > HISTORY_DIVISOR) {
+        if(ticks - lticks > i*HISTORY_DIVISOR) {
             for(std::list<HistoryAtom>::iterator it = data[i-1].data.begin();
                 it != data[i-1].data.end(); it++) {
                 if(it->ticks <= lticks)
@@ -106,7 +106,7 @@ void History::AddData(double value, time_t ticks)
     }
 }
 
-const int history_magic = 0xfe01;
+const int history_magic = 0xfe02;
 
 void History::Read(wxString filename)
 {
