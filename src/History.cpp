@@ -65,10 +65,10 @@ void History::AddData(int i, HistoryAtom state)
     data[i].data.push_front(state);
     data[i].newdata = true;
 
+    // discard obsolete data
     while(state.ticks - data[i].data.back().ticks > Depth(i))
         data[i].data.pop_back();
 }
-
 
 void History::AddData(double value, time_t ticks)
 {
@@ -91,22 +91,23 @@ void History::AddData(double value, time_t ticks)
             lticks = data[i-1].data.back().ticks;
 
         double total = 0, count = 0;
-        if(ticks - lticks > i*HISTORY_DIVISOR) {
+        if(ticks - lticks > Divisor(i)) {
             for(std::list<HistoryAtom>::iterator it = data[i-1].data.begin();
                 it != data[i-1].data.end(); it++) {
-                if(it->ticks <= lticks)
+                if(it->ticks < lticks)
                     break;
 
                 total += it->value;
                 count++;
             }
 
-            AddData(i, HistoryAtom(total / count, ticks));
+            if(count > 0)
+                AddData(i, HistoryAtom(total / count, ticks));
         }
     }
 }
 
-const int history_magic = 0xfe02;
+const int history_magic = 0xfe01;
 
 void History::Read(wxString filename)
 {
@@ -152,10 +153,15 @@ void History::Write(wxString filename)
         }
 }
 
+int History::Divisor(int i)
+{
+    long z = 1;
+    while(i--)
+        z *= HISTORY_DIVISOR;
+    return z;
+}
+
 int History::Depth(int i)
 {
-    if(i == 0)
-        return HISTORY_DEPTH;
-    else
-        return HISTORY_DIVISOR * Depth(i-1);
+    return HISTORY_DEPTH*Divisor(i);
 }

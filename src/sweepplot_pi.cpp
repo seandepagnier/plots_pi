@@ -426,17 +426,21 @@ void sweepplot_pi::UpdatePositionDetermined(enum HistoryEnum speed, enum History
         return;
 
     double lat0, lon0, lat1, lon1;
+    int actual_ticks = tick_diff;
     if(!g_history[LAT].LastValue(lat0) ||
        !g_history[LON].LastValue(lon0) ||
-       !g_history[LAT].LastValue(lat1, tick_diff) ||
-       !g_history[LON].LastValue(lon1, tick_diff))
+       !g_history[LAT].LastValue(lat1, actual_ticks) ||
+       !g_history[LON].LastValue(lon1, actual_ticks))
+        return;
+
+    if(abs(actual_ticks - tick_diff) > 2) // invalidate if we aren't getting continuous enough data
         return;
 
     double brg, dist;
     DistanceBearingMercator_Plugin(lat0, lon0, lat1, lon1, &brg, &dist);
 
-    time_t ticks = wxDateTime::Now().GetTicks() - tick_diff/2;
-    AddData(speed, dist * 3600.0 / tick_diff, ticks);
+    time_t ticks = wxDateTime::Now().GetTicks() - actual_ticks/2;
+    AddData(speed, dist * 3600.0 / actual_ticks, ticks);
     AddData(course, brg, ticks);
 }
 

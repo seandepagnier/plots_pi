@@ -60,6 +60,7 @@ struct History
 
     static void Read(wxString filename);
     static void Write(wxString filename);
+    static int Divisor(int i);
     static int Depth(int i);
 };
 
