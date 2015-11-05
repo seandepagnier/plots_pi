@@ -28,6 +28,7 @@
 
 #include "History.h"
 #include "Plot.h"
+#include "wx28compat.h"
 
 #ifdef __MSVC__
 #include <float.h>

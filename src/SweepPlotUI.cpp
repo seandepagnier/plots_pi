@@ -158,7 +158,7 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_panel1->SetSizer( fgSizer14 );
 	m_panel1->Layout();
 	fgSizer14->Fit( m_panel1 );
-	m_listbook1->AddPage( m_panel1, _("Speed"), true );
+	m_listbook1->AddPage( m_panel1, _("Speed"), false );
 	m_panel2 = new wxPanel( m_listbook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer17;
 	fgSizer17 = new wxFlexGridSizer( 0, 2, 0, 0 );
@@ -230,7 +230,7 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_panel5->SetSizer( fgSizer201 );
 	m_panel5->Layout();
 	fgSizer201->Fit( m_panel5 );
-	m_listbook1->AddPage( m_panel5, _("Cross Track Error"), false );
+	m_listbook1->AddPage( m_panel5, _("Cross Track Error"), true );
 	#ifdef __WXGTK__ // Small icon style not supported in GTK
 	wxListView* m_listbook1ListView = m_listbook1->GetListView();
 	long m_listbook1Flags = m_listbook1ListView->GetWindowStyleFlag();
@@ -250,6 +250,14 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	fgSizer101 = new wxFlexGridSizer( 0, 4, 0, 0 );
 	fgSizer101->SetFlexibleDirection( wxBOTH );
 	fgSizer101->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText13 = new wxStaticText( this, wxID_ANY, _("Font"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText13->Wrap( -1 );
+	fgSizer101->Add( m_staticText13, 0, wxALL, 5 );
+	
+	m_fpPlotFont = new wxFontPickerCtrl( this, wxID_ANY, wxNullFont, wxDefaultPosition, wxDefaultSize, wxFNTP_DEFAULT_STYLE );
+	m_fpPlotFont->SetMaxPointSize( 100 ); 
+	fgSizer101->Add( m_fpPlotFont, 0, wxALL, 5 );
 	
 	m_staticText12 = new wxStaticText( this, wxID_ANY, _("Minimum Height"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText12->Wrap( -1 );
@@ -287,6 +295,18 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	
 	
 	fgSizer111->Add( fgSizer101, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer16;
+	fgSizer16 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer16->SetFlexibleDirection( wxBOTH );
+	fgSizer16->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_cbShowTitleBar = new wxCheckBox( this, wxID_ANY, _("Show Title Bar (restart required)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbShowTitleBar->SetValue(true); 
+	fgSizer16->Add( m_cbShowTitleBar, 0, wxALL, 5 );
+	
+	
+	fgSizer111->Add( fgSizer16, 1, wxEXPAND, 5 );
 	
 	
 	sbSizer6->Add( fgSizer111, 1, wxEXPAND, 5 );
@@ -367,6 +387,7 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	
 	// Connect Events
 	m_button5->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPDS ), NULL, this );
+	m_fpPlotFont->Connect( wxEVT_COMMAND_FONTPICKER_CHANGED, wxFontPickerEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_sPlotMinHeight->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_cColors->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_sPlotTransparency->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
@@ -377,6 +398,7 @@ PreferencesDialogBase::~PreferencesDialogBase()
 {
 	// Disconnect Events
 	m_button5->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPDS ), NULL, this );
+	m_fpPlotFont->Disconnect( wxEVT_COMMAND_FONTPICKER_CHANGED, wxFontPickerEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_sPlotMinHeight->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_cColors->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_sPlotTransparency->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );

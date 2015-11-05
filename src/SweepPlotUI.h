@@ -29,6 +29,7 @@
 #include <wx/stattext.h>
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
+#include <wx/fontpicker.h>
 #include <wx/spinctrl.h>
 #include <wx/choice.h>
 #include <wx/statbox.h>
@@ -68,7 +69,7 @@ class SweepPlotDialogBase : public wxDialog
 	public:
 		wxScrolledWindow* m_scrollWindow;
 		
-		SweepPlotDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSUNKEN_BORDER|wxWANTS_CHARS ); 
+		SweepPlotDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Sweep Plot"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSUNKEN_BORDER|wxWANTS_CHARS ); 
 		~SweepPlotDialogBase();
 		
 		void m_swPlotsOnContextMenu( wxMouseEvent &event )
@@ -95,6 +96,7 @@ class PreferencesDialogBase : public wxDialog
 		wxStaticText* m_staticText16;
 		wxPanel* m_panel5;
 		wxStaticText* m_staticText161;
+		wxStaticText* m_staticText13;
 		wxStaticText* m_staticText12;
 		wxSpinCtrl* m_sPlotMinHeight;
 		wxStaticText* m_staticText121;
@@ -110,6 +112,7 @@ class PreferencesDialogBase : public wxDialog
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnPDS( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPlotChange( wxFontPickerEvent& event ) { event.Skip(); }
 		virtual void OnPlotChange( wxSpinEvent& event ) { event.Skip(); }
 		virtual void OnPlotChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
@@ -125,9 +128,11 @@ class PreferencesDialogBase : public wxDialog
 		wxCheckBox* m_cbPDC60;
 		wxCheckBox* m_cbHDG;
 		wxCheckBox* m_cbCourseFFTWPlot;
+		wxFontPickerCtrl* m_fpPlotFont;
 		wxChoice* m_cColors;
 		wxSpinCtrl* m_sPlotTransparency;
 		wxChoice* m_cPlotStyle;
+		wxCheckBox* m_cbShowTitleBar;
 		wxCheckBox* m_cbCoursePrediction;
 		wxCheckBox* m_cbCoursePredictionBlended;
 		wxSpinCtrl* m_sCoursePredictionLength;

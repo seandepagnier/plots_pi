@@ -31,7 +31,10 @@
 #include "Plot.h"
 
 SweepPlotDialog::SweepPlotDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi, PreferencesDialog &preferences)
-    : SweepPlotDialogBase( parent ), m_sweepplot_pi(_sweepplot_pi), m_preferences(preferences),
+    : SweepPlotDialogBase( parent, wxID_ANY, _("Sweep Plot"), wxDefaultPosition, wxDefaultSize,
+                           (preferences.m_cbShowTitleBar->GetValue() ? wxCAPTION|wxDEFAULT_DIALOG_STYLE : 0)
+                           |wxRESIZE_BORDER|wxSUNKEN_BORDER|wxWANTS_CHARS),
+      m_sweepplot_pi(_sweepplot_pi), m_preferences(preferences),
       m_lastTimerTotalSeconds(0)
 {
     m_tRefreshTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
@@ -83,6 +86,7 @@ void SweepPlotDialog::OnPaint( wxPaintEvent& event )
         return;
 
     wxPaintDC dc( window );
+    dc.SetFont(m_preferences.m_fpPlotFont->GetSelectedFont());
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
     PlotSettings settings(PlotColorSchemes[m_preferences.m_cColors->GetSelection()],

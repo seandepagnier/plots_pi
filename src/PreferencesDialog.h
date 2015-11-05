@@ -34,6 +34,7 @@ public:
     PreferencesDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi);
     ~PreferencesDialog();
 
+    void OnPlotChange( wxFontPickerEvent& event ) { PlotChange(); }
     void OnPlotChange( wxCommandEvent& event ) { PlotChange(); }
     void OnPlotChange( wxSpinEvent& event ) { PlotChange(); }
 
