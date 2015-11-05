@@ -86,7 +86,7 @@ int sweepplot_pi::Init(void)
     LoadConfig(); //    And load the configuration items
 
     // read history
-    wxString data = StandardPath() + "data";
+    wxString data = StandardPath() + _T("data");
     History::Read(data);
     
     m_leftclick_tool_id  = InsertPlugInTool
@@ -108,7 +108,7 @@ bool sweepplot_pi::DeInit(void)
     SaveConfig();
 
     // write history
-    wxString data = StandardPath() + "data";
+    wxString data = StandardPath() + _T("data");
     wxFileName fn = data;
     wxFileName fn2 = fn.GetPath();
     if(!fn.DirExists()) {
