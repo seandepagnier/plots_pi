@@ -88,6 +88,11 @@ int sweepplot_pi::Init(void)
     // read history
     wxString data = StandardPath() + _T("data");
     History::Read(data);
+
+
+    m_HistoryWriteTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
+                               ( sweepplot_pi::OnHistoryWriteTimer ), NULL, this);
+    m_HistoryWriteTimer.Start(1000*60*20);
     
     m_leftclick_tool_id  = InsertPlugInTool
         (_T(""), _img_sweepplot, _img_sweepplot, wxITEM_NORMAL,
@@ -108,14 +113,7 @@ bool sweepplot_pi::DeInit(void)
     SaveConfig();
 
     // write history
-    wxString data = StandardPath() + _T("data");
-    wxFileName fn = data;
-    wxFileName fn2 = fn.GetPath();
-    if(!fn.DirExists()) {
-        fn2.Mkdir();
-        fn.Mkdir();
-    }
-    History::Write(data);
+    WriteHistory();
 
     if (m_SweepPlotDialog)
     {
@@ -357,6 +355,17 @@ bool sweepplot_pi::SaveConfig(void)
     return true;
 }
 
+void sweepplot_pi::WriteHistory()
+{
+    wxString data = StandardPath() + _T("data");
+    wxFileName fn = data;
+    wxFileName fn2 = fn.GetPath();
+    if(!fn.DirExists()) {
+        fn2.Mkdir();
+        fn.Mkdir();
+    }
+}
+
 wxString sweepplot_pi::StandardPath()
 {
     wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
@@ -447,4 +456,9 @@ void sweepplot_pi::UpdatePositionDetermined(enum HistoryEnum speed, enum History
 void sweepplot_pi::AddData(enum HistoryEnum e, double value, time_t ticks)
 {
     g_history[e].AddData(value, ticks);
+}
+
+void sweepplot_pi::OnHistoryWriteTimer( wxTimerEvent & )
+{
+    WriteHistory();
 }

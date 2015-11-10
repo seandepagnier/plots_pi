@@ -126,23 +126,27 @@ public:
       
 private:
 
-      bool    LoadConfig(void);
-      bool    SaveConfig(void);
+      bool LoadConfig(void);
+      bool SaveConfig(void);
+      void WriteHistory();
 
       wxString StandardPath();
 
       void SetNMEASentence( wxString &sentence );
-      void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
+      void SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 
       void UpdatePositionDetermined(enum HistoryEnum speed, enum HistoryEnum course, int tick_diff);
 
       void AddData(enum HistoryEnum e, double value, time_t ticks=0);
+      void OnHistoryWriteTimer( wxTimerEvent & );
 
-      int               m_leftclick_tool_id;
+      void RearrangeWindow();
+
+      int m_leftclick_tool_id;
 
       NMEA0183 m_NMEA0183;
 
-      void              RearrangeWindow();
+      wxTimer m_HistoryWriteTimer;
 };
 
 #endif
