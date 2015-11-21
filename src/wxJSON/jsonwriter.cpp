@@ -8,12 +8,12 @@
 // Licence:     wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
 
-#ifdef __GNUG__
-    #pragma implementation "jsonwriter.cpp"
-#endif
+//#ifdef __GNUG__
+//    #pragma implementation "jsonwriter.cpp"
+//#endif
 
 
-#include "jsonwriter.h"
+#include <wx/jsonwriter.h>
 
 #include <wx/sstream.h>
 #include <wx/mstream.h>
