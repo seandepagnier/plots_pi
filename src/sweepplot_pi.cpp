@@ -89,10 +89,9 @@ int sweepplot_pi::Init(void)
     wxString data = StandardPath() + _T("data");
     History::Read(data);
 
-
     m_HistoryWriteTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
                                ( sweepplot_pi::OnHistoryWriteTimer ), NULL, this);
-    m_HistoryWriteTimer.Start(1000*60*20);
+    m_HistoryWriteTimer.Start(1000*60*20); // every 20 minutes
     
     m_leftclick_tool_id  = InsertPlugInTool
         (_T(""), _img_sweepplot, _img_sweepplot, wxITEM_NORMAL,
