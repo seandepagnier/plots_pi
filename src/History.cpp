@@ -70,7 +70,7 @@ void History::AddData(int i, HistoryAtom state)
         data[i].data.pop_back();
 }
 
-void History::AddData(double value, time_t ticks)
+void History::AddData(double value, time_t ticks, bool resolve)
 {
     if(ticks == 0)
         ticks = wxDateTime::Now().GetTicks();
@@ -90,14 +90,22 @@ void History::AddData(double value, time_t ticks)
         else
             lticks = data[i-1].data.back().ticks;
 
-        double total = 0, count = 0;
         if(ticks - lticks > Divisor(i)) {
+            double total = 0, count = 0, lv = NAN;
             for(std::list<HistoryAtom>::iterator it = data[i-1].data.begin();
                 it != data[i-1].data.end(); it++) {
                 if(it->ticks < lticks)
                     break;
 
-                total += it->value;
+                double v = it->value;
+                if(resolve) {
+                    if(v - lv > 180)
+                        v -= 360;
+                    else if(lv - v > 180)
+                        v += 360;
+                }
+                total += v;
+                lv = v;
                 count++;
             }
 

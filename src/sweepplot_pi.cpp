@@ -364,6 +364,8 @@ void sweepplot_pi::WriteHistory()
         fn2.Mkdir();
         fn.Mkdir();
     }
+
+    History::Write(data);
 }
 
 wxString sweepplot_pi::StandardPath()
@@ -455,7 +457,12 @@ void sweepplot_pi::UpdatePositionDetermined(enum HistoryEnum speed, enum History
 
 void sweepplot_pi::AddData(enum HistoryEnum e, double value, time_t ticks)
 {
-    g_history[e].AddData(value, ticks);
+    const int resolve[] = {TWD, TWA, AWA, COG, HDG, PDC10, PDC60};
+    bool bresolve = false;
+    for(unsigned int i=0; i < (sizeof resolve) / (sizeof *resolve); i++)
+        if(resolve[i])
+           bresolve = true;
+    g_history[e].AddData(value, ticks, bresolve);
 }
 
 void sweepplot_pi::OnHistoryWriteTimer( wxTimerEvent & )
