@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2016 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -82,19 +82,20 @@ void HistoryTrace::Bounds(double &min, double &max, PlotSettings &plotsettings, 
     time_t first_ticks = wxDateTime::Now().GetTicks();
 
     int w = plotsettings.rect.width;
-    double fv = NAN;
+    double fv = NAN, lv = (min + max) / 2;
     for(std::list<HistoryAtom>::iterator it = g_history[datai].data[HistoryIndex(plotsettings)].data.begin();
         it != g_history[datai].data[HistoryIndex(plotsettings)].data.end(); it++) {
 
         double v = it->value;
 
         if(resolve) {
-            if(isnan(fv)) {
+            if(isnan(fv))
                 fv = v;
-            } else if(fv - v > 180)
+            if(lv - v > 180)
                 v += 360;
-            else if(v - fv > 180)
+            else if(v - lv > 180)
                 v -= 360;
+            lv = v;
         }
 
         if(v < min)
@@ -108,6 +109,9 @@ void HistoryTrace::Bounds(double &min, double &max, PlotSettings &plotsettings, 
             break;
 
     }
+
+    if(resolve && max - min > 360)
+        min = fv - 180, max = fv + 180;
 }
 
 void HistoryTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tracesettings)
