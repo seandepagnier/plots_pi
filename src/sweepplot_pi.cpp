@@ -62,7 +62,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //---------------------------------------------------------------------------------------------------------
 
 sweepplot_pi::sweepplot_pi(void *ppimgr)
-    : opencpn_plugin_110(ppimgr)
+    : opencpn_plugin_113(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
@@ -93,9 +93,13 @@ int sweepplot_pi::Init(void)
                                ( sweepplot_pi::OnHistoryWriteTimer ), NULL, this);
     m_HistoryWriteTimer.Start(1000*60*20); // every 20 minutes
     
+#ifdef SWEEPPLOT_USE_SVG
+    m_leftclick_tool_id = InsertPlugInToolSVG( _T( "SweepPlot" ), _svg_sweepplot, _svg_sweepplot_rollover, _svg_sweepplot_toggled, wxITEM_CHECK, _( "SweepPlot" ), _T( "" ), NULL, SWEEPPLOT_TOOL_POSITION, 0, this);
+#else
     m_leftclick_tool_id  = InsertPlugInTool
         (_T(""), _img_sweepplot, _img_sweepplot, wxITEM_NORMAL,
          _("SweepPlot"), _T(""), NULL, SWEEPPLOT_TOOL_POSITION, 0, this);
+#endif
     
     m_SweepPlotDialog = NULL;
     
