@@ -1,0 +1,275 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: opencpn\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-24 14:39-0300\n"
+"PO-Revision-Date: 2016-02-24 14:34-0500\n"
+"Last-Translator: nohal <pavel@kalian.cz>\n"
+"Language-Team: Dutch\n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Language: nl\n"
+"X-Crowdin-File: /plugins/sweepplot_pi/po/sweepplot_pi.pot\n"
+
+#: src/SweepPlotDialog.cpp:34 src/SweepPlotUI.h:72
+msgid "Sweep Plot"
+msgstr "Sweep Plot"
+
+#: src/SweepPlotDialog.cpp:47 src/SweepPlotUI.cpp:161
+msgid "Speed"
+msgstr "Vaart"
+
+#: src/SweepPlotDialog.cpp:53 src/SweepPlotUI.cpp:188
+msgid "Course"
+msgstr "Koers"
+
+#: src/SweepPlotDialog.cpp:60
+msgid "Course FFTW"
+msgstr "Koers FFTW"
+
+#: src/SweepPlotDialog.cpp:98
+msgid "No Plots Enabled"
+msgstr "Geen plots ingeschakeld"
+
+#: src/PreferencesDialog.cpp:112
+msgid "Position Determined Speed (PDS) finds the speed of the vessel by comparing the current position to the position from the past.  For example PDS10 (10 seconds) takes the position from 10 seconds before, and determines the vessel speed by taking the distance from where it was then.\n\n"
+"This method filters the data giving a much steadier reading, but also shows a comparison of useful speed traveled rather than the immediate gps speed.  Consider autosteering that is under or over dampened, or the case of large waves, even with an ideal autopilot. This will cause the boat to not travel in a straight line, but instead in an S curve.The gps speed will read higher than the position determined speed."
+msgstr "Position Determined Speed (PDS, de uit posities afgeleide vaart) berekent de vaart door de huidige positie te vergelijken met een eerdere positie. Voorbeeld: PDS10 gebruikt de positie van 10 seconden eerder, en berekent de vaart uit het afstands- en tijdverschil.\n\n"
+"Deze filtermethode geeft een meer stabiele uitkomst, die bruikbaarder vaartwaarden betreft dan de door de GPS-ontvanger berekende vaartwaarden. Denk bijvoorbeeld aan autopilots die te veel of te weinig gedempt worden, of aan hoge golven, zelfs met een ideale autopilot. Deze situaties zijn oorzaken van het niet volgen van een rechte koerslijn, maar van een slingerkoers."
+
+#: src/PreferencesDialog.cpp:121
+msgid "Positon Determined Speed"
+msgstr "Vaart afgeleid uit posities"
+
+#: src/SweepPlotUI.cpp:35
+msgid "5 m"
+msgstr "5 m"
+
+#: src/SweepPlotUI.cpp:39
+msgid "20 m"
+msgstr "20 m"
+
+#: src/SweepPlotUI.cpp:42
+msgid "1 h"
+msgstr "1 u"
+
+#: src/SweepPlotUI.cpp:45
+msgid "4 h"
+msgstr "4 u"
+
+#: src/SweepPlotUI.cpp:48
+msgid "8 h"
+msgstr "8 u"
+
+#: src/SweepPlotUI.cpp:51
+msgid "24 h"
+msgstr "24 u"
+
+#: src/SweepPlotUI.cpp:54
+msgid "3 d"
+msgstr "3 d"
+
+#: src/SweepPlotUI.cpp:57
+msgid "10 d"
+msgstr "10 d"
+
+#: src/SweepPlotUI.cpp:60
+msgid "30 d"
+msgstr "30 d"
+
+#: src/SweepPlotUI.cpp:63
+msgid "60 d"
+msgstr "60 d"
+
+#: src/SweepPlotUI.cpp:69
+msgid "Configuration"
+msgstr "Configuratie"
+
+#: src/SweepPlotUI.cpp:123
+msgid "Plots"
+msgstr "Plots"
+
+#: src/SweepPlotUI.cpp:144
+msgid "GPS Speed (SOG)"
+msgstr "Vaart over de grond"
+
+#: src/SweepPlotUI.cpp:148
+msgid "PDS 10"
+msgstr "PDS 10"
+
+#: src/SweepPlotUI.cpp:151
+msgid "?"
+msgstr "?"
+
+#: src/SweepPlotUI.cpp:154
+msgid "PDS 60"
+msgstr "PDS 60"
+
+#: src/SweepPlotUI.cpp:168
+msgid "GPS Course (COG)"
+msgstr "Koers over de grond"
+
+#: src/SweepPlotUI.cpp:172
+msgid "PDC 10"
+msgstr "PDC 10"
+
+#: src/SweepPlotUI.cpp:175
+msgid "PDC 60"
+msgstr "PDC 60"
+
+#: src/SweepPlotUI.cpp:178
+msgid "Heading"
+msgstr "Koers"
+
+#: src/SweepPlotUI.cpp:181
+msgid "FFTW Plot"
+msgstr "FFTW-plot"
+
+#: src/SweepPlotUI.cpp:195 src/SweepPlotUI.cpp:210 src/SweepPlotUI.cpp:225
+msgid "Implement Me"
+msgstr "Voer dit uit"
+
+#: src/SweepPlotUI.cpp:203
+msgid "Wind Speed"
+msgstr "Windsnelheid"
+
+#: src/SweepPlotUI.cpp:218
+msgid "Wind Direction"
+msgstr "Windrichting"
+
+#: src/SweepPlotUI.cpp:233
+msgid "Cross Track Error"
+msgstr "Cross Track Error (XTE)"
+
+#: src/SweepPlotUI.cpp:254
+msgid "Font"
+msgstr "Lettertype"
+
+#: src/SweepPlotUI.cpp:262
+msgid "Minimum Height"
+msgstr "Minimum hoogte"
+
+#: src/SweepPlotUI.cpp:269
+msgid "Colors"
+msgstr "Kleuren"
+
+#: src/SweepPlotUI.cpp:273
+msgid "Standard"
+msgstr "Standaard"
+
+#: src/SweepPlotUI.cpp:273
+msgid "Light"
+msgstr "Licht"
+
+#: src/SweepPlotUI.cpp:273
+msgid "Retro"
+msgstr "Retro"
+
+#: src/SweepPlotUI.cpp:273
+msgid "Sky"
+msgstr "Lucht"
+
+#: src/SweepPlotUI.cpp:279
+msgid "Transparency"
+msgstr "Transparantie"
+
+#: src/SweepPlotUI.cpp:286
+msgid "Style"
+msgstr "Stijl"
+
+#: src/SweepPlotUI.cpp:290
+msgid "Continuous"
+msgstr "Continu"
+
+#: src/SweepPlotUI.cpp:290
+msgid "Sweep"
+msgstr "Sweep"
+
+#: src/SweepPlotUI.cpp:304
+msgid "Show Title Bar (restart required)"
+msgstr "Toon titelbalk (herstart vereist)"
+
+#: src/SweepPlotUI.cpp:318
+msgid "Course Prediction Display (from ship on main chart)"
+msgstr "Weergave koersvoorspeller (van schip op kaart)"
+
+#: src/SweepPlotUI.cpp:325
+msgid "Enable"
+msgstr "Inschakelen"
+
+#: src/SweepPlotUI.cpp:329
+msgid "Blended (Requires OpenGL)"
+msgstr "Gemengd (OpenGL vereist)"
+
+#: src/SweepPlotUI.cpp:335
+msgid "Length"
+msgstr "Lengte"
+
+#: src/SweepPlotUI.cpp:342
+msgid "minutes"
+msgstr "minuten"
+
+#: src/SweepPlotUI.cpp:346
+msgid "Using"
+msgstr "Gebruikmakend van"
+
+#: src/SweepPlotUI.cpp:353
+msgid "seconds"
+msgstr "seconden"
+
+#: src/SweepPlotUI.cpp:368
+msgid "About"
+msgstr "Over"
+
+#: src/SweepPlotUI.cpp:418
+msgid "The sweepplot plugin for opencpn is\n"
+"designed to monitor speed and course to make the results of changes to sail sweep obvious.  It may be used to better understand the sailing characteristics of a particular vessel, or for fine tuning to give optimal results.\n\n"
+"For example, tightening a vang or adjusting a traveler may produce such a slight result that it is difficult to gauge the result.  This plugin can make gps speed feedback visible.\n\n"
+"The predictor line allows setting the sample time for smoother prediction than the builtin predictor.  This is especially useful when traveling relatively slowly in areas with large waves.\n\n"
+"License: GPLv3+\n\n"
+"Source Code:\n"
+"https://github.com/seandepagnier/sweepplot_pi\n\n"
+"Author:\n"
+"Sean D'Epagnier\n\n"
+"Many thanks to all of the translators and testers."
+msgstr "SweepPlot PlugIn voor OpenCPN\n"
+"Deze PlugIn is ontworpen voor het monitoren van vaart en koers over de grond, teneinde de resultaten van zeilaanpassingen duidelijk te maken. Hij kan gebruikt worden om de zeilkarakteristieken van een vaartuig beter te begrijpen, of voor fijnafstellingen t.b.v. optimale resultaten.\n\n"
+"Voorbeeld: doorhalen van een val of bijstellen van een schoot kan zo'n klein gevolg hebben dat dit niet of nauwelijks gemerkt wordt. Deze PlugIn geeft een duidelijke terugkoppeling van grondvaartveranderingen.\n\n"
+"De voorspellerlijn maakt een vloeiender filtering mogelijk door de instelmogelijkheid van de filterperiode dan met de in OpenCPN ingebouwde voorspeller. Dit is vooral nuttig als met lage vaart door een gebied met hoge golven wordt gevaren.\n\n"
+"Licentie: GPLv3+\n\n"
+"Broncode: \n"
+"https://github.com/seandepagnier/sweepplot_pi\n\n"
+"Auteur: Sean D'Epagnier\n\n"
+"Veel dank aan alle vertalers en testers."
+
+#: src/SweepPlotUI.cpp:428
+msgid "About Author"
+msgstr "Over de auteur"
+
+#: src/SweepPlotUI.h:141
+msgid "SweepPlot Preferences"
+msgstr "SweepPlot voorkeuren"
+
+#: src/SweepPlotUI.h:165
+msgid "About SweepPlot"
+msgstr "Over SweepPlot"
+
+#: src/sweepplot_pi.cpp:98 src/sweepplot_pi.cpp:158
+msgid "SweepPlot"
+msgstr "SweepPlot"
+
+#: src/sweepplot_pi.cpp:164
+msgid "SweepPlot PlugIn for OpenCPN"
+msgstr "SweepPlot PlugIn voor OpenCPN"
+
+#: src/sweepplot_pi.cpp:169
+msgid "SweepPlot PlugIn for OpenCPN\n"
+"Plot speed and course over ground to make the result of small adjustments evident."
+msgstr "SweepPlot PlugIn voor OpenCPN\n"
+"Plot vaart en koers over de grond om het resultaat van kleine bijstellingen zichtbaar te maken."
+
