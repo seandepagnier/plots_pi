@@ -48,6 +48,8 @@ SweepPlotDialog::SweepPlotDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi, 
     speedPlot->PUSH_HISTORY_TRACE(SOG);
     speedPlot->PUSH_HISTORY_TRACE(PDS10);
     speedPlot->PUSH_HISTORY_TRACE(PDS60);
+    speedPlot->traces.push_back
+        (new VMGTrace(_T("VMG"), m_preferences.m_cbVMG));
     m_plots.push_back(speedPlot);
 
     Plot *coursePlot = new Plot(_("Course"), true);
@@ -62,11 +64,12 @@ SweepPlotDialog::SweepPlotDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi, 
         (new HistoryFFTWTrace(_T("Course FFTW"), m_preferences.m_cbCourseFFTWPlot, COG));
     m_plots.push_back(courseFFTWPlot);
 
+#if 0
     Plot *vmgPlot = new Plot(_("VMG"), false);
     vmgPlot->traces.push_back
         (new VMGTrace(_T("VMG"), m_preferences.m_cbVMG));
     m_plots.push_back(vmgPlot);
-
+#endif
 }
 
 SweepPlotDialog::~SweepPlotDialog()

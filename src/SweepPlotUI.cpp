@@ -137,28 +137,56 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_listbook1 = new wxListbook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLB_DEFAULT );
 	m_panel1 = new wxPanel( m_listbook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer14;
-	fgSizer14 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer14 = new wxFlexGridSizer( 0, 1, 0, 0 );
 	fgSizer14->SetFlexibleDirection( wxBOTH );
 	fgSizer14->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
+	wxFlexGridSizer* fgSizer191;
+	fgSizer191 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer191->SetFlexibleDirection( wxBOTH );
+	fgSizer191->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
 	m_cbSOG = new wxCheckBox( m_panel1, wxID_ANY, _("GPS Speed (SOG)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_cbSOG->SetValue(true); 
-	fgSizer14->Add( m_cbSOG, 0, wxALL, 5 );
+	fgSizer191->Add( m_cbSOG, 0, wxALL, 5 );
 	
 	m_cbPDS10 = new wxCheckBox( m_panel1, wxID_ANY, _("PDS 10"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer14->Add( m_cbPDS10, 0, wxALL, 5 );
-	
-	m_button5 = new wxButton( m_panel1, wxID_ANY, _("?"), wxDefaultPosition, wxSize( 20,-1 ), 0 );
-	fgSizer14->Add( m_button5, 0, wxALL, 5 );
+	fgSizer191->Add( m_cbPDS10, 0, wxALL, 5 );
 	
 	m_cbPDS60 = new wxCheckBox( m_panel1, wxID_ANY, _("PDS 60"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer14->Add( m_cbPDS60, 0, wxALL, 5 );
+	fgSizer191->Add( m_cbPDS60, 0, wxALL, 5 );
+	
+	m_button5 = new wxButton( m_panel1, wxID_ANY, _("?"), wxDefaultPosition, wxSize( 20,-1 ), 0 );
+	fgSizer191->Add( m_button5, 0, wxALL, 5 );
+	
+	
+	fgSizer14->Add( fgSizer191, 1, wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer3;
+	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( m_panel1, wxID_ANY, _("VMG") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer171;
+	fgSizer171 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer171->SetFlexibleDirection( wxBOTH );
+	fgSizer171->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_cbVMG = new wxCheckBox( m_panel1, wxID_ANY, _("Course"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer171->Add( m_cbVMG, 0, wxALL, 5 );
+	
+	m_tVMGCourse = new wxTextCtrl( m_panel1, wxID_ANY, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer171->Add( m_tVMGCourse, 0, wxALL, 5 );
+	
+	
+	sbSizer3->Add( fgSizer171, 1, wxEXPAND, 5 );
+	
+	
+	fgSizer14->Add( sbSizer3, 1, wxEXPAND, 5 );
 	
 	
 	m_panel1->SetSizer( fgSizer14 );
 	m_panel1->Layout();
 	fgSizer14->Fit( m_panel1 );
-	m_listbook1->AddPage( m_panel1, _("Speed"), false );
+	m_listbook1->AddPage( m_panel1, _("Speed"), true );
 	m_panel2 = new wxPanel( m_listbook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer17;
 	fgSizer17 = new wxFlexGridSizer( 0, 2, 0, 0 );
@@ -186,23 +214,6 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_panel2->Layout();
 	fgSizer17->Fit( m_panel2 );
 	m_listbook1->AddPage( m_panel2, _("Course"), false );
-	m_panel6 = new wxPanel( m_listbook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxFlexGridSizer* fgSizer171;
-	fgSizer171 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer171->SetFlexibleDirection( wxBOTH );
-	fgSizer171->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_cbVMG = new wxCheckBox( m_panel6, wxID_ANY, _("Desired Heading"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer171->Add( m_cbVMG, 0, wxALL, 5 );
-	
-	m_tVMGCourse = new wxTextCtrl( m_panel6, wxID_ANY, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer171->Add( m_tVMGCourse, 0, wxALL, 5 );
-	
-	
-	m_panel6->SetSizer( fgSizer171 );
-	m_panel6->Layout();
-	fgSizer171->Fit( m_panel6 );
-	m_listbook1->AddPage( m_panel6, _("VMG"), true );
 	m_panel3 = new wxPanel( m_listbook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer19;
 	fgSizer19 = new wxFlexGridSizer( 0, 2, 0, 0 );

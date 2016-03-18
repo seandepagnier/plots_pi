@@ -25,15 +25,15 @@
 #include <wx/dialog.h>
 #include <wx/checkbox.h>
 #include <wx/button.h>
-#include <wx/panel.h>
 #include <wx/textctrl.h>
+#include <wx/statbox.h>
+#include <wx/panel.h>
 #include <wx/stattext.h>
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
 #include <wx/fontpicker.h>
 #include <wx/spinctrl.h>
 #include <wx/choice.h>
-#include <wx/statbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -91,7 +91,6 @@ class PreferencesDialogBase : public wxDialog
 		wxListbook* m_listbook1;
 		wxButton* m_button5;
 		wxPanel* m_panel2;
-		wxPanel* m_panel6;
 		wxPanel* m_panel3;
 		wxStaticText* m_staticText15;
 		wxPanel* m_panel4;
@@ -125,13 +124,13 @@ class PreferencesDialogBase : public wxDialog
 		wxCheckBox* m_cbSOG;
 		wxCheckBox* m_cbPDS10;
 		wxCheckBox* m_cbPDS60;
+		wxCheckBox* m_cbVMG;
+		wxTextCtrl* m_tVMGCourse;
 		wxCheckBox* m_cbCOG;
 		wxCheckBox* m_cbPDC10;
 		wxCheckBox* m_cbPDC60;
 		wxCheckBox* m_cbHDG;
 		wxCheckBox* m_cbCourseFFTWPlot;
-		wxCheckBox* m_cbVMG;
-		wxTextCtrl* m_tVMGCourse;
 		wxFontPickerCtrl* m_fpPlotFont;
 		wxChoice* m_cColors;
 		wxSpinCtrl* m_sPlotTransparency;
