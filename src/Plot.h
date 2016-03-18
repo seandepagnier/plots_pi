@@ -36,13 +36,14 @@ enum PlotStyle { CONTINUOUS, SWEEP };
 
 struct PlotSettings
 {
-    PlotSettings(PlotColor &c, int totalseconds, PlotStyle s)
-    : colors(c), TotalSeconds(totalseconds), style(s) {}
+    PlotSettings(PlotColor &c, int totalseconds, PlotStyle s, double course)
+    : colors(c), TotalSeconds(totalseconds), style(s), vmgcourse(course) {}
 
     wxRect rect;
     PlotColor &colors;
     int TotalSeconds;
     enum PlotStyle style;
+    double vmgcourse;
 };
 
 struct TraceSettings
@@ -53,7 +54,6 @@ struct TraceSettings
 
 struct Trace
 {
-
     Trace(wxString n, wxCheckBox *cb=NULL) : name(n), CheckBox(cb) {}
     virtual ~Trace() {}
 
@@ -73,9 +73,6 @@ struct HistoryTrace : Trace
     HistoryTrace(wxString n, wxCheckBox *cb, enum HistoryEnum i)
     : Trace(n, cb), datai(i) {}
 
-    int HistoryIndex(int TotalSeconds);
-    int HistoryIndex(PlotSettings &plotsettings);
-
     virtual bool NewData(int TotalSeconds);
 
     virtual void Bounds(double &min, double &max, PlotSettings &plotsettings, bool resolve);
@@ -92,6 +89,21 @@ struct HistoryFFTWTrace : HistoryTrace
 
     virtual void Bounds(double &min, double &max, PlotSettings &plotsettings, bool resolve);
     virtual void Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tracesettings);
+};
+
+struct VMGTrace : Trace
+{
+    VMGTrace(wxString n, wxCheckBox *cb)
+        : Trace(n, cb) {}
+
+    virtual bool NewData(int TotalSeconds);
+    virtual void Bounds(double &min, double &max, PlotSettings &plotsettings, bool resolve);
+    virtual void Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tracesettings);
+    virtual bool LastValue(double &value);
+
+private:
+    double ComputeVMG(double sog, double cog);
+    double course;
 };
 
 struct Plot

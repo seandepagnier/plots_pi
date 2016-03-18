@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 12 2015)
+// C++ code generated with wxFormBuilder (version Dec  8 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -26,6 +26,7 @@
 #include <wx/checkbox.h>
 #include <wx/button.h>
 #include <wx/panel.h>
+#include <wx/textctrl.h>
 #include <wx/stattext.h>
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
@@ -90,6 +91,7 @@ class PreferencesDialogBase : public wxDialog
 		wxListbook* m_listbook1;
 		wxButton* m_button5;
 		wxPanel* m_panel2;
+		wxPanel* m_panel6;
 		wxPanel* m_panel3;
 		wxStaticText* m_staticText15;
 		wxPanel* m_panel4;
@@ -112,9 +114,9 @@ class PreferencesDialogBase : public wxDialog
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnPDS( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPlotChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPlotChange( wxFontPickerEvent& event ) { event.Skip(); }
 		virtual void OnPlotChange( wxSpinEvent& event ) { event.Skip(); }
-		virtual void OnPlotChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
 		
 	
@@ -128,6 +130,8 @@ class PreferencesDialogBase : public wxDialog
 		wxCheckBox* m_cbPDC60;
 		wxCheckBox* m_cbHDG;
 		wxCheckBox* m_cbCourseFFTWPlot;
+		wxCheckBox* m_cbVMG;
+		wxTextCtrl* m_tVMGCourse;
 		wxFontPickerCtrl* m_fpPlotFont;
 		wxChoice* m_cColors;
 		wxSpinCtrl* m_sPlotTransparency;

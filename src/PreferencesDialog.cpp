@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2016 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -48,11 +48,16 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent, sweepplot_pi &_sweepplot_
     ADD_CB(PDC60);
     ADD_CB(HDG);
     ADD_CB(CourseFFTWPlot);
+    ADD_CB(VMG);
 
     pConf->SetPath ( _T ( "/Settings/SweepPlot" ) );
 
     for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
         it->cb->SetValue(pConf->Read(_T("Plot ") + it->name, it->cb->GetValue()));
+
+    double vmgcourse;
+    pConf->Read(_T("VMGCourse"), &vmgcourse, 0);
+    m_tVMGCourse->SetValue(wxString::Format(_T("%f"), vmgcourse));
 
 #if wxCHECK_VERSION(3,0,0)
     m_fpPlotFont->SetSelectedFont(pConf->Read(_T("PlotFont"), wxToString(m_fpPlotFont->GetSelectedFont())));
@@ -92,6 +97,10 @@ PreferencesDialog::~PreferencesDialog()
     for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
         pConf->Write(_T("Plot ") + it->name, it->cb->GetValue());
 
+    double vmgcourse;
+    m_tVMGCourse->GetValue().ToDouble(&vmgcourse);
+    pConf->Write(_T("VMGCourse"), vmgcourse);
+
 #if wxCHECK_VERSION(3,0,0)
     pConf->Write(_T("PlotFont"), m_fpPlotFont->GetSelectedFont());
 #endif
@@ -130,6 +139,8 @@ void PreferencesDialog::OnAbout( wxCommandEvent& event )
 
 void PreferencesDialog::PlotChange()
 {
-    m_sweepplot_pi.m_SweepPlotDialog->Refresh();
-    m_sweepplot_pi.m_SweepPlotDialog->SetupPlot();
+    if(m_sweepplot_pi.m_SweepPlotDialog) {
+        m_sweepplot_pi.m_SweepPlotDialog->Refresh();
+        m_sweepplot_pi.m_SweepPlotDialog->SetupPlot();
+    }
 }

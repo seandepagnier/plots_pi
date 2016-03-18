@@ -81,6 +81,7 @@ int sweepplot_pi::Init(void)
     //    Get a pointer to the opencpn display canvas, to use as a parent for the POI Manager dialog
     m_parent_window = GetOCPNCanvasWindow();
 
+    m_SweepPlotDialog = NULL;
     m_Preferences = new PreferencesDialog(m_parent_window, *this);
     
     LoadConfig(); //    And load the configuration items
@@ -100,9 +101,7 @@ int sweepplot_pi::Init(void)
         (_T(""), _img_sweepplot, _img_sweepplot, wxITEM_NORMAL,
          _("SweepPlot"), _T(""), NULL, SWEEPPLOT_TOOL_POSITION, 0, this);
 #endif
-    
-    m_SweepPlotDialog = NULL;
-    
+        
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
             WANTS_TOOLBAR_CALLBACK    |

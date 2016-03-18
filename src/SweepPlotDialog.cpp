@@ -61,6 +61,12 @@ SweepPlotDialog::SweepPlotDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi, 
     courseFFTWPlot->traces.push_back
         (new HistoryFFTWTrace(_T("Course FFTW"), m_preferences.m_cbCourseFFTWPlot, COG));
     m_plots.push_back(courseFFTWPlot);
+
+    Plot *vmgPlot = new Plot(_("VMG"), false);
+    vmgPlot->traces.push_back
+        (new VMGTrace(_T("VMG"), m_preferences.m_cbVMG));
+    m_plots.push_back(vmgPlot);
+
 }
 
 SweepPlotDialog::~SweepPlotDialog()
@@ -89,8 +95,10 @@ void SweepPlotDialog::OnPaint( wxPaintEvent& event )
     dc.SetFont(m_preferences.m_fpPlotFont->GetSelectedFont());
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
+    double vmgcourse;
+    m_preferences.m_tVMGCourse->GetValue().ToDouble(&vmgcourse);
     PlotSettings settings(PlotColorSchemes[m_preferences.m_cColors->GetSelection()],
-                          TotalSeconds(), (PlotStyle)m_preferences.m_cPlotStyle->GetSelection());
+                          TotalSeconds(), (PlotStyle)m_preferences.m_cPlotStyle->GetSelection(), vmgcourse);
 
     window->SetBackgroundColour(settings.colors.BackgroundColor);
 

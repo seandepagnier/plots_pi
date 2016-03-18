@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 12 2015)
+// C++ code generated with wxFormBuilder (version Dec  8 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -186,6 +186,23 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_panel2->Layout();
 	fgSizer17->Fit( m_panel2 );
 	m_listbook1->AddPage( m_panel2, _("Course"), false );
+	m_panel6 = new wxPanel( m_listbook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxFlexGridSizer* fgSizer171;
+	fgSizer171 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer171->SetFlexibleDirection( wxBOTH );
+	fgSizer171->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_cbVMG = new wxCheckBox( m_panel6, wxID_ANY, _("Desired Heading"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer171->Add( m_cbVMG, 0, wxALL, 5 );
+	
+	m_tVMGCourse = new wxTextCtrl( m_panel6, wxID_ANY, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer171->Add( m_tVMGCourse, 0, wxALL, 5 );
+	
+	
+	m_panel6->SetSizer( fgSizer171 );
+	m_panel6->Layout();
+	fgSizer171->Fit( m_panel6 );
+	m_listbook1->AddPage( m_panel6, _("VMG"), true );
 	m_panel3 = new wxPanel( m_listbook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer19;
 	fgSizer19 = new wxFlexGridSizer( 0, 2, 0, 0 );
@@ -230,7 +247,7 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_panel5->SetSizer( fgSizer201 );
 	m_panel5->Layout();
 	fgSizer201->Fit( m_panel5 );
-	m_listbook1->AddPage( m_panel5, _("Cross Track Error"), true );
+	m_listbook1->AddPage( m_panel5, _("Cross Track Error"), false );
 	#ifdef __WXGTK__ // Small icon style not supported in GTK
 	wxListView* m_listbook1ListView = m_listbook1->GetListView();
 	long m_listbook1Flags = m_listbook1ListView->GetWindowStyleFlag();
@@ -387,6 +404,7 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	
 	// Connect Events
 	m_button5->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPDS ), NULL, this );
+	m_tVMGCourse->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_fpPlotFont->Connect( wxEVT_COMMAND_FONTPICKER_CHANGED, wxFontPickerEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_sPlotMinHeight->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_cColors->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
@@ -398,6 +416,7 @@ PreferencesDialogBase::~PreferencesDialogBase()
 {
 	// Disconnect Events
 	m_button5->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPDS ), NULL, this );
+	m_tVMGCourse->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_fpPlotFont->Disconnect( wxEVT_COMMAND_FONTPICKER_CHANGED, wxFontPickerEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_sPlotMinHeight->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_cColors->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );

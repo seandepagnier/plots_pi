@@ -57,7 +57,7 @@ inline double round(double n) { return n < 0.0 ? ceil(n - 0.5) : floor(n + 0.5);
 
 double heading_resolve(double degrees, double ref=0);
 
-int HistoryTrace::HistoryIndex(int TotalSeconds)
+static int HistoryIndex(int TotalSeconds)
 {
     int i = 0;
     while(TotalSeconds > History::Depth(i))
@@ -67,7 +67,7 @@ int HistoryTrace::HistoryIndex(int TotalSeconds)
     return i;
 }
 
-int HistoryTrace::HistoryIndex(PlotSettings &plotsettings)
+static int HistoryIndex(PlotSettings &plotsettings)
 {
     return HistoryIndex(plotsettings.TotalSeconds);
 }
@@ -81,7 +81,6 @@ void HistoryTrace::Bounds(double &min, double &max, PlotSettings &plotsettings, 
 {
     time_t first_ticks = wxDateTime::Now().GetTicks();
 
-    int w = plotsettings.rect.width;
     double fv = NAN, lv = (min + max) / 2;
     for(std::list<HistoryAtom>::iterator it = g_history[datai].data[HistoryIndex(plotsettings)].data.begin();
         it != g_history[datai].data[HistoryIndex(plotsettings)].data.end(); it++) {
@@ -103,11 +102,8 @@ void HistoryTrace::Bounds(double &min, double &max, PlotSettings &plotsettings, 
         if(v > max)
             max = v;
 
-        int x = w*(first_ticks - it->ticks) / plotsettings.TotalSeconds;
-
-        if(x > w)
+        if(first_ticks - it->ticks  > plotsettings.TotalSeconds)
             break;
-
     }
 
     if(resolve && max - min > 360)
@@ -248,6 +244,127 @@ void HistoryFFTWTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings
     delete [] dft;
 
     g_history[datai].data[HistoryIndex(plotsettings)].newdata = false;
+}
+
+bool VMGTrace::NewData(int TotalSeconds)
+{
+    return g_history[SOG].data[HistoryIndex(TotalSeconds)].newdata ||
+        g_history[COG].data[HistoryIndex(TotalSeconds)].newdata;
+}
+
+double deg2rad(double degrees)
+{
+  return M_PI * degrees / 180.0;
+}
+
+double rad2deg(double radians)
+{
+  return 180.0 * radians / M_PI;
+}
+
+void VMGTrace::Bounds(double &min, double &max, PlotSettings &plotsettings, bool resolve)
+{
+    time_t first_ticks = wxDateTime::Now().GetTicks();
+
+    course = plotsettings.vmgcourse;
+    std::list<HistoryAtom> &soglist = g_history[SOG].data[HistoryIndex(plotsettings)].data;
+    std::list<HistoryAtom> &coglist = g_history[COG].data[HistoryIndex(plotsettings)].data;
+    
+    std::list<HistoryAtom>::iterator sogit = soglist.begin();
+    std::list<HistoryAtom>::iterator cogit = coglist.begin();
+    while(sogit != soglist.end() && cogit != coglist.end()) {
+        
+        double v = ComputeVMG(sogit->value, cogit->value);
+
+        if(v < min)
+            min = v;
+        if(v > max)
+            max = v;
+        
+        if(first_ticks - cogit->ticks  > plotsettings.TotalSeconds)
+            break;
+
+        cogit++;
+        while(sogit != soglist.end() && sogit->ticks > cogit->ticks)
+            sogit++;
+    }
+}
+
+void VMGTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tracesettings)
+{
+    time_t first_ticks = wxDateTime::Now().GetTicks(), lticks = 0;
+
+    int lx = 0;
+
+    int w = plotsettings.rect.width, h = plotsettings.rect.height;
+    double u = NAN;
+
+    std::list<HistoryAtom> &soglist = g_history[SOG].data[HistoryIndex(plotsettings)].data;
+    std::list<HistoryAtom> &coglist = g_history[COG].data[HistoryIndex(plotsettings)].data;
+    
+    std::list<HistoryAtom>::iterator sogit = soglist.begin();
+    std::list<HistoryAtom>::iterator cogit = coglist.begin();
+    while(sogit != soglist.end() && cogit != coglist.end()) {
+        
+        double v = ComputeVMG(sogit->value, cogit->value);
+        time_t ticks = cogit->ticks;
+
+        int x;
+        if(plotsettings.style == CONTINUOUS)
+            x = w*(first_ticks - ticks) / plotsettings.TotalSeconds;
+        else {
+            x = w*fmod(ticks, plotsettings.TotalSeconds) / plotsettings.TotalSeconds;
+            lx = x - w*(ticks - lticks) / plotsettings.TotalSeconds;
+        }
+
+        if(!isnan(v)) {
+            // apply scale
+            v = h*(.5 + (tracesettings.offset - v)/tracesettings.scale);
+
+            if(!isnan(u)) {
+                int x1, x2;
+                if(plotsettings.style == CONTINUOUS)
+                    x1 = w-x, x2 = w-lx;
+                else
+                    x1 = x, x2 = lx;
+
+                dc.DrawLine(plotsettings.rect.x + x1,
+                            plotsettings.rect.y + v,
+                            plotsettings.rect.x + x2,
+                            plotsettings.rect.y + u);
+            }
+
+            u = v;
+            lx = x;
+            lticks = ticks;
+        }
+
+        if(first_ticks - cogit->ticks  > plotsettings.TotalSeconds)
+            break;
+
+        cogit++;
+        while(sogit != soglist.end() && sogit->ticks > cogit->ticks)
+            sogit++;
+    }
+
+    g_history[SOG].data[HistoryIndex(plotsettings)].newdata = false;
+    g_history[COG].data[HistoryIndex(plotsettings)].newdata = false;
+}
+
+bool VMGTrace::LastValue(double &value)
+{
+    double sog, cog;
+    if(g_history[SOG].LastValue(sog) &&
+       g_history[COG].LastValue(cog)) {
+        value = ComputeVMG(sog, cog);
+        return true;
+    }
+    return false;
+}
+
+double VMGTrace::ComputeVMG(double sog, double cog)
+{
+    return sog * cos(deg2rad(fabs(cog - course)));
 }
 
 struct PlotColor PlotColorSchemes[] = {
