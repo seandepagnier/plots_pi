@@ -248,8 +248,8 @@ void HistoryFFTWTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings
 
 bool VMGTrace::NewData(int TotalSeconds)
 {
-    return g_history[SOG].data[HistoryIndex(TotalSeconds)].newdata ||
-        g_history[COG].data[HistoryIndex(TotalSeconds)].newdata;
+    return g_history[PDS60].data[HistoryIndex(TotalSeconds)].newdata ||
+        g_history[PDC60].data[HistoryIndex(TotalSeconds)].newdata;
 }
 
 double deg2rad(double degrees)
@@ -267,8 +267,8 @@ void VMGTrace::Bounds(double &min, double &max, PlotSettings &plotsettings, bool
     time_t first_ticks = wxDateTime::Now().GetTicks();
 
     course = plotsettings.vmgcourse;
-    std::list<HistoryAtom> &soglist = g_history[SOG].data[HistoryIndex(plotsettings)].data;
-    std::list<HistoryAtom> &coglist = g_history[COG].data[HistoryIndex(plotsettings)].data;
+    std::list<HistoryAtom> &soglist = g_history[PDS60].data[HistoryIndex(plotsettings)].data;
+    std::list<HistoryAtom> &coglist = g_history[PDC60].data[HistoryIndex(plotsettings)].data;
     
     std::list<HistoryAtom>::iterator sogit = soglist.begin();
     std::list<HistoryAtom>::iterator cogit = coglist.begin();
@@ -299,8 +299,8 @@ void VMGTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &traces
     int w = plotsettings.rect.width, h = plotsettings.rect.height;
     double u = NAN;
 
-    std::list<HistoryAtom> &soglist = g_history[SOG].data[HistoryIndex(plotsettings)].data;
-    std::list<HistoryAtom> &coglist = g_history[COG].data[HistoryIndex(plotsettings)].data;
+    std::list<HistoryAtom> &soglist = g_history[PDS60].data[HistoryIndex(plotsettings)].data;
+    std::list<HistoryAtom> &coglist = g_history[PDC60].data[HistoryIndex(plotsettings)].data;
     
     std::list<HistoryAtom>::iterator sogit = soglist.begin();
     std::list<HistoryAtom>::iterator cogit = coglist.begin();
@@ -347,15 +347,15 @@ void VMGTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &traces
             sogit++;
     }
 
-    g_history[SOG].data[HistoryIndex(plotsettings)].newdata = false;
-    g_history[COG].data[HistoryIndex(plotsettings)].newdata = false;
+    g_history[PDS60].data[HistoryIndex(plotsettings)].newdata = false;
+    g_history[PDC60].data[HistoryIndex(plotsettings)].newdata = false;
 }
 
 bool VMGTrace::LastValue(double &value)
 {
     double sog, cog;
-    if(g_history[SOG].LastValue(sog) &&
-       g_history[COG].LastValue(cog)) {
+    if(g_history[PDS60].LastValue(sog) &&
+       g_history[PDC60].LastValue(cog)) {
         value = ComputeVMG(sog, cog);
         return true;
     }
