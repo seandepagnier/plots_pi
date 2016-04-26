@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2016 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -172,6 +172,12 @@ void SweepPlotDialog::SetupPlot()
 void SweepPlotDialog::OnConfiguration( wxCommandEvent& event )
 {
     m_preferences.Show();
+}
+
+void SweepPlotDialog::OnClose( wxCloseEvent& )
+{
+    SetToolbarItemState(m_sweepplot_pi.m_leftclick_tool_id, false);
+    Hide();
 }
 
 void SweepPlotDialog::OnRefreshTimer( wxTimerEvent & )

@@ -140,7 +140,8 @@ public:
 
       SweepPlotDialog   *m_SweepPlotDialog;
       PreferencesDialog *m_Preferences;
-      
+
+      int m_leftclick_tool_id;
 private:
 
       bool LoadConfig(void);
@@ -158,8 +159,6 @@ private:
       void OnHistoryWriteTimer( wxTimerEvent & );
 
       void RearrangeWindow();
-
-      int m_leftclick_tool_id;
 
       NMEA0183 m_NMEA0183;
 

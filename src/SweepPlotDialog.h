@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2016 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -46,6 +46,7 @@ private:
     void OnTimeChoice( wxCommandEvent& event ) { Refresh(); }
     void OnConfiguration( wxCommandEvent& event );
 
+    void OnClose( wxCloseEvent& );
     void OnRefreshTimer( wxTimerEvent & );
 
     int PlotCount();

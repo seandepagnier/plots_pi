@@ -87,6 +87,7 @@ SweepPlotDialogBase::SweepPlotDialogBase( wxWindow* parent, wxWindowID id, const
 	this->Centre( wxBOTH );
 	
 	// Connect Events
+	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( SweepPlotDialogBase::OnClose ) );
 	this->Connect( wxEVT_SIZE, wxSizeEventHandler( SweepPlotDialogBase::OnSize ) );
 	m_swPlots->Connect( wxEVT_CHAR, wxKeyEventHandler( SweepPlotDialogBase::Relay ), NULL, this );
 	m_swPlots->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( SweepPlotDialogBase::Relay ), NULL, this );
@@ -99,6 +100,7 @@ SweepPlotDialogBase::SweepPlotDialogBase( wxWindow* parent, wxWindowID id, const
 SweepPlotDialogBase::~SweepPlotDialogBase()
 {
 	// Disconnect Events
+	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( SweepPlotDialogBase::OnClose ) );
 	this->Disconnect( wxEVT_SIZE, wxSizeEventHandler( SweepPlotDialogBase::OnSize ) );
 	m_swPlots->Disconnect( wxEVT_CHAR, wxKeyEventHandler( SweepPlotDialogBase::Relay ), NULL, this );
 	m_swPlots->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler( SweepPlotDialogBase::Relay ), NULL, this );

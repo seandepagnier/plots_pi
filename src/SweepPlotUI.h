@@ -60,6 +60,7 @@ class SweepPlotDialogBase : public wxDialog
 		wxMenuItem* m_mt10;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
 		virtual void OnSize( wxSizeEvent& event ) { event.Skip(); }
 		virtual void Relay( wxKeyEvent& event ) { event.Skip(); }
 		virtual void OnDoubleClick( wxMouseEvent& event ) { event.Skip(); }
