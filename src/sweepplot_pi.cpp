@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2016 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -82,17 +82,7 @@ int sweepplot_pi::Init(void)
     m_parent_window = GetOCPNCanvasWindow();
 
     m_SweepPlotDialog = NULL;
-    m_Preferences = new PreferencesDialog(m_parent_window, *this);
-    
-    LoadConfig(); //    And load the configuration items
-
-    // read history
-    wxString data = StandardPath() + _T("data");
-    History::Read(data);
-
-    m_HistoryWriteTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
-                               ( sweepplot_pi::OnHistoryWriteTimer ), NULL, this);
-    m_HistoryWriteTimer.Start(1000*60*20); // every 20 minutes
+    m_PreferencesDialog = NULL;
     
 #ifdef SWEEPPLOT_USE_SVG
     m_leftclick_tool_id = InsertPlugInToolSVG( _T( "SweepPlot" ), _svg_sweepplot, _svg_sweepplot_rollover, _svg_sweepplot_toggled, wxITEM_CHECK, _( "SweepPlot" ), _T( "" ), NULL, SWEEPPLOT_TOOL_POSITION, 0, this);
@@ -124,7 +114,7 @@ bool sweepplot_pi::DeInit(void)
         m_SweepPlotDialog = NULL;
     }
 
-    delete m_Preferences;
+    delete m_PreferencesDialog;
 
     RemovePlugInTool(m_leftclick_tool_id);
 
@@ -199,7 +189,20 @@ void sweepplot_pi::OnToolbarToolCallback(int id)
 {
     if(!m_SweepPlotDialog)
     {
-        m_SweepPlotDialog = new SweepPlotDialog(m_parent_window, *this, *m_Preferences);
+        m_PreferencesDialog = new PreferencesDialog(m_parent_window, *this);
+    
+        LoadConfig(); //    And load the configuration items
+
+        // read history
+        wxString data = StandardPath() + _T("data");
+        History::Read(data);
+
+        m_HistoryWriteTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
+                                    ( sweepplot_pi::OnHistoryWriteTimer ), NULL, this);
+        m_HistoryWriteTimer.Start(1000*60*20); // every 20 minutes
+
+        
+        m_SweepPlotDialog = new SweepPlotDialog(m_parent_window, *this, *m_PreferencesDialog);
 
         wxFileConfig *pConf = GetOCPNConfigObject();
         pConf->SetPath ( _T ( "/Settings/SweepPlot" ) );
@@ -212,7 +215,7 @@ void sweepplot_pi::OnToolbarToolCallback(int id)
         wxIcon icon;
         icon.CopyFromBitmap(*_img_sweepplot);
         m_SweepPlotDialog->SetIcon(icon);
-        m_Preferences->SetIcon(icon);
+        m_PreferencesDialog->SetIcon(icon);
     }
 
     RearrangeWindow();
@@ -247,17 +250,17 @@ bool sweepplot_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 
 void sweepplot_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
 {
-    if(!m_Preferences->m_cbCoursePrediction->GetValue())
+    if(!m_PreferencesDialog || !m_PreferencesDialog->m_cbCoursePrediction->GetValue())
         return;
 
-    int ticks = m_Preferences->m_sCoursePredictionSeconds->GetValue();
-    int length = m_Preferences->m_sCoursePredictionLength->GetValue();
+    int ticks = m_PreferencesDialog->m_sCoursePredictionSeconds->GetValue();
+    int length = m_PreferencesDialog->m_sCoursePredictionLength->GetValue();
 
     double lat0, lon0, lat1, lon1;
     double brg, dist, dlat, dlon;
     wxPoint r0, r1, r2;
 
-    if(m_Preferences->m_cbCoursePredictionBlended->GetValue()) {
+    if(m_PreferencesDialog->m_cbCoursePredictionBlended->GetValue()) {
         if(dc)
             return;
 

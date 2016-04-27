@@ -139,7 +139,7 @@ public:
       wxWindow         *m_parent_window;
 
       SweepPlotDialog   *m_SweepPlotDialog;
-      PreferencesDialog *m_Preferences;
+      PreferencesDialog *m_PreferencesDialog;
 
       int m_leftclick_tool_id;
 private:

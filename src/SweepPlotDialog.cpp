@@ -85,7 +85,7 @@ void SweepPlotDialog::Relay( wxKeyEvent& event )
 
 void SweepPlotDialog::OnDoubleClick( wxMouseEvent& event )
 {
-    m_sweepplot_pi.m_Preferences->Show();
+    m_sweepplot_pi.m_PreferencesDialog->Show();
 }
 
 void SweepPlotDialog::OnPaint( wxPaintEvent& event )
