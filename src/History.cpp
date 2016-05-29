@@ -29,6 +29,8 @@
 
 #include "History.h"
 
+// using 60 and 1440 gives buffers at 1 second 1 minute and 1 hour
+// to periods of 20 minutes, 24 hours and 60 days
 #define HISTORY_DIVISOR 60
 #define HISTORY_DEPTH 1440
 
@@ -109,7 +111,7 @@ void History::AddData(double value, time_t ticks, bool resolve)
                 count++;
             }
 
-            if(count > 0)
+            if(count > HISTORY_DIVISOR / 2) // require at least half the data
                 AddData(i, HistoryAtom(total / count, ticks));
         }
     }

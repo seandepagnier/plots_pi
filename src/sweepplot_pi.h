@@ -127,6 +127,7 @@ public:
 
       int GetToolbarToolCount(void);
 
+      void OnInitTimer( wxTimerEvent & );
       void OnToolbarToolCallback(int id);
 
       bool RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp);
@@ -162,7 +163,7 @@ private:
 
       NMEA0183 m_NMEA0183;
 
-      wxTimer m_HistoryWriteTimer;
+      wxTimer m_InitTimer, m_HistoryWriteTimer;
 };
 
 #endif

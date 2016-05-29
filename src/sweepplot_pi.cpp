@@ -83,6 +83,12 @@ int sweepplot_pi::Init(void)
 
     m_SweepPlotDialog = NULL;
     m_PreferencesDialog = NULL;
+
+    // use a timer to delay loading history so that the plugin
+    // does not slow down startup... this could be in a thread also
+    m_InitTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
+                                ( sweepplot_pi::OnInitTimer ), NULL, this);
+    m_InitTimer.Start(1000, true); // one second
     
 #ifdef SWEEPPLOT_USE_SVG
     m_leftclick_tool_id = InsertPlugInToolSVG( _T( "SweepPlot" ), _svg_sweepplot, _svg_sweepplot_rollover, _svg_sweepplot_toggled, wxITEM_CHECK, _( "SweepPlot" ), _T( "" ), NULL, SWEEPPLOT_TOOL_POSITION, 0, this);
@@ -105,7 +111,8 @@ bool sweepplot_pi::DeInit(void)
     SaveConfig();
 
     // write history
-    WriteHistory();
+    if(m_PreferencesDialog)
+        WriteHistory();
 
     if (m_SweepPlotDialog)
     {
@@ -185,23 +192,28 @@ void sweepplot_pi::RearrangeWindow()
     SetColorScheme(PI_ColorScheme());
 }
 
+void sweepplot_pi::OnInitTimer( wxTimerEvent & )
+{
+    m_PreferencesDialog = new PreferencesDialog(m_parent_window, *this);
+    
+    LoadConfig(); //    And load the configuration items
+    
+    // read history
+    wxString data = StandardPath() + _T("data");
+    History::Read(data);
+    
+    m_HistoryWriteTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
+                                ( sweepplot_pi::OnHistoryWriteTimer ), NULL, this);
+    m_HistoryWriteTimer.Start(1000*60*20); // every 20 minutes
+}
+
 void sweepplot_pi::OnToolbarToolCallback(int id)
 {
-    if(!m_SweepPlotDialog)
-    {
-        m_PreferencesDialog = new PreferencesDialog(m_parent_window, *this);
+    if(!m_PreferencesDialog)
+        return;
     
-        LoadConfig(); //    And load the configuration items
-
-        // read history
-        wxString data = StandardPath() + _T("data");
-        History::Read(data);
-
-        m_HistoryWriteTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
-                                    ( sweepplot_pi::OnHistoryWriteTimer ), NULL, this);
-        m_HistoryWriteTimer.Start(1000*60*20); // every 20 minutes
-
-        
+    if(!m_SweepPlotDialog)
+    {   
         m_SweepPlotDialog = new SweepPlotDialog(m_parent_window, *this, *m_PreferencesDialog);
 
         wxFileConfig *pConf = GetOCPNConfigObject();
@@ -270,8 +282,6 @@ void sweepplot_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
 
         GetCanvasPixLL(&vp, &r0, lat0, lon0);
 
-        glColor4f(1, 0, 0, 1.0/ticks);
-
         glBegin(GL_TRIANGLES);
 
         GetCanvasPixLL(&vp, &r0, lat0, lon0);
@@ -295,6 +305,18 @@ void sweepplot_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
 //                dc->SetPen(wxPen(*wxRED, 3));
 //                dc->DrawLine( r0.x, r0.y, r1.x, r1.y);
                 } else {
+                    long v0[2] = {r1.x - r0.x, r1.y -r0.y};
+                    long v1[2] = {r2.x - r0.x, r2.y -r0.y};
+
+                    double d0 = sqrt(v0[0]*v0[0] + v0[1]*v0[1]);
+                    double d1 = sqrt(v1[0]*v1[0] + v1[1]*v1[1]);
+                    
+                    float alpha = 1 - (v0[0]*v1[1] - v0[1]*v1[0]) / (d0*d1);
+                    alpha /= sqrt(sqrt(ticks));
+//                    alpha = sqrt(sqrt(alpha));
+                    glColor4f(1, 0, 0, alpha);
+
+
                     glVertex2i(r0.x, r0.y);
                     glVertex2i(r1.x, r1.y);
                     glVertex2i(r2.x, r2.y);

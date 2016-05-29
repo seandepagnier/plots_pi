@@ -331,8 +331,7 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	fgSizer16->SetFlexibleDirection( wxBOTH );
 	fgSizer16->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_cbShowTitleBar = new wxCheckBox( this, wxID_ANY, _("Show Title Bar (restart required)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_cbShowTitleBar->SetValue(true); 
+	m_cbShowTitleBar = new wxCheckBox( this, wxID_ANY, _("Show Title Bar (restart required)\nWindow Manager may not support this"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer16->Add( m_cbShowTitleBar, 0, wxALL, 5 );
 	
 	
