@@ -26,13 +26,14 @@
 
 #include "SweepPlotUI.h"
 
+
 class sweepplot_pi;
 class Plot;
 
 class SweepPlotDialog: public SweepPlotDialogBase
 {
 public:
-    SweepPlotDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi, PreferencesDialog &preferences);
+    SweepPlotDialog(wxWindow* parent, int index);
     ~SweepPlotDialog();
 
     void Relay( wxKeyEvent& event );
@@ -52,8 +53,8 @@ private:
     int PlotCount();
     int TotalSeconds();
 
-    sweepplot_pi &m_sweepplot_pi;
-    PreferencesDialog &m_preferences;
+    bool initialized;
+    PlotConfigurationDialog m_configuration;
 
     wxTimer m_tRefreshTimer;
     int m_lastTimerTotalSeconds;

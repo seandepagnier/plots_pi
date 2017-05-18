@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Dec  8 2015)
+// C++ code generated with wxFormBuilder (version Jul 15 2016)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -112,17 +112,9 @@ SweepPlotDialogBase::~SweepPlotDialogBase()
 	delete m_menu1; 
 }
 
-PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+PlotConfigurationDialogBase::PlotConfigurationDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-	
-	wxFlexGridSizer* fgSizer4;
-	fgSizer4 = new wxFlexGridSizer( 0, 1, 0, 0 );
-	fgSizer4->SetFlexibleDirection( wxBOTH );
-	fgSizer4->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	wxStaticBoxSizer* sbSizer6;
-	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Plots") ), wxVERTICAL );
 	
 	wxFlexGridSizer* fgSizer111;
 	fgSizer111 = new wxFlexGridSizer( 0, 1, 0, 0 );
@@ -196,7 +188,6 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	fgSizer17->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	m_cbCOG = new wxCheckBox( m_panel2, wxID_ANY, _("GPS Course (COG)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_cbCOG->SetValue(true); 
 	fgSizer17->Add( m_cbCOG, 0, wxALL, 5 );
 	
 	m_cbPDC10 = new wxCheckBox( m_panel2, wxID_ANY, _("PDC 10"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -218,13 +209,15 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_listbook1->AddPage( m_panel2, _("Course"), false );
 	m_panel3 = new wxPanel( m_listbook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer19;
-	fgSizer19 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer19 = new wxFlexGridSizer( 0, 1, 0, 0 );
 	fgSizer19->SetFlexibleDirection( wxBOTH );
 	fgSizer19->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText15 = new wxStaticText( m_panel3, wxID_ANY, _("Implement Me"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText15->Wrap( -1 );
-	fgSizer19->Add( m_staticText15, 0, wxALL, 5 );
+	m_cbAWS = new wxCheckBox( m_panel3, wxID_ANY, _("Apparent Wind Speed (NMEA MWV)"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_cbAWS, 0, wxALL, 5 );
+	
+	m_cbTWS = new wxCheckBox( m_panel3, wxID_ANY, _("True Wind Speed (via gpps speed)"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_cbTWS, 0, wxALL, 5 );
 	
 	
 	m_panel3->SetSizer( fgSizer19 );
@@ -233,13 +226,18 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	m_listbook1->AddPage( m_panel3, _("Wind Speed"), false );
 	m_panel4 = new wxPanel( m_listbook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer20;
-	fgSizer20 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer20 = new wxFlexGridSizer( 0, 1, 0, 0 );
 	fgSizer20->SetFlexibleDirection( wxBOTH );
 	fgSizer20->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText16 = new wxStaticText( m_panel4, wxID_ANY, _("Implement Me"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText16->Wrap( -1 );
-	fgSizer20->Add( m_staticText16, 0, wxALL, 5 );
+	m_cbAWA = new wxCheckBox( m_panel4, wxID_ANY, _("Apparent Wind Direction (NMEA MWV)"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer20->Add( m_cbAWA, 0, wxALL, 5 );
+	
+	m_cbTWA = new wxCheckBox( m_panel4, wxID_ANY, _("True Wind Angle (via GPS speed)"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer20->Add( m_cbTWA, 0, wxALL, 5 );
+	
+	m_cbTWD = new wxCheckBox( m_panel4, wxID_ANY, _("True Wind Direction (via GPS speed)"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer20->Add( m_cbTWD, 0, wxALL, 5 );
 	
 	
 	m_panel4->SetSizer( fgSizer20 );
@@ -252,15 +250,14 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	fgSizer201->SetFlexibleDirection( wxBOTH );
 	fgSizer201->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText161 = new wxStaticText( m_panel5, wxID_ANY, _("Implement Me"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText161->Wrap( -1 );
-	fgSizer201->Add( m_staticText161, 0, wxALL, 5 );
+	m_cbBAR = new wxCheckBox( m_panel5, wxID_ANY, _("Barometer Pressure( (NMEA MDA)"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer201->Add( m_cbBAR, 0, wxALL, 5 );
 	
 	
 	m_panel5->SetSizer( fgSizer201 );
 	m_panel5->Layout();
 	fgSizer201->Fit( m_panel5 );
-	m_listbook1->AddPage( m_panel5, _("Cross Track Error"), false );
+	m_listbook1->AddPage( m_panel5, _("Barometer"), false );
 	#ifdef __WXGTK__ // Small icon style not supported in GTK
 	wxListView* m_listbook1ListView = m_listbook1->GetListView();
 	long m_listbook1Flags = m_listbook1ListView->GetWindowStyleFlag();
@@ -332,13 +329,86 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	fgSizer16->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	m_cbShowTitleBar = new wxCheckBox( this, wxID_ANY, _("Show Title Bar (restart required)\nWindow Manager may not support this"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbShowTitleBar->SetValue(true); 
 	fgSizer16->Add( m_cbShowTitleBar, 0, wxALL, 5 );
 	
 	
 	fgSizer111->Add( fgSizer16, 1, wxEXPAND, 5 );
 	
+	wxFlexGridSizer* fgSizer11;
+	fgSizer11 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer11->SetFlexibleDirection( wxBOTH );
+	fgSizer11->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	sbSizer6->Add( fgSizer111, 1, wxEXPAND, 5 );
+	m_bAbout = new wxButton( this, wxID_ANY, _("About"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer11->Add( m_bAbout, 0, wxALL, 5 );
+	
+	m_sdbSizer1 = new wxStdDialogButtonSizer();
+	m_sdbSizer1OK = new wxButton( this, wxID_OK );
+	m_sdbSizer1->AddButton( m_sdbSizer1OK );
+	m_sdbSizer1->Realize();
+	
+	fgSizer11->Add( m_sdbSizer1, 0, wxBOTTOM|wxEXPAND|wxTOP, 5 );
+	
+	
+	fgSizer111->Add( fgSizer11, 1, wxEXPAND, 5 );
+	
+	
+	this->SetSizer( fgSizer111 );
+	this->Layout();
+	fgSizer111->Fit( this );
+	
+	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_button5->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PlotConfigurationDialogBase::OnPDS ), NULL, this );
+	m_tVMGCourse->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
+	m_fpPlotFont->Connect( wxEVT_COMMAND_FONTPICKER_CHANGED, wxFontPickerEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
+	m_sPlotMinHeight->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
+	m_cColors->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
+	m_sPlotTransparency->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
+	m_bAbout->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PlotConfigurationDialogBase::OnAbout ), NULL, this );
+}
+
+PlotConfigurationDialogBase::~PlotConfigurationDialogBase()
+{
+	// Disconnect Events
+	m_button5->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PlotConfigurationDialogBase::OnPDS ), NULL, this );
+	m_tVMGCourse->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
+	m_fpPlotFont->Disconnect( wxEVT_COMMAND_FONTPICKER_CHANGED, wxFontPickerEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
+	m_sPlotMinHeight->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
+	m_cColors->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
+	m_sPlotTransparency->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
+	m_bAbout->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PlotConfigurationDialogBase::OnAbout ), NULL, this );
+	
+}
+
+PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxFlexGridSizer* fgSizer4;
+	fgSizer4 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer4->SetFlexibleDirection( wxBOTH );
+	fgSizer4->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	wxStaticBoxSizer* sbSizer6;
+	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Plots") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer20;
+	fgSizer20 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer20->SetFlexibleDirection( wxBOTH );
+	fgSizer20->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText14 = new wxStaticText( this, wxID_ANY, _("Plot Count"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText14->Wrap( -1 );
+	fgSizer20->Add( m_staticText14, 0, wxALL, 5 );
+	
+	m_sPlotCount = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 1 );
+	fgSizer20->Add( m_sPlotCount, 0, wxALL, 5 );
+	
+	
+	sbSizer6->Add( fgSizer20, 1, wxEXPAND, 5 );
 	
 	
 	fgSizer4->Add( sbSizer6, 1, wxEXPAND, 5 );
@@ -415,24 +485,12 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_button5->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPDS ), NULL, this );
-	m_tVMGCourse->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
-	m_fpPlotFont->Connect( wxEVT_COMMAND_FONTPICKER_CHANGED, wxFontPickerEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
-	m_sPlotMinHeight->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
-	m_cColors->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
-	m_sPlotTransparency->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_bAbout->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnAbout ), NULL, this );
 }
 
 PreferencesDialogBase::~PreferencesDialogBase()
 {
 	// Disconnect Events
-	m_button5->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnPDS ), NULL, this );
-	m_tVMGCourse->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
-	m_fpPlotFont->Disconnect( wxEVT_COMMAND_FONTPICKER_CHANGED, wxFontPickerEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
-	m_sPlotMinHeight->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
-	m_cColors->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
-	m_sPlotTransparency->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PreferencesDialogBase::OnPlotChange ), NULL, this );
 	m_bAbout->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PreferencesDialogBase::OnAbout ), NULL, this );
 	
 }

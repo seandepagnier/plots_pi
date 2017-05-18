@@ -28,6 +28,7 @@
 #define _SWEEPPLOTPI_H_
 
 #include <list>
+#include <vector>
 
 #include <wx/wx.h>
 #include <wx/fileconf.h>
@@ -133,13 +134,14 @@ public:
       bool RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp);
       bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp);
       void Render(wxDC *dc, PlugIn_ViewPort &vp);
+      void ShowPreferencesDialog( wxWindow* parent );
 
 //    Optional plugin overrides
       void SetColorScheme(PI_ColorScheme cs);
 
       wxWindow         *m_parent_window;
 
-      SweepPlotDialog   *m_SweepPlotDialog;
+      std::vector<SweepPlotDialog*> m_SweepPlotDialogs;
       PreferencesDialog *m_PreferencesDialog;
 
       int m_leftclick_tool_id;
@@ -148,6 +150,7 @@ private:
       bool LoadConfig(void);
       bool SaveConfig(void);
       void WriteHistory();
+      void CreatePlots();
 
       wxString StandardPath();
 
@@ -160,8 +163,6 @@ private:
       void OnHistoryWriteTimer( wxTimerEvent & );
 
       void RearrangeWindow();
-
-      NMEA0183 m_NMEA0183;
 
       wxTimer m_InitTimer, m_HistoryWriteTimer;
 };

@@ -28,31 +28,11 @@
 
 class sweepplot_pi;
 
-class PreferencesDialog: public PreferencesDialogBase
+class PreferencesDialog : public PreferencesDialogBase
 {
 public:
-    PreferencesDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi);
+    PreferencesDialog(wxWindow* parent);
     ~PreferencesDialog();
 
-    void OnPlotChange( wxFontPickerEvent& event ) { PlotChange(); }
-    void OnPlotChange( wxCommandEvent& event ) { PlotChange(); }
-    void OnPlotChange( wxSpinEvent& event ) { PlotChange(); }
-
-    void OnPDS( wxCommandEvent& event );
     void OnAbout( wxCommandEvent& event );
-
-    int PlotMinHeight() { return m_sPlotMinHeight->GetValue(); }
-
-private:
-    void PlotChange();
-
-    sweepplot_pi &m_sweepplot_pi;
-
-    struct cbState {
-       cbState(wxCheckBox *a, wxString n) : cb(a), name(n) { }
-        wxCheckBox *cb;
-        wxString name;
-    };
-
-    std::list<cbState> m_cbStates;
 };

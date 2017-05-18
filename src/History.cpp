@@ -117,7 +117,7 @@ void History::AddData(double value, time_t ticks, bool resolve)
     }
 }
 
-const int history_magic = 0xfe01;
+const int history_magic = 0xfe01 + HISTORY_COUNT;
 
 void History::Read(wxString filename)
 {

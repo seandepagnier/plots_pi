@@ -27,7 +27,7 @@
 #include <list>
 
 enum HistoryEnum {TWS, TWD, TWA, AWS, AWA, SOG, COG, HDG, XTE, LAT, LON,
-                  PDS10, PDS60, PDC10, PDC60, HISTORY_COUNT};
+                  PDS10, PDS60, PDC10, PDC60, BAR, HISTORY_COUNT};
 
 // three buffers, one for current data, and one
 // with entrees averaged to each minute, and hour

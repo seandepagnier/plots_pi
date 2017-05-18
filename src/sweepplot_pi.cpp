@@ -28,6 +28,7 @@
 #include <wx/stdpaths.h>
 
 #include "sweepplot_pi.h"
+#include "PlotConfigurationDialog.h"
 #include "SweepPlotDialog.h"
 #include "PreferencesDialog.h"
 #include "icons.h"
@@ -81,14 +82,13 @@ int sweepplot_pi::Init(void)
     //    Get a pointer to the opencpn display canvas, to use as a parent for the POI Manager dialog
     m_parent_window = GetOCPNCanvasWindow();
 
-    m_SweepPlotDialog = NULL;
     m_PreferencesDialog = NULL;
 
     // use a timer to delay loading history so that the plugin
     // does not slow down startup... this could be in a thread also
     m_InitTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
                                 ( sweepplot_pi::OnInitTimer ), NULL, this);
-    m_InitTimer.Start(1000, true); // one second
+    m_InitTimer.Start(3000, true); // 3 seconds
     
 #ifdef SWEEPPLOT_USE_SVG
     m_leftclick_tool_id = InsertPlugInToolSVG( _T( "SweepPlot" ), _svg_sweepplot, _svg_sweepplot_rollover, _svg_sweepplot_toggled, wxITEM_CHECK, _( "SweepPlot" ), _T( "" ), NULL, SWEEPPLOT_TOOL_POSITION, 0, this);
@@ -101,8 +101,9 @@ int sweepplot_pi::Init(void)
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
             WANTS_TOOLBAR_CALLBACK    |
-            WANTS_NMEA_SENTENCES   |
+            WANTS_NMEA_SENTENCES      |
             WANTS_NMEA_EVENTS         |
+            WANTS_PREFERENCES         |
             WANTS_CONFIG);
 }
 
@@ -114,11 +115,10 @@ bool sweepplot_pi::DeInit(void)
     if(m_PreferencesDialog)
         WriteHistory();
 
-    if (m_SweepPlotDialog)
-    {
-        m_SweepPlotDialog->Close();
-        delete m_SweepPlotDialog;
-        m_SweepPlotDialog = NULL;
+    for(unsigned int i=0; i<m_SweepPlotDialogs.size(); i++) {
+        SweepPlotDialog* dlg = m_SweepPlotDialogs[i];
+        dlg->Close();
+        delete dlg;
     }
 
     delete m_PreferencesDialog;
@@ -178,24 +178,24 @@ int sweepplot_pi::GetToolbarToolCount(void)
 
 void sweepplot_pi::SetColorScheme(PI_ColorScheme cs)
 {
-    if (NULL == m_SweepPlotDialog)
-        return;
-
-    DimeWindow(m_SweepPlotDialog);
+    for(unsigned int i=0; i<m_SweepPlotDialogs.size(); i++) {
+        SweepPlotDialog* dlg = m_SweepPlotDialogs[i];
+        DimeWindow(dlg);
+    }
 }
 
 void sweepplot_pi::RearrangeWindow()
 {
-    if (NULL == m_SweepPlotDialog)
-        return;
-
     SetColorScheme(PI_ColorScheme());
 }
 
 void sweepplot_pi::OnInitTimer( wxTimerEvent & )
 {
-    m_PreferencesDialog = new PreferencesDialog(m_parent_window, *this);
-    
+    m_PreferencesDialog = new PreferencesDialog(m_parent_window);
+    wxIcon icon;
+    icon.CopyFromBitmap(*_img_sweepplot);
+    m_PreferencesDialog->SetIcon(icon);
+
     LoadConfig(); //    And load the configuration items
     
     // read history
@@ -211,34 +211,11 @@ void sweepplot_pi::OnToolbarToolCallback(int id)
 {
     if(!m_PreferencesDialog)
         return;
-    
-    if(!m_SweepPlotDialog)
-    {   
-        m_SweepPlotDialog = new SweepPlotDialog(m_parent_window, *this, *m_PreferencesDialog);
 
-        wxFileConfig *pConf = GetOCPNConfigObject();
-        pConf->SetPath ( _T ( "/Settings/SweepPlot" ) );
-
-        m_SweepPlotDialog->Move(pConf->Read ( _T ( "DialogPosX" ), 20L ),
-                               pConf->Read ( _T ( "DialogPosY" ), 20L ));
-        m_SweepPlotDialog->SetSize(pConf->Read ( _T ( "DialogW" ), 400L ),
-                                  pConf->Read ( _T ( "DialogH" ), 300L ));
-
-        wxIcon icon;
-        icon.CopyFromBitmap(*_img_sweepplot);
-        m_SweepPlotDialog->SetIcon(icon);
-        m_PreferencesDialog->SetIcon(icon);
-    }
-
+    if(m_SweepPlotDialogs.size())
+        m_SweepPlotDialogs[0]->Show(!m_SweepPlotDialogs[0]->IsShown());
+    CreatePlots();
     RearrangeWindow();
-    m_SweepPlotDialog->Show(!m_SweepPlotDialog->IsShown());
-
-    if(m_SweepPlotDialog->IsShown())
-        m_SweepPlotDialog->SetupPlot();
-
-    wxPoint p = m_SweepPlotDialog->GetPosition();
-    m_SweepPlotDialog->Move(0, 0);        // workaround for gtk autocentre dialog behavior
-    m_SweepPlotDialog->Move(p);
 }
 
 bool sweepplot_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
@@ -352,6 +329,12 @@ void sweepplot_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
     }
 }
 
+void sweepplot_pi::ShowPreferencesDialog( wxWindow* parent )
+{
+    m_PreferencesDialog->ShowModal();
+    CreatePlots();
+}
+
 bool sweepplot_pi::LoadConfig(void)
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
@@ -367,11 +350,13 @@ bool sweepplot_pi::LoadConfig(void)
 bool sweepplot_pi::SaveConfig(void)
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
-    pConf->SetPath ( _T ( "/Settings/SweepPlot" ) );
 
-    if(m_SweepPlotDialog) {
-        wxPoint p = m_SweepPlotDialog->GetPosition();
-        wxSize s = m_SweepPlotDialog->GetSize();
+    for(unsigned int i=0; i<m_SweepPlotDialogs.size(); i++) {
+        SweepPlotDialog* dlg = m_SweepPlotDialogs[i];
+        pConf->SetPath ( _T ( "/Settings/SweepPlot/" ) + wxString::Format(_T("%d"), i));
+
+        wxPoint p = dlg->GetPosition();
+        wxSize s = dlg->GetSize();
 
         pConf->Write ( _T ( "DialogPosX" ), p.x);
         pConf->Write ( _T ( "DialogPosY" ), p.y);
@@ -415,29 +400,37 @@ wxString sweepplot_pi::StandardPath()
 
 void sweepplot_pi::SetNMEASentence( wxString &sentence )
 {
-    m_NMEA0183 << sentence;
+    NMEA0183 nmea;
+    nmea << sentence;
 
-    if( !m_NMEA0183.PreParse() )
+    if( !nmea.PreParse() )
         return;
 
-    if( m_NMEA0183.LastSentenceIDReceived == _T("HDT") ) {
-        if( m_NMEA0183.Parse() ) {
-            if( !wxIsNaN(m_NMEA0183.Hdt.DegreesTrue) )
-                AddData(HDG, m_NMEA0183.Hdt.DegreesTrue);
+    if( nmea.LastSentenceIDReceived == _T("HDM") ) {
+        if( nmea.Parse() ) {
+            if( !wxIsNaN(nmea.Hdm.DegreesMagnetic) )
+                AddData(HDG, nmea.Hdm.DegreesMagnetic);
         }
     }
     // NMEA 0183 standard Wind Direction and Speed, with respect to north.
-    else if( m_NMEA0183.LastSentenceIDReceived == _T("MWD") ) {
-        if( m_NMEA0183.Parse() ) {
+    else if( nmea.LastSentenceIDReceived == _T("MWV") ) {
+        if( nmea.Parse() && nmea.Mwv.IsDataValid == NTrue ) {
+            double m_wSpeedFactor = 1.0; //knots ("N")
+            if (nmea.Mwv.WindSpeedUnits == _T("K") ) m_wSpeedFactor = 0.53995 ; //km/h > knots
+            if (nmea.Mwv.WindSpeedUnits == _T("M") ) m_wSpeedFactor = 1.94384;
+
+            double speed = nmea.Mwv.WindSpeed * m_wSpeedFactor;
+
             // Option for True vs Magnetic
 //            wxString windunit;
-            if( m_NMEA0183.Mwd.WindAngleTrue < 999. ) { //if WindAngleTrue is available, use it ...
-                AddData(TWD, m_NMEA0183.Mwd.WindAngleTrue);
-                AddData(TWS, m_NMEA0183.Mwd.WindSpeedKnots);
-            } else if( m_NMEA0183.Mwd.WindAngleMagnetic < 999. ) { //otherwise try WindAngleMagnetic ...
-                // TODO: use wmm plugin to compensate to true wind
-//                truewind = m_NMEA0183.Mwd.WindAngleMagnetic;
-            }
+            if( nmea.Mwv.WindAngle < 999. ) { //if WindAngleTrue is available, use it ...
+                AddData(AWA, nmea.Mwv.WindAngle);
+                AddData(AWS, speed);
+            } 
+        }
+    } else if(nmea.LastSentenceIDReceived == _T("MDA")) {
+        if( nmea.Parse() ) {
+            AddData(BAR, nmea.Mda.Pressure * 1000);
         }
     }
 }
@@ -495,4 +488,41 @@ void sweepplot_pi::AddData(enum HistoryEnum e, double value, time_t ticks)
 void sweepplot_pi::OnHistoryWriteTimer( wxTimerEvent & )
 {
     WriteHistory();
+}
+
+
+void sweepplot_pi::CreatePlots()
+{
+    wxFileConfig *pConf = GetOCPNConfigObject();
+    for(int i=0; i<m_PreferencesDialog->m_sPlotCount->GetValue(); i++) {
+        if(i < (int)m_SweepPlotDialogs.size())
+            continue;
+        SweepPlotDialog *dlg = new SweepPlotDialog(m_parent_window, i);
+        m_SweepPlotDialogs.push_back(dlg);
+
+        pConf->SetPath ( _T ( "/Settings/SweepPlot/" ) + wxString::Format(_T("%d"), i));
+        
+        dlg->Move(pConf->Read ( _T ( "DialogPosX" ), 20L ),
+                  pConf->Read ( _T ( "DialogPosY" ), 20L ));
+        dlg->SetSize(pConf->Read ( _T ( "DialogW" ), 400L ),
+                     pConf->Read ( _T ( "DialogH" ), 300L ));
+
+        wxIcon icon;
+        icon.CopyFromBitmap(*_img_sweepplot);
+        dlg->SetIcon(icon);
+    }
+
+    for(unsigned int i=0; i<m_SweepPlotDialogs.size(); i++) {
+        bool shown = m_SweepPlotDialogs[0]->IsShown();
+        SweepPlotDialog* dlg = m_SweepPlotDialogs[i];
+        if(dlg->IsShown() == shown)
+            continue;
+        dlg->Show(shown);
+        if(shown)
+            dlg->SetupPlot();
+
+        wxPoint p = dlg->GetPosition();
+        dlg->Move(0, 0);        // workaround for gtk autocentre dialog behavior
+        dlg->Move(p);
+    }
 }

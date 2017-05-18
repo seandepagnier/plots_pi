@@ -31,6 +31,7 @@ SET(SRC_SWEEPPLOT
             src/sweepplot_pi.cpp
             src/SweepPlotDialog.cpp
             src/PreferencesDialog.cpp
+            src/PlotConfigurationDialog.cpp
             src/AboutDialog.cpp
             src/History.cpp
             src/Plot.cpp

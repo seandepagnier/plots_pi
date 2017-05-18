@@ -25,16 +25,17 @@
  */
 
 #include "sweepplot_pi.h"
+#include "PlotConfigurationDialog.h"
 #include "SweepPlotDialog.h"
-#include "PreferencesDialog.h"
 
 #include "Plot.h"
 
-SweepPlotDialog::SweepPlotDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi, PreferencesDialog &preferences)
+SweepPlotDialog::SweepPlotDialog(wxWindow* parent, int index)
     : SweepPlotDialogBase( parent, wxID_ANY, _("Sweep Plot"), wxDefaultPosition, wxDefaultSize,
-                           (preferences.m_cbShowTitleBar->GetValue() ? wxCAPTION|wxDEFAULT_DIALOG_STYLE : 0)
+                           (PlotConfigurationDialog::ShowTitleBar(index) ? wxCAPTION|wxDEFAULT_DIALOG_STYLE : 0)
                            |wxRESIZE_BORDER|wxSUNKEN_BORDER|wxWANTS_CHARS),
-      m_sweepplot_pi(_sweepplot_pi), m_preferences(preferences),
+      initialized(false),
+      m_configuration(parent, *this, index),
       m_lastTimerTotalSeconds(0)
 {
     m_tRefreshTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
@@ -42,14 +43,14 @@ SweepPlotDialog::SweepPlotDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi, 
     m_tRefreshTimer.Start(1000);
 
 #define PUSH_HISTORY_TRACE(NAME) \
-    traces.push_back(new HistoryTrace(_T(#NAME), m_preferences.m_cb##NAME, NAME));
+    traces.push_back(new HistoryTrace(_T(#NAME), m_configuration.m_cb##NAME, NAME));
 
     Plot *speedPlot = new Plot(_("Speed"), false);
     speedPlot->PUSH_HISTORY_TRACE(SOG);
     speedPlot->PUSH_HISTORY_TRACE(PDS10);
     speedPlot->PUSH_HISTORY_TRACE(PDS60);
     speedPlot->traces.push_back
-        (new VMGTrace(_T("VMG"), m_preferences.m_cbVMG));
+        (new VMGTrace(_T("VMG"), m_configuration.m_cbVMG));
     m_plots.push_back(speedPlot);
 
     Plot *coursePlot = new Plot(_("Course"), true);
@@ -61,15 +62,33 @@ SweepPlotDialog::SweepPlotDialog(wxWindow* parent, sweepplot_pi &_sweepplot_pi, 
 
     Plot *courseFFTWPlot = new Plot(_("Course FFTW"), false);
     courseFFTWPlot->traces.push_back
-        (new HistoryFFTWTrace(_T("Course FFTW"), m_preferences.m_cbCourseFFTWPlot, COG));
+        (new HistoryFFTWTrace(_T("Course FFTW"), m_configuration.m_cbCourseFFTWPlot, COG));
     m_plots.push_back(courseFFTWPlot);
 
 #if 0
     Plot *vmgPlot = new Plot(_("VMG"), false);
     vmgPlot->traces.push_back
-        (new VMGTrace(_T("VMG"), m_preferences.m_cbVMG));
+        (new VMGTrace(_T("VMG"), m_configuration.m_cbVMG));
     m_plots.push_back(vmgPlot);
 #endif
+
+    Plot *windSpeedPlot = new Plot(_("Wind Speed"), false);
+    windSpeedPlot->PUSH_HISTORY_TRACE(AWS);
+    windSpeedPlot->PUSH_HISTORY_TRACE(TWS);
+    m_plots.push_back(windSpeedPlot);
+
+    Plot *windDirectionPlot = new Plot(_("Wind Angle"), true);
+    windDirectionPlot->PUSH_HISTORY_TRACE(AWA);
+    windDirectionPlot->PUSH_HISTORY_TRACE(TWA);
+    windDirectionPlot->PUSH_HISTORY_TRACE(TWD);
+    m_plots.push_back(windDirectionPlot);
+
+    Plot *barometerPlot = new Plot(_("Barometer"), false);
+    barometerPlot->PUSH_HISTORY_TRACE(BAR);
+    m_plots.push_back(barometerPlot);
+
+    initialized = true;
+    SetupPlot();
 }
 
 SweepPlotDialog::~SweepPlotDialog()
@@ -85,7 +104,7 @@ void SweepPlotDialog::Relay( wxKeyEvent& event )
 
 void SweepPlotDialog::OnDoubleClick( wxMouseEvent& event )
 {
-    m_sweepplot_pi.m_PreferencesDialog->Show();
+    m_configuration.Show();
 }
 
 void SweepPlotDialog::OnPaint( wxPaintEvent& event )
@@ -95,13 +114,13 @@ void SweepPlotDialog::OnPaint( wxPaintEvent& event )
         return;
 
     wxPaintDC dc( window );
-    dc.SetFont(m_preferences.m_fpPlotFont->GetSelectedFont());
+    dc.SetFont(m_configuration.m_fpPlotFont->GetSelectedFont());
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
     double vmgcourse;
-    m_preferences.m_tVMGCourse->GetValue().ToDouble(&vmgcourse);
-    PlotSettings settings(PlotColorSchemes[m_preferences.m_cColors->GetSelection()],
-                          TotalSeconds(), (PlotStyle)m_preferences.m_cPlotStyle->GetSelection(), vmgcourse);
+    m_configuration.m_tVMGCourse->GetValue().ToDouble(&vmgcourse);
+    PlotSettings settings(PlotColorSchemes[m_configuration.m_cColors->GetSelection()],
+                          TotalSeconds(), (PlotStyle)m_configuration.m_cPlotStyle->GetSelection(), vmgcourse);
 
     window->SetBackgroundColour(settings.colors.BackgroundColor);
 
@@ -110,7 +129,7 @@ void SweepPlotDialog::OnPaint( wxPaintEvent& event )
         return;
     }
 
-    int PlotHeight = wxMax(m_preferences.PlotMinHeight(),
+    int PlotHeight = wxMax(m_configuration.PlotMinHeight(),
                            window->GetSize().y / PlotCount());
 
     int plotcount = 0;
@@ -152,8 +171,11 @@ void SweepPlotDialog::OnPaint( wxPaintEvent& event )
 
 void SweepPlotDialog::SetupPlot()
 {
+    if(!initialized)
+        return;
+            
     int count = wxMax(PlotCount(), 1); // even with no plots, make size of one plot
-    int minh = m_preferences.PlotMinHeight() * count;
+    int minh = m_configuration.PlotMinHeight() * count;
 
     int w, h;
     m_swPlots->GetSize(&w, &h);
@@ -161,22 +183,22 @@ void SweepPlotDialog::SetupPlot()
 
     if(h < minh) {
         // hack needed to make scrollbar appear
-        wxSize s = m_sweepplot_pi.m_SweepPlotDialog->GetSize();
+        wxSize s = GetSize();
         SetSize(s.x+1, s.y);
         SetSize(s.x, s.y);
     }
 
-    SetTransparent(255 - 255*m_preferences.m_sPlotTransparency->GetValue()/100);
+    SetTransparent(255 - 255*m_configuration.m_sPlotTransparency->GetValue()/100);
 }
 
 void SweepPlotDialog::OnConfiguration( wxCommandEvent& event )
 {
-    m_preferences.Show();
+    m_configuration.Show();
 }
 
 void SweepPlotDialog::OnClose( wxCloseEvent& )
 {
-    SetToolbarItemState(m_sweepplot_pi.m_leftclick_tool_id, false);
+//    SetToolbarItemState(m_sweepplot_pi.m_leftclick_tool_id, false);
     Hide();
 }
 

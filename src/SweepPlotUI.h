@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Dec  8 2015)
+// C++ code generated with wxFormBuilder (version Jul 15 2016)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -28,9 +28,9 @@
 #include <wx/textctrl.h>
 #include <wx/statbox.h>
 #include <wx/panel.h>
-#include <wx/stattext.h>
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
+#include <wx/stattext.h>
 #include <wx/fontpicker.h>
 #include <wx/spinctrl.h>
 #include <wx/choice.h>
@@ -82,9 +82,9 @@ class SweepPlotDialogBase : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class PreferencesDialogBase
+/// Class PlotConfigurationDialogBase
 ///////////////////////////////////////////////////////////////////////////////
-class PreferencesDialogBase : public wxDialog 
+class PlotConfigurationDialogBase : public wxDialog 
 {
 	private:
 	
@@ -93,21 +93,13 @@ class PreferencesDialogBase : public wxDialog
 		wxButton* m_button5;
 		wxPanel* m_panel2;
 		wxPanel* m_panel3;
-		wxStaticText* m_staticText15;
 		wxPanel* m_panel4;
-		wxStaticText* m_staticText16;
-		wxPanel* m_panel5;
-		wxStaticText* m_staticText161;
 		wxStaticText* m_staticText13;
 		wxStaticText* m_staticText12;
 		wxSpinCtrl* m_sPlotMinHeight;
 		wxStaticText* m_staticText121;
 		wxStaticText* m_staticText11;
 		wxStaticText* m_staticText122;
-		wxStaticText* m_staticText1411;
-		wxStaticText* m_staticText1511;
-		wxStaticText* m_staticText721;
-		wxStaticText* m_staticText2311;
 		wxButton* m_bAbout;
 		wxStdDialogButtonSizer* m_sdbSizer1;
 		wxButton* m_sdbSizer1OK;
@@ -132,11 +124,47 @@ class PreferencesDialogBase : public wxDialog
 		wxCheckBox* m_cbPDC60;
 		wxCheckBox* m_cbHDG;
 		wxCheckBox* m_cbCourseFFTWPlot;
+		wxCheckBox* m_cbAWS;
+		wxCheckBox* m_cbTWS;
+		wxCheckBox* m_cbAWA;
+		wxCheckBox* m_cbTWA;
+		wxCheckBox* m_cbTWD;
+		wxPanel* m_panel5;
+		wxCheckBox* m_cbBAR;
 		wxFontPickerCtrl* m_fpPlotFont;
 		wxChoice* m_cColors;
 		wxSpinCtrl* m_sPlotTransparency;
 		wxChoice* m_cPlotStyle;
 		wxCheckBox* m_cbShowTitleBar;
+		
+		PlotConfigurationDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		~PlotConfigurationDialogBase();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class PreferencesDialogBase
+///////////////////////////////////////////////////////////////////////////////
+class PreferencesDialogBase : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText14;
+		wxStaticText* m_staticText1411;
+		wxStaticText* m_staticText1511;
+		wxStaticText* m_staticText721;
+		wxStaticText* m_staticText2311;
+		wxButton* m_bAbout;
+		wxStdDialogButtonSizer* m_sdbSizer1;
+		wxButton* m_sdbSizer1OK;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		wxSpinCtrl* m_sPlotCount;
 		wxCheckBox* m_cbCoursePrediction;
 		wxCheckBox* m_cbCoursePredictionBlended;
 		wxSpinCtrl* m_sCoursePredictionLength;
