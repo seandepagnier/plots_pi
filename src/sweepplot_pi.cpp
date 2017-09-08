@@ -209,12 +209,22 @@ void sweepplot_pi::OnInitTimer( wxTimerEvent & )
 
 void sweepplot_pi::OnToolbarToolCallback(int id)
 {
-    if(!m_PreferencesDialog)
-        return;
-
-    if(m_SweepPlotDialogs.size())
-        m_SweepPlotDialogs[0]->Show(!m_SweepPlotDialogs[0]->IsShown());
     CreatePlots();
+
+    bool shown = !m_SweepPlotDialogs[0]->IsShown();
+    for(unsigned int i=0; i<m_SweepPlotDialogs.size(); i++) {
+        SweepPlotDialog* dlg = m_SweepPlotDialogs[i];
+        if(dlg->IsShown() == shown)
+            continue;
+        dlg->Show(shown);
+        if(shown)
+            dlg->SetupPlot();
+
+        wxPoint p = dlg->GetPosition();
+        dlg->Move(0, 0);        // workaround for gtk autocentre dialog behavior
+        dlg->Move(p);
+    }
+
     RearrangeWindow();
 }
 
@@ -510,19 +520,5 @@ void sweepplot_pi::CreatePlots()
         wxIcon icon;
         icon.CopyFromBitmap(*_img_sweepplot);
         dlg->SetIcon(icon);
-    }
-
-    for(unsigned int i=0; i<m_SweepPlotDialogs.size(); i++) {
-        bool shown = m_SweepPlotDialogs[0]->IsShown();
-        SweepPlotDialog* dlg = m_SweepPlotDialogs[i];
-        if(dlg->IsShown() == shown)
-            continue;
-        dlg->Show(shown);
-        if(shown)
-            dlg->SetupPlot();
-
-        wxPoint p = dlg->GetPosition();
-        dlg->Move(0, 0);        // workaround for gtk autocentre dialog behavior
-        dlg->Move(p);
     }
 }
