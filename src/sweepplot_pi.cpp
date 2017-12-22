@@ -434,8 +434,14 @@ void sweepplot_pi::SetNMEASentence( wxString &sentence )
             // Option for True vs Magnetic
 //            wxString windunit;
             if( nmea.Mwv.WindAngle < 999. ) { //if WindAngleTrue is available, use it ...
-                AddData(AWA, nmea.Mwv.WindAngle);
-                AddData(AWS, speed);
+                if(nmea.Mwv.Reference == _T("R")) {
+                    AddData(AWA, nmea.Mwv.WindAngle);
+                    AddData(AWS, speed);
+                } else if(nmea.Mwv.Reference == _T("T")) {
+
+                    AddData(TWA, nmea.Mwv.WindAngle);
+                    AddData(TWS, speed);
+                }
             } 
         }
     } else if(nmea.LastSentenceIDReceived == _T("MDA")) {
