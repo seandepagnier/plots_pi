@@ -2,47 +2,54 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-24 14:39-0300\n"
-"PO-Revision-Date: 2016-02-24 14:34-0500\n"
+"POT-Creation-Date: 2018-02-15 13:41-0300\n"
+"PO-Revision-Date: 2018-02-15 13:04-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
-"Language-Team: Finnish\n"
-"Language: fi_FI\n"
+"Language-Team: Chinese Traditional\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: opencpn\n"
-"X-Crowdin-Language: fi\n"
+"X-Crowdin-Language: zh-TW\n"
 "X-Crowdin-File: /plugins/sweepplot_pi/po/sweepplot_pi.pot\n"
 
-#: src/SweepPlotDialog.cpp:34 src/SweepPlotUI.h:72
+#: src/SweepPlotDialog.cpp:34 src/SweepPlotUI.h:74
 msgid "Sweep Plot"
 msgstr ""
 
-#: src/SweepPlotDialog.cpp:47 src/SweepPlotUI.cpp:161
+#: src/SweepPlotDialog.cpp:48 src/SweepPlotUI.cpp:183
 msgid "Speed"
 msgstr ""
 
-#: src/SweepPlotDialog.cpp:53 src/SweepPlotUI.cpp:188
+#: src/SweepPlotDialog.cpp:56 src/SweepPlotUI.cpp:167 src/SweepPlotUI.cpp:209
 msgid "Course"
 msgstr ""
 
-#: src/SweepPlotDialog.cpp:60
+#: src/SweepPlotDialog.cpp:63
 msgid "Course FFTW"
 msgstr ""
 
-#: src/SweepPlotDialog.cpp:98
+#: src/SweepPlotDialog.cpp:69 src/SweepPlotUI.cpp:160
+msgid "VMG"
+msgstr ""
+
+#: src/SweepPlotDialog.cpp:75 src/SweepPlotUI.cpp:226
+msgid "Wind Speed"
+msgstr ""
+
+#: src/SweepPlotDialog.cpp:80
+msgid "Wind Angle"
+msgstr ""
+
+#: src/SweepPlotDialog.cpp:86 src/SweepPlotUI.cpp:260
+msgid "Barometer"
+msgstr ""
+
+#: src/SweepPlotDialog.cpp:128
 msgid "No Plots Enabled"
-msgstr ""
-
-#: src/PreferencesDialog.cpp:112
-msgid "Position Determined Speed (PDS) finds the speed of the vessel by comparing the current position to the position from the past.  For example PDS10 (10 seconds) takes the position from 10 seconds before, and determines the vessel speed by taking the distance from where it was then.\n\n"
-"This method filters the data giving a much steadier reading, but also shows a comparison of useful speed traveled rather than the immediate gps speed.  Consider autosteering that is under or over dampened, or the case of large waves, even with an ideal autopilot. This will cause the boat to not travel in a straight line, but instead in an S curve.The gps speed will read higher than the position determined speed."
-msgstr ""
-
-#: src/PreferencesDialog.cpp:121
-msgid "Positon Determined Speed"
 msgstr ""
 
 #: src/SweepPlotUI.cpp:35
@@ -89,143 +96,164 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:123
-msgid "Plots"
-msgstr ""
-
-#: src/SweepPlotUI.cpp:144
+#: src/SweepPlotUI.cpp:143
 msgid "GPS Speed (SOG)"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:148
+#: src/SweepPlotUI.cpp:147
 msgid "PDS 10"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:151
-msgid "?"
-msgstr ""
-
-#: src/SweepPlotUI.cpp:154
+#: src/SweepPlotUI.cpp:150
 msgid "PDS 60"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:168
+#: src/SweepPlotUI.cpp:153
+msgid "?"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:170
+msgid "0"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:190
 msgid "GPS Course (COG)"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:172
+#: src/SweepPlotUI.cpp:193
 msgid "PDC 10"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:175
+#: src/SweepPlotUI.cpp:196
 msgid "PDC 60"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:178
+#: src/SweepPlotUI.cpp:199
 msgid "Heading"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:181
+#: src/SweepPlotUI.cpp:202
 msgid "FFTW Plot"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:195 src/SweepPlotUI.cpp:210 src/SweepPlotUI.cpp:225
-msgid "Implement Me"
+#: src/SweepPlotUI.cpp:216
+msgid "Apparent Wind Speed (NMEA MWV)"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:203
-msgid "Wind Speed"
-msgstr ""
-
-#: src/SweepPlotUI.cpp:218
-msgid "Wind Direction"
+#: src/SweepPlotUI.cpp:219
+msgid "True Wind Speed (via gpps speed)"
 msgstr ""
 
 #: src/SweepPlotUI.cpp:233
-msgid "Cross Track Error"
+msgid "Apparent Wind Direction (NMEA MWV)"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:254
+#: src/SweepPlotUI.cpp:236
+msgid "True Wind Angle (via GPS speed)"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:239
+msgid "True Wind Direction (via GPS speed)"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:246
+msgid "Wind Direction"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:253
+msgid "Barometer Pressure( (NMEA MDA)"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:281
 msgid "Font"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:262
+#: src/SweepPlotUI.cpp:289
 msgid "Minimum Height"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:269
+#: src/SweepPlotUI.cpp:296
 msgid "Colors"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:273
+#: src/SweepPlotUI.cpp:300
 msgid "Standard"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:273
+#: src/SweepPlotUI.cpp:300
 msgid "Light"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:273
+#: src/SweepPlotUI.cpp:300
 msgid "Retro"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:273
+#: src/SweepPlotUI.cpp:300
 msgid "Sky"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:279
+#: src/SweepPlotUI.cpp:306
 msgid "Transparency"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:286
+#: src/SweepPlotUI.cpp:313
 msgid "Style"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:290
+#: src/SweepPlotUI.cpp:317
 msgid "Continuous"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:290
+#: src/SweepPlotUI.cpp:317
 msgid "Sweep"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:304
-msgid "Show Title Bar (restart required)"
+#: src/SweepPlotUI.cpp:331
+msgid "Show Title Bar (restart required)\n"
+"Window Manager may not support this"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:318
-msgid "Course Prediction Display (from ship on main chart)"
-msgstr ""
-
-#: src/SweepPlotUI.cpp:325
-msgid "Enable"
-msgstr ""
-
-#: src/SweepPlotUI.cpp:329
-msgid "Blended (Requires OpenGL)"
-msgstr ""
-
-#: src/SweepPlotUI.cpp:335
-msgid "Length"
-msgstr ""
-
-#: src/SweepPlotUI.cpp:342
-msgid "minutes"
-msgstr ""
-
-#: src/SweepPlotUI.cpp:346
-msgid "Using"
-msgstr ""
-
-#: src/SweepPlotUI.cpp:353
-msgid "seconds"
-msgstr ""
-
-#: src/SweepPlotUI.cpp:368
+#: src/SweepPlotUI.cpp:343 src/SweepPlotUI.cpp:467
 msgid "About"
 msgstr ""
 
-#: src/SweepPlotUI.cpp:418
+#: src/SweepPlotUI.cpp:396
+msgid "Plots"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:403
+msgid "Plot Count"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:417
+msgid "Course Prediction Display (from ship on main chart)"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:424
+msgid "Enable"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:428
+msgid "Blended (Requires OpenGL)"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:434
+msgid "Length"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:441
+msgid "minutes"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:445
+msgid "Using"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:452
+msgid "seconds"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:507
 msgid "The sweepplot plugin for opencpn is\n"
 "designed to monitor speed and course to make the results of changes to sail sweep obvious.  It may be used to better understand the sailing characteristics of a particular vessel, or for fine tuning to give optimal results.\n\n"
 "For example, tightening a vang or adjusting a traveler may produce such a slight result that it is difficult to gauge the result.  This plugin can make gps speed feedback visible.\n\n"
@@ -238,19 +266,19 @@ msgid "The sweepplot plugin for opencpn is\n"
 "Many thanks to all of the translators and testers."
 msgstr ""
 
-#: src/SweepPlotUI.cpp:428
+#: src/SweepPlotUI.cpp:517
 msgid "About Author"
 msgstr ""
 
-#: src/SweepPlotUI.h:141
+#: src/SweepPlotUI.h:173
 msgid "SweepPlot Preferences"
 msgstr ""
 
-#: src/SweepPlotUI.h:165
+#: src/SweepPlotUI.h:197
 msgid "About SweepPlot"
 msgstr ""
 
-#: src/sweepplot_pi.cpp:98 src/sweepplot_pi.cpp:158
+#: src/sweepplot_pi.cpp:94 src/sweepplot_pi.cpp:98 src/sweepplot_pi.cpp:158
 msgid "SweepPlot"
 msgstr ""
 
