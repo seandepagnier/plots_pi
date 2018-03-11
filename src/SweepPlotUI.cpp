@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jul 15 2016)
+// C++ code generated with wxFormBuilder (version Feb 20 2018)
 // http://www.wxformbuilder.org/
 //
-// PLEASE DO "NOT" EDIT THIS FILE!
+// PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
 #include "SweepPlotUI.h"
@@ -164,10 +164,10 @@ PlotConfigurationDialogBase::PlotConfigurationDialogBase( wxWindow* parent, wxWi
 	fgSizer171->SetFlexibleDirection( wxBOTH );
 	fgSizer171->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_cbVMG = new wxCheckBox( m_panel1, wxID_ANY, _("Course"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbVMG = new wxCheckBox( sbSizer3->GetStaticBox(), wxID_ANY, _("Course"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer171->Add( m_cbVMG, 0, wxALL, 5 );
 	
-	m_tVMGCourse = new wxTextCtrl( m_panel1, wxID_ANY, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_tVMGCourse = new wxTextCtrl( sbSizer3->GetStaticBox(), wxID_ANY, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer171->Add( m_tVMGCourse, 0, wxALL, 5 );
 	
 	
@@ -307,7 +307,7 @@ PlotConfigurationDialogBase::PlotConfigurationDialogBase( wxWindow* parent, wxWi
 	m_staticText11->Wrap( -1 );
 	fgSizer101->Add( m_staticText11, 0, wxALL, 5 );
 	
-	m_sPlotTransparency = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 20 );
+	m_sPlotTransparency = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 90, 20 );
 	fgSizer101->Add( m_sPlotTransparency, 0, wxALL, 5 );
 	
 	m_staticText122 = new wxStaticText( this, wxID_ANY, _("Style"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -400,11 +400,11 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	fgSizer20->SetFlexibleDirection( wxBOTH );
 	fgSizer20->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText14 = new wxStaticText( this, wxID_ANY, _("Plot Count"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText14 = new wxStaticText( sbSizer6->GetStaticBox(), wxID_ANY, _("Plot Count"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText14->Wrap( -1 );
 	fgSizer20->Add( m_staticText14, 0, wxALL, 5 );
 	
-	m_sPlotCount = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 1 );
+	m_sPlotCount = new wxSpinCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 1 );
 	fgSizer20->Add( m_sPlotCount, 0, wxALL, 5 );
 	
 	
@@ -421,35 +421,35 @@ PreferencesDialogBase::PreferencesDialogBase( wxWindow* parent, wxWindowID id, c
 	fgSizer1021->SetFlexibleDirection( wxBOTH );
 	fgSizer1021->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_cbCoursePrediction = new wxCheckBox( this, wxID_ANY, _("Enable"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbCoursePrediction = new wxCheckBox( sbSizer61->GetStaticBox(), wxID_ANY, _("Enable"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_cbCoursePrediction->SetValue(true); 
 	fgSizer1021->Add( m_cbCoursePrediction, 0, wxALL, 5 );
 	
-	m_cbCoursePredictionBlended = new wxCheckBox( this, wxID_ANY, _("Blended (Requires OpenGL)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbCoursePredictionBlended = new wxCheckBox( sbSizer61->GetStaticBox(), wxID_ANY, _("Blended (Requires OpenGL)"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer1021->Add( m_cbCoursePredictionBlended, 0, wxALL, 5 );
 	
 	
 	fgSizer1021->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_staticText1411 = new wxStaticText( this, wxID_ANY, _("Length"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1411 = new wxStaticText( sbSizer61->GetStaticBox(), wxID_ANY, _("Length"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText1411->Wrap( -1 );
 	fgSizer1021->Add( m_staticText1411, 0, wxALL, 5 );
 	
-	m_sCoursePredictionLength = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 60, 1000000, 0 );
+	m_sCoursePredictionLength = new wxSpinCtrl( sbSizer61->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 60, 1000000, 0 );
 	fgSizer1021->Add( m_sCoursePredictionLength, 0, wxALL, 5 );
 	
-	m_staticText1511 = new wxStaticText( this, wxID_ANY, _("minutes"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1511 = new wxStaticText( sbSizer61->GetStaticBox(), wxID_ANY, _("minutes"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText1511->Wrap( -1 );
 	fgSizer1021->Add( m_staticText1511, 0, wxALL, 5 );
 	
-	m_staticText721 = new wxStaticText( this, wxID_ANY, _("Using"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText721 = new wxStaticText( sbSizer61->GetStaticBox(), wxID_ANY, _("Using"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText721->Wrap( -1 );
 	fgSizer1021->Add( m_staticText721, 0, wxALL, 5 );
 	
-	m_sCoursePredictionSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 100, 10 );
+	m_sCoursePredictionSeconds = new wxSpinCtrl( sbSizer61->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 100, 10 );
 	fgSizer1021->Add( m_sCoursePredictionSeconds, 0, wxALL, 5 );
 	
-	m_staticText2311 = new wxStaticText( this, wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2311 = new wxStaticText( sbSizer61->GetStaticBox(), wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2311->Wrap( -1 );
 	fgSizer1021->Add( m_staticText2311, 0, wxALL, 5 );
 	

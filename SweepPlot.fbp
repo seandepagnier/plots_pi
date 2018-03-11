@@ -14,6 +14,7 @@
         <property name="file">SweepPlotUI</property>
         <property name="first_id">1000</property>
         <property name="help_provider">none</property>
+        <property name="indent_with_spaces"></property>
         <property name="internationalize">1</property>
         <property name="name">sweepplot</property>
         <property name="namespace"></property>
@@ -1095,6 +1096,7 @@
                                                     <property name="minimum_size"></property>
                                                     <property name="name">sbSizer3</property>
                                                     <property name="orient">wxVERTICAL</property>
+                                                    <property name="parent">1</property>
                                                     <property name="permission">none</property>
                                                     <event name="OnUpdateUI"></event>
                                                     <object class="sizeritem" expanded="0">
@@ -3288,7 +3290,7 @@
                                 <property name="hidden">0</property>
                                 <property name="id">wxID_ANY</property>
                                 <property name="initial">20</property>
-                                <property name="max">100</property>
+                                <property name="max">90</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>
@@ -3840,6 +3842,7 @@
                         <property name="minimum_size"></property>
                         <property name="name">sbSizer6</property>
                         <property name="orient">wxVERTICAL</property>
+                        <property name="parent">1</property>
                         <property name="permission">none</property>
                         <event name="OnUpdateUI"></event>
                         <object class="sizeritem" expanded="1">
@@ -4043,6 +4046,7 @@
                         <property name="minimum_size"></property>
                         <property name="name">sbSizer61</property>
                         <property name="orient">wxVERTICAL</property>
+                        <property name="parent">1</property>
                         <property name="permission">none</property>
                         <event name="OnUpdateUI"></event>
                         <object class="sizeritem" expanded="0">

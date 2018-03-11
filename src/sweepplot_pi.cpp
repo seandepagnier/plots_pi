@@ -364,7 +364,7 @@ bool sweepplot_pi::SaveConfig(void)
 
     for(unsigned int i=0; i<m_SweepPlotDialogs.size(); i++) {
         SweepPlotDialog* dlg = m_SweepPlotDialogs[i];
-        pConf->SetPath ( _T ( "/Settings/SweepPlot/" ) + wxString::Format(_T("%d"), i));
+        pConf->SetPath ( wxString::Format( "/Settings/SweepPlot/%d", i ) );
 
         wxPoint p = dlg->GetPosition();
         wxSize s = dlg->GetSize();
@@ -517,7 +517,7 @@ void sweepplot_pi::CreatePlots()
         SweepPlotDialog *dlg = new SweepPlotDialog(m_parent_window, i);
         m_SweepPlotDialogs.push_back(dlg);
 
-        pConf->SetPath ( _T ( "/Settings/SweepPlot/" ) + wxString::Format(_T("%d"), i));
+        pConf->SetPath ( wxString::Format( "/Settings/SweepPlot/%d", i ) );
         
         dlg->Move(pConf->Read ( _T ( "DialogPosX" ), 20L ),
                   pConf->Read ( _T ( "DialogPosY" ), 20L ));

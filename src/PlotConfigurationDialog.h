@@ -51,4 +51,5 @@ private:
     };
 
     std::list<cbState> m_cbStates;
+    int m_index;
 };

@@ -31,7 +31,7 @@
 #include "SweepPlotDialog.h"
 #include "AboutDialog.h"
 
-PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, SweepPlotDialog &m_dialog, int index) : PlotConfigurationDialogBase(parent), m_SweepPlotDialog(m_dialog)
+PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, SweepPlotDialog &m_dialog, int index) : PlotConfigurationDialogBase(parent), m_SweepPlotDialog(m_dialog), m_index(index)
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
 
@@ -51,7 +51,7 @@ PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, SweepPlotDial
     ADD_CB(CourseFFTWPlot);
     ADD_CB(VMG);
 
-    pConf->SetPath ( _T ( "/Settings/SweepPlot" ) );
+    pConf->SetPath ( wxString::Format( "/Settings/SweepPlot/%d", index ) );
 
     for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
         it->cb->SetValue(pConf->Read(_T("Plot ") + it->name, it->cb->GetValue()));
@@ -69,7 +69,11 @@ PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, SweepPlotDial
     m_cColors->SetSelection(pConf->Read(_T("PlotColors"), m_cColors->GetSelection()));
     m_sPlotTransparency->SetValue(pConf->Read(_T("PlotTransparency"), m_sPlotTransparency->GetValue()));
     m_cPlotStyle->SetSelection(pConf->Read(_T("PlotStyle"), m_cPlotStyle->GetSelection()));
+#ifdef WIN32
+    m_cbShowTitleBar->Disable();
+#else
     m_cbShowTitleBar->SetValue(pConf->Read(_T("PlotShowTitleBar"), m_cbShowTitleBar->GetValue()));
+#endif
 }
 
 PlotConfigurationDialog::~PlotConfigurationDialog()
@@ -79,7 +83,7 @@ PlotConfigurationDialog::~PlotConfigurationDialog()
     if(!pConf)
         return;
 
-    pConf->SetPath ( _T ( "/Settings/SweepPlot" ) );
+    pConf->SetPath ( wxString::Format( "/Settings/SweepPlot/%d", m_index ) );
 
     for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
         pConf->Write(_T("Plot ") + it->name, it->cb->GetValue());
@@ -129,6 +133,11 @@ void PlotConfigurationDialog::OnAbout(wxCommandEvent& event)
 
 bool PlotConfigurationDialog::ShowTitleBar(int index)
 {
+#ifdef WIN32
+    return true;
+#else
     wxFileConfig *pConf = GetOCPNConfigObject();
+    pConf->SetPath ( wxString::Format( "/Settings/SweepPlot/%d", index ) );
     return pConf->Read(_T("PlotShowTitleBar"), true);
+#endif
 }
