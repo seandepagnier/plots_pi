@@ -1,0 +1,303 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: opencpn\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-15 13:41-0300\n"
+"PO-Revision-Date: 2018-02-15 13:05-0500\n"
+"Last-Translator: nohal <pavel@kalian.cz>\n"
+"Language-Team: Greek\n"
+"Language: el_GR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Language: el\n"
+"X-Crowdin-File: /plugins/sweepplot_pi/po/sweepplot_pi.pot\n"
+
+#: src/SweepPlotDialog.cpp:34 src/SweepPlotUI.h:74
+msgid "Sweep Plot"
+msgstr "Sweep Plot"
+
+#: src/SweepPlotDialog.cpp:48 src/SweepPlotUI.cpp:183
+msgid "Speed"
+msgstr "Ταχύτητα"
+
+#: src/SweepPlotDialog.cpp:56 src/SweepPlotUI.cpp:167 src/SweepPlotUI.cpp:209
+msgid "Course"
+msgstr "Πορεία"
+
+#: src/SweepPlotDialog.cpp:63
+msgid "Course FFTW"
+msgstr "Πορεία FFTW"
+
+#: src/SweepPlotDialog.cpp:69 src/SweepPlotUI.cpp:160
+msgid "VMG"
+msgstr ""
+
+#: src/SweepPlotDialog.cpp:75 src/SweepPlotUI.cpp:226
+msgid "Wind Speed"
+msgstr "Ταχύτητα ανέμου"
+
+#: src/SweepPlotDialog.cpp:80
+msgid "Wind Angle"
+msgstr ""
+
+#: src/SweepPlotDialog.cpp:86 src/SweepPlotUI.cpp:260
+msgid "Barometer"
+msgstr ""
+
+#: src/SweepPlotDialog.cpp:128
+msgid "No Plots Enabled"
+msgstr "Τα διαγράμματα δεν είναι ενεργά"
+
+#: src/SweepPlotUI.cpp:35
+msgid "5 m"
+msgstr "5 m"
+
+#: src/SweepPlotUI.cpp:39
+msgid "20 m"
+msgstr "20 m"
+
+#: src/SweepPlotUI.cpp:42
+msgid "1 h"
+msgstr "1 h"
+
+#: src/SweepPlotUI.cpp:45
+msgid "4 h"
+msgstr "4 h"
+
+#: src/SweepPlotUI.cpp:48
+msgid "8 h"
+msgstr "8 h"
+
+#: src/SweepPlotUI.cpp:51
+msgid "24 h"
+msgstr "24 h"
+
+#: src/SweepPlotUI.cpp:54
+msgid "3 d"
+msgstr "3 ημ."
+
+#: src/SweepPlotUI.cpp:57
+msgid "10 d"
+msgstr "10 ημ."
+
+#: src/SweepPlotUI.cpp:60
+msgid "30 d"
+msgstr "30 ημ."
+
+#: src/SweepPlotUI.cpp:63
+msgid "60 d"
+msgstr "60 ημ."
+
+#: src/SweepPlotUI.cpp:69
+msgid "Configuration"
+msgstr "Ρυθμίσεις παραμέτρων"
+
+#: src/SweepPlotUI.cpp:143
+msgid "GPS Speed (SOG)"
+msgstr "Ταχύτητα GPS (SOG)"
+
+#: src/SweepPlotUI.cpp:147
+msgid "PDS 10"
+msgstr "PDS 10"
+
+#: src/SweepPlotUI.cpp:150
+msgid "PDS 60"
+msgstr "PDS 60"
+
+#: src/SweepPlotUI.cpp:153
+msgid "?"
+msgstr "?"
+
+#: src/SweepPlotUI.cpp:170
+msgid "0"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:190
+msgid "GPS Course (COG)"
+msgstr "Πορεία GPS (COG)"
+
+#: src/SweepPlotUI.cpp:193
+msgid "PDC 10"
+msgstr "PDC 10"
+
+#: src/SweepPlotUI.cpp:196
+msgid "PDC 60"
+msgstr "PDC 60"
+
+#: src/SweepPlotUI.cpp:199
+msgid "Heading"
+msgstr "Πορεία"
+
+#: src/SweepPlotUI.cpp:202
+msgid "FFTW Plot"
+msgstr "Διάγραμμα FFTW"
+
+#: src/SweepPlotUI.cpp:216
+msgid "Apparent Wind Speed (NMEA MWV)"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:219
+msgid "True Wind Speed (via gpps speed)"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:233
+msgid "Apparent Wind Direction (NMEA MWV)"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:236
+msgid "True Wind Angle (via GPS speed)"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:239
+msgid "True Wind Direction (via GPS speed)"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:246
+msgid "Wind Direction"
+msgstr "Κατεύθυνση ανέμου"
+
+#: src/SweepPlotUI.cpp:253
+msgid "Barometer Pressure( (NMEA MDA)"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:281
+msgid "Font"
+msgstr "Γραμματοσειρά"
+
+#: src/SweepPlotUI.cpp:289
+msgid "Minimum Height"
+msgstr "Ελάχιστο ύψος"
+
+#: src/SweepPlotUI.cpp:296
+msgid "Colors"
+msgstr "Χρώματα"
+
+#: src/SweepPlotUI.cpp:300
+msgid "Standard"
+msgstr "Κανονικό"
+
+#: src/SweepPlotUI.cpp:300
+msgid "Light"
+msgstr "Φωτεινό"
+
+#: src/SweepPlotUI.cpp:300
+msgid "Retro"
+msgstr "Ρετρό"
+
+#: src/SweepPlotUI.cpp:300
+msgid "Sky"
+msgstr "Ουρανός"
+
+#: src/SweepPlotUI.cpp:306
+msgid "Transparency"
+msgstr "Διαφάνεια"
+
+#: src/SweepPlotUI.cpp:313
+msgid "Style"
+msgstr "Στιλ"
+
+#: src/SweepPlotUI.cpp:317
+msgid "Continuous"
+msgstr "Συνεχές"
+
+#: src/SweepPlotUI.cpp:317
+msgid "Sweep"
+msgstr "Sweep"
+
+#: src/SweepPlotUI.cpp:331
+msgid "Show Title Bar (restart required)\n"
+"Window Manager may not support this"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:343 src/SweepPlotUI.cpp:467
+msgid "About"
+msgstr "Περί"
+
+#: src/SweepPlotUI.cpp:396
+msgid "Plots"
+msgstr "Διαγραάμματα"
+
+#: src/SweepPlotUI.cpp:403
+msgid "Plot Count"
+msgstr ""
+
+#: src/SweepPlotUI.cpp:417
+msgid "Course Prediction Display (from ship on main chart)"
+msgstr "Υπολογισμένη πορεία (από το πλοίο στον χάρτη)"
+
+#: src/SweepPlotUI.cpp:424
+msgid "Enable"
+msgstr "Ενεργοποίηση"
+
+#: src/SweepPlotUI.cpp:428
+msgid "Blended (Requires OpenGL)"
+msgstr "Ανάμικτα (απαιτεί OpenGL)"
+
+#: src/SweepPlotUI.cpp:434
+msgid "Length"
+msgstr "Μήκος"
+
+#: src/SweepPlotUI.cpp:441
+msgid "minutes"
+msgstr "λεπτά"
+
+#: src/SweepPlotUI.cpp:445
+msgid "Using"
+msgstr "Χρησιμοποιώντας"
+
+#: src/SweepPlotUI.cpp:452
+msgid "seconds"
+msgstr "δευτερόλεπτα"
+
+#: src/SweepPlotUI.cpp:507
+msgid "The sweepplot plugin for opencpn is\n"
+"designed to monitor speed and course to make the results of changes to sail sweep obvious.  It may be used to better understand the sailing characteristics of a particular vessel, or for fine tuning to give optimal results.\n\n"
+"For example, tightening a vang or adjusting a traveler may produce such a slight result that it is difficult to gauge the result.  This plugin can make gps speed feedback visible.\n\n"
+"The predictor line allows setting the sample time for smoother prediction than the builtin predictor.  This is especially useful when traveling relatively slowly in areas with large waves.\n\n"
+"License: GPLv3+\n\n"
+"Source Code:\n"
+"https://github.com/seandepagnier/sweepplot_pi\n\n"
+"Author:\n"
+"Sean D'Epagnier\n\n"
+"Many thanks to all of the translators and testers."
+msgstr "Το πρόσθετο SweepPlot του OpenCPN\n"
+"σχεδιάστηκε για να παρουσιάζει την ταχύτητα και την πορεία για να δείχνει το αποτέλεσμα αλλαγών στα πανιά ενός ιστιοφόρου.  Χρησιμοποιείται για την κατανόηση των χαρακτηριστικών των πανιών, ή το καλύτερο τριμάρισμα.\n\n"
+"Π.χ., το σφίξιμο του boom-vang ή το τριμάρισμα του σιδηρόδρομου μπορεί να δώσει μια τόσο μικρή αλλαγή που να είναι δύσκολο να εκτιμηθεί αμέσως. Το παρόν πρόσθετο εξασφαλίζει και τη σωστή εκτίμηση της ταχύτητας gps.\n\n"
+"Η προβλεπόμενη γραμμή πορείας μπορεί να εξομαλυνθεί, μέσω του ρυθμού δειγματοληψίας,  σε σχέση με την πρόβλεψη του OpenCPN. Κάτι πολύ χρήσιμο σε αργές πλεύσεις με μεγάλα κύματα.\n\n"
+"License: GPLv3+\n\n"
+"Source Code:\n"
+"https://github.com/seandepagnier/sweepplot_pi\n\n"
+"Author:\n"
+"Sean D'Epagnier\n\n"
+"Ευχαριστίες στους μεταφραστές και τους δοκιμαστές."
+
+#: src/SweepPlotUI.cpp:517
+msgid "About Author"
+msgstr "Σχετικά με το συγγραφέα"
+
+#: src/SweepPlotUI.h:173
+msgid "SweepPlot Preferences"
+msgstr "Προτιμήσεις SweepPlot"
+
+#: src/SweepPlotUI.h:197
+msgid "About SweepPlot"
+msgstr "Σχετικά με SweepPlot"
+
+#: src/sweepplot_pi.cpp:94 src/sweepplot_pi.cpp:98 src/sweepplot_pi.cpp:158
+msgid "SweepPlot"
+msgstr "SweepPlot"
+
+#: src/sweepplot_pi.cpp:164
+msgid "SweepPlot PlugIn for OpenCPN"
+msgstr "Πρόσθετο SweepPlot για το OpenCPN"
+
+#: src/sweepplot_pi.cpp:169
+msgid "SweepPlot PlugIn for OpenCPN\n"
+"Plot speed and course over ground to make the result of small adjustments evident."
+msgstr "SweepPlot PlugIn για το OpenCPN\n"
+"Διαγράμματα πραγματικής ταχύτητας και πορείας για να φαίνεται το αποτέλεσμα μικρών προσαρμογών στο τριμάρισμα."
+

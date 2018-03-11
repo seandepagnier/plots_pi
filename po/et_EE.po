@@ -1,37 +1,36 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the sweepplot_pi package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: sweepplot_pi .\n"
+"Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-02-15 13:41-0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2018-02-15 13:04-0500\n"
+"Last-Translator: nohal <pavel@kalian.cz>\n"
+"Language-Team: Estonian\n"
+"Language: et_EE\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Language: et\n"
+"X-Crowdin-File: /plugins/sweepplot_pi/po/sweepplot_pi.pot\n"
 
 #: src/SweepPlotDialog.cpp:34 src/SweepPlotUI.h:74
 msgid "Sweep Plot"
-msgstr ""
+msgstr "Sweep Plot"
 
 #: src/SweepPlotDialog.cpp:48 src/SweepPlotUI.cpp:183
 msgid "Speed"
-msgstr ""
+msgstr "Kiirus"
 
 #: src/SweepPlotDialog.cpp:56 src/SweepPlotUI.cpp:167 src/SweepPlotUI.cpp:209
 msgid "Course"
-msgstr ""
+msgstr "Kurss"
 
 #: src/SweepPlotDialog.cpp:63
 msgid "Course FFTW"
-msgstr ""
+msgstr "Kurss FFTW"
 
 #: src/SweepPlotDialog.cpp:69 src/SweepPlotUI.cpp:160
 msgid "VMG"
@@ -39,7 +38,7 @@ msgstr ""
 
 #: src/SweepPlotDialog.cpp:75 src/SweepPlotUI.cpp:226
 msgid "Wind Speed"
-msgstr ""
+msgstr "Tuule kiirus"
 
 #: src/SweepPlotDialog.cpp:80
 msgid "Wind Angle"
@@ -51,67 +50,67 @@ msgstr ""
 
 #: src/SweepPlotDialog.cpp:128
 msgid "No Plots Enabled"
-msgstr ""
+msgstr "Punktid pole võimaldatud"
 
 #: src/SweepPlotUI.cpp:35
 msgid "5 m"
-msgstr ""
+msgstr "5 m"
 
 #: src/SweepPlotUI.cpp:39
 msgid "20 m"
-msgstr ""
+msgstr "20 m"
 
 #: src/SweepPlotUI.cpp:42
 msgid "1 h"
-msgstr ""
+msgstr "1 h"
 
 #: src/SweepPlotUI.cpp:45
 msgid "4 h"
-msgstr ""
+msgstr "4 h"
 
 #: src/SweepPlotUI.cpp:48
 msgid "8 h"
-msgstr ""
+msgstr "8 h"
 
 #: src/SweepPlotUI.cpp:51
 msgid "24 h"
-msgstr ""
+msgstr "24 h"
 
 #: src/SweepPlotUI.cpp:54
 msgid "3 d"
-msgstr ""
+msgstr "3 d"
 
 #: src/SweepPlotUI.cpp:57
 msgid "10 d"
-msgstr ""
+msgstr "10 d"
 
 #: src/SweepPlotUI.cpp:60
 msgid "30 d"
-msgstr ""
+msgstr "30 d"
 
 #: src/SweepPlotUI.cpp:63
 msgid "60 d"
-msgstr ""
+msgstr "60 d"
 
 #: src/SweepPlotUI.cpp:69
 msgid "Configuration"
-msgstr ""
+msgstr "Seadistus"
 
 #: src/SweepPlotUI.cpp:143
 msgid "GPS Speed (SOG)"
-msgstr ""
+msgstr "GPS-kiirus (SOG)"
 
 #: src/SweepPlotUI.cpp:147
 msgid "PDS 10"
-msgstr ""
+msgstr "PDS 10"
 
 #: src/SweepPlotUI.cpp:150
 msgid "PDS 60"
-msgstr ""
+msgstr "PDS 60"
 
 #: src/SweepPlotUI.cpp:153
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: src/SweepPlotUI.cpp:170
 msgid "0"
@@ -119,23 +118,23 @@ msgstr ""
 
 #: src/SweepPlotUI.cpp:190
 msgid "GPS Course (COG)"
-msgstr ""
+msgstr "GPS-kurss (COG)"
 
 #: src/SweepPlotUI.cpp:193
 msgid "PDC 10"
-msgstr ""
+msgstr "PDC 10"
 
 #: src/SweepPlotUI.cpp:196
 msgid "PDC 60"
-msgstr ""
+msgstr "PDC 60"
 
 #: src/SweepPlotUI.cpp:199
 msgid "Heading"
-msgstr ""
+msgstr "Suund"
 
 #: src/SweepPlotUI.cpp:202
 msgid "FFTW Plot"
-msgstr ""
+msgstr "FFTW koht"
 
 #: src/SweepPlotUI.cpp:216
 msgid "Apparent Wind Speed (NMEA MWV)"
@@ -159,7 +158,7 @@ msgstr ""
 
 #: src/SweepPlotUI.cpp:246
 msgid "Wind Direction"
-msgstr ""
+msgstr "Tuule suund"
 
 #: src/SweepPlotUI.cpp:253
 msgid "Barometer Pressure( (NMEA MDA)"
@@ -167,61 +166,60 @@ msgstr ""
 
 #: src/SweepPlotUI.cpp:281
 msgid "Font"
-msgstr ""
+msgstr "Font"
 
 #: src/SweepPlotUI.cpp:289
 msgid "Minimum Height"
-msgstr ""
+msgstr "Minimaalne kõrgus"
 
 #: src/SweepPlotUI.cpp:296
 msgid "Colors"
-msgstr ""
+msgstr "Värvid"
 
 #: src/SweepPlotUI.cpp:300
 msgid "Standard"
-msgstr ""
+msgstr "Standard"
 
 #: src/SweepPlotUI.cpp:300
 msgid "Light"
-msgstr ""
+msgstr "Hele"
 
 #: src/SweepPlotUI.cpp:300
 msgid "Retro"
-msgstr ""
+msgstr "Retro"
 
 #: src/SweepPlotUI.cpp:300
 msgid "Sky"
-msgstr ""
+msgstr "Taevas"
 
 #: src/SweepPlotUI.cpp:306
 msgid "Transparency"
-msgstr ""
+msgstr "Läbipaistvus"
 
 #: src/SweepPlotUI.cpp:313
 msgid "Style"
-msgstr ""
+msgstr "Stiil"
 
 #: src/SweepPlotUI.cpp:317
 msgid "Continuous"
-msgstr ""
+msgstr "Pidev"
 
 #: src/SweepPlotUI.cpp:317
 msgid "Sweep"
 msgstr ""
 
 #: src/SweepPlotUI.cpp:331
-msgid ""
-"Show Title Bar (restart required)\n"
+msgid "Show Title Bar (restart required)\n"
 "Window Manager may not support this"
 msgstr ""
 
 #: src/SweepPlotUI.cpp:343 src/SweepPlotUI.cpp:467
 msgid "About"
-msgstr ""
+msgstr "Teave"
 
 #: src/SweepPlotUI.cpp:396
 msgid "Plots"
-msgstr ""
+msgstr "Kohad"
 
 #: src/SweepPlotUI.cpp:403
 msgid "Plot Count"
@@ -229,82 +227,77 @@ msgstr ""
 
 #: src/SweepPlotUI.cpp:417
 msgid "Course Prediction Display (from ship on main chart)"
-msgstr ""
+msgstr "Kursi ennustuskuva (laevalt põhikaardil)"
 
 #: src/SweepPlotUI.cpp:424
 msgid "Enable"
-msgstr ""
+msgstr "Võimalda"
 
 #: src/SweepPlotUI.cpp:428
 msgid "Blended (Requires OpenGL)"
-msgstr ""
+msgstr "Segatud (nõuab OpenGL'i)"
 
 #: src/SweepPlotUI.cpp:434
 msgid "Length"
-msgstr ""
+msgstr "Pikkus"
 
 #: src/SweepPlotUI.cpp:441
 msgid "minutes"
-msgstr ""
+msgstr "minutit"
 
 #: src/SweepPlotUI.cpp:445
 msgid "Using"
-msgstr ""
+msgstr "Kasutades"
 
 #: src/SweepPlotUI.cpp:452
 msgid "seconds"
-msgstr ""
+msgstr "sekundit"
 
 #: src/SweepPlotUI.cpp:507
-msgid ""
-"The sweepplot plugin for opencpn is\n"
-"designed to monitor speed and course to make the results of changes to sail "
-"sweep obvious.  It may be used to better understand the sailing "
-"characteristics of a particular vessel, or for fine tuning to give optimal "
-"results.\n"
-"\n"
-"For example, tightening a vang or adjusting a traveler may produce such a "
-"slight result that it is difficult to gauge the result.  This plugin can make "
-"gps speed feedback visible.\n"
-"\n"
-"The predictor line allows setting the sample time for smoother prediction "
-"than the builtin predictor.  This is especially useful when traveling "
-"relatively slowly in areas with large waves.\n"
-"\n"
-"License: GPLv3+\n"
-"\n"
+msgid "The sweepplot plugin for opencpn is\n"
+"designed to monitor speed and course to make the results of changes to sail sweep obvious.  It may be used to better understand the sailing characteristics of a particular vessel, or for fine tuning to give optimal results.\n\n"
+"For example, tightening a vang or adjusting a traveler may produce such a slight result that it is difficult to gauge the result.  This plugin can make gps speed feedback visible.\n\n"
+"The predictor line allows setting the sample time for smoother prediction than the builtin predictor.  This is especially useful when traveling relatively slowly in areas with large waves.\n\n"
+"License: GPLv3+\n\n"
 "Source Code:\n"
-"https://github.com/seandepagnier/sweepplot_pi\n"
-"\n"
+"https://github.com/seandepagnier/sweepplot_pi\n\n"
 "Author:\n"
-"Sean D'Epagnier\n"
-"\n"
+"Sean D'Epagnier\n\n"
 "Many thanks to all of the translators and testers."
-msgstr ""
+msgstr "Sweepplot-plugin Opencpn'i jaoks on\n"
+"loodud kiiruse ja kursi jälgimiseks, et teha muudatuste tulemused purjetamiseks ilmseks.  Seda võib kasutada kindla laeva purjetamise omaduste paremini mõistmiseks või optimaalsete tulemuste saamise täppishäälestuseks.\n\n"
+"Näiteks, jäärdi pingutamine või soodiloogi kohendamine võib anda sellise väikese tulemuse, mida on keeruline mõõta.  See plugin võib teha GPS-kiiruse tagasiside nähtavaks.\n\n"
+"Ettearvutatud joon võimaldab määrata sämplimise aja täpsemaks ennustamiseks kui sisseehitatud ettearvutaja.  See on eriti kasulik kui liigute suhteliselt aeglaselt suurte lainetega alades.\n\n"
+"Litsents: GPLv3+\n\n"
+"Algkood:\n"
+"https://github.com/seandepagnier/sweepplot_pi\n\n"
+"Autor:\n"
+"Sean D'Epagnier\n\n"
+"Suured tänud kõikideld tõlkijatele ja testijatele ."
 
 #: src/SweepPlotUI.cpp:517
 msgid "About Author"
-msgstr ""
+msgstr "Autorist"
 
 #: src/SweepPlotUI.h:173
 msgid "SweepPlot Preferences"
-msgstr ""
+msgstr "SweepPlot eelistused"
 
 #: src/SweepPlotUI.h:197
 msgid "About SweepPlot"
-msgstr ""
+msgstr "Info SweepPlot'ist"
 
 #: src/sweepplot_pi.cpp:94 src/sweepplot_pi.cpp:98 src/sweepplot_pi.cpp:158
 msgid "SweepPlot"
-msgstr ""
+msgstr "SweepPlot"
 
 #: src/sweepplot_pi.cpp:164
 msgid "SweepPlot PlugIn for OpenCPN"
-msgstr ""
+msgstr "SweepPlot-plugIn OpenCPN'i jaoks"
 
 #: src/sweepplot_pi.cpp:169
-msgid ""
-"SweepPlot PlugIn for OpenCPN\n"
-"Plot speed and course over ground to make the result of small adjustments "
-"evident."
-msgstr ""
+msgid "SweepPlot PlugIn for OpenCPN\n"
+"Plot speed and course over ground to make the result of small adjustments evident."
+msgstr "SweepPlot-plugIn OpenCPN'i jaoks\n"
+"Märgib kiiruse ja kursi põhja suhtes, et teha väikeste täpsustuste tulemused silmnähtavaks."
+
