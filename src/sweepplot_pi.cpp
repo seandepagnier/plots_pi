@@ -120,6 +120,7 @@ bool sweepplot_pi::DeInit(void)
         dlg->Close();
         delete dlg;
     }
+    m_SweepPlotDialogs.clear();
 
     delete m_PreferencesDialog;
 
