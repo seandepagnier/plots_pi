@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  sweepplot Plugin
+ * Purpose:  plots Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -24,7 +24,7 @@
  ***************************************************************************
  */
 
-#include "sweepplot_pi.h"
+#include "plots_pi.h"
 #include "PreferencesDialog.h"
 #include "AboutDialog.h"
 
@@ -32,7 +32,7 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent)
     : PreferencesDialogBase(parent)
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
-    pConf->SetPath ( _T ( "/Settings/SweepPlot" ) );
+    pConf->SetPath ( _T ( "/Settings/Plots" ) );
 
     if(!pConf)
         return;
@@ -62,7 +62,7 @@ PreferencesDialog::~PreferencesDialog()
     if(!pConf)
         return;
 
-    pConf->SetPath ( _T ( "/Settings/SweepPlot" ) );
+    pConf->SetPath ( _T ( "/Settings/Plots" ) );
 
     pConf->Write(_T("PlotCount"), m_sPlotCount->GetValue());
     pConf->Write(_T("CoursePrediction"), m_cbCoursePrediction->GetValue());

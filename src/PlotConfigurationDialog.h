@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  sweepplot Plugin
+ * Purpose:  plots Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -24,14 +24,14 @@
  ***************************************************************************
  */
 
-#include "SweepPlotUI.h"
+#include "PlotsUI.h"
 
-class SweepPlotDialog;
+class PlotsDialog;
 
 class PlotConfigurationDialog: public PlotConfigurationDialogBase
 {
 public:
-    PlotConfigurationDialog(wxWindow* parent, SweepPlotDialog &m_dialog, int index);
+    PlotConfigurationDialog(wxWindow* parent, PlotsDialog &m_dialog, int index);
     ~PlotConfigurationDialog();
 
     void OnPDS( wxCommandEvent& event );
@@ -43,7 +43,7 @@ public:
     static bool ShowTitleBar(int index);
 
 private:
-    SweepPlotDialog &m_SweepPlotDialog;
+    PlotsDialog &m_PlotsDialog;
     struct cbState {
        cbState(wxCheckBox *a, wxString n) : cb(a), name(n) { }
         wxCheckBox *cb;

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  sweepplot Plugin
+ * Purpose:  plots Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -24,9 +24,9 @@
  ***************************************************************************
  */
 
-#include "SweepPlotUI.h"
+#include "PlotsUI.h"
 
-class sweepplot_pi;
+class plots_pi;
 
 class PreferencesDialog : public PreferencesDialogBase
 {

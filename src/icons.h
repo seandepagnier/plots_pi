@@ -9,12 +9,12 @@
 
 extern void initialize_images(void);
 
-extern wxBitmap *_img_sweepplot;
+extern wxBitmap *_img_plots;
 
-#ifdef SWEEPPLOT_USE_SVG
-extern wxString _svg_sweepplot;
-extern wxString _svg_sweepplot_rollover;
-extern wxString _svg_sweepplot_toggled;
+#ifdef PLOTS_USE_SVG
+extern wxString _svg_plots;
+extern wxString _svg_plots_rollover;
+extern wxString _svg_plots_toggled;
 #endif
 
 #endif /* ICONS_H */

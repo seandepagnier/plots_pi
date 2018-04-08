@@ -1,8 +1,8 @@
-src/SweepPlotDialog.cpp
-src/SweepPlotDialog.h
+src/PlotsDialog.cpp
+src/PlotsDialog.h
 src/PreferencesDialog.cpp
 src/PreferencesDialog.h
-src/SweepPlotUI.cpp
-src/SweepPlotUI.h
-src/sweepplot_pi.cpp
-src/sweepplot_pi.h
+src/PlotsUI.cpp
+src/PlotsUI.h
+src/plots_pi.cpp
+src/plots_pi.h

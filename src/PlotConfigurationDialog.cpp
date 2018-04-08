@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  sweepplot Plugin
+ * Purpose:  plots Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -24,14 +24,14 @@
  ***************************************************************************
  */
 
-#include "sweepplot_pi.h"
+#include "plots_pi.h"
 
-#include "SweepPlotUI.h"
+#include "PlotsUI.h"
 #include "PlotConfigurationDialog.h"
-#include "SweepPlotDialog.h"
+#include "PlotsDialog.h"
 #include "AboutDialog.h"
 
-PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, SweepPlotDialog &m_dialog, int index) : PlotConfigurationDialogBase(parent), m_SweepPlotDialog(m_dialog), m_index(index)
+PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, PlotsDialog &m_dialog, int index) : PlotConfigurationDialogBase(parent), m_PlotsDialog(m_dialog), m_index(index)
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
 
@@ -51,7 +51,7 @@ PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, SweepPlotDial
     ADD_CB(CourseFFTWPlot);
     ADD_CB(VMG);
 
-    pConf->SetPath ( wxString::Format( "/Settings/SweepPlot/%d", index ) );
+    pConf->SetPath ( wxString::Format( "/Settings/Plots/%d", index ) );
 
     for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
         it->cb->SetValue(pConf->Read(_T("Plot ") + it->name, it->cb->GetValue()));
@@ -63,7 +63,7 @@ PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, SweepPlotDial
 #if wxCHECK_VERSION(3,0,0)
     m_fpPlotFont->SetSelectedFont(pConf->Read(_T("PlotFont"), wxToString(m_fpPlotFont->GetSelectedFont())));
 #else
-    wxLogMessage(_T("sweepplot_pi: cannot save and load fonts using wxwidgets version < 3"));
+    wxLogMessage(_T("plots_pi: cannot save and load fonts using wxwidgets version < 3"));
 #endif    
     m_sPlotMinHeight->SetValue(pConf->Read(_T("PlotMinHeight"), m_sPlotMinHeight->GetValue()));
     m_cColors->SetSelection(pConf->Read(_T("PlotColors"), m_cColors->GetSelection()));
@@ -83,7 +83,7 @@ PlotConfigurationDialog::~PlotConfigurationDialog()
     if(!pConf)
         return;
 
-    pConf->SetPath ( wxString::Format( "/Settings/SweepPlot/%d", m_index ) );
+    pConf->SetPath ( wxString::Format( "/Settings/Plots/%d", m_index ) );
 
     for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
         pConf->Write(_T("Plot ") + it->name, it->cb->GetValue());
@@ -121,8 +121,8 @@ The gps speed will read higher than the position determined speed."),
 
 void PlotConfigurationDialog::OnPlotChange(wxCommandEvent& event)
 {
-    m_SweepPlotDialog.Refresh();
-    m_SweepPlotDialog.SetupPlot();
+    m_PlotsDialog.Refresh();
+    m_PlotsDialog.SetupPlot();
 }
 
 void PlotConfigurationDialog::OnAbout(wxCommandEvent& event)
@@ -137,7 +137,7 @@ bool PlotConfigurationDialog::ShowTitleBar(int index)
     return true;
 #else
     wxFileConfig *pConf = GetOCPNConfigObject();
-    pConf->SetPath ( wxString::Format( "/Settings/SweepPlot/%d", index ) );
+    pConf->SetPath ( wxString::Format( "/Settings/Plots/%d", index ) );
     return pConf->Read(_T("PlotShowTitleBar"), true);
 #endif
 }
