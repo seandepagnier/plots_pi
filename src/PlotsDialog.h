@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2016 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -24,44 +24,40 @@
  ***************************************************************************
  */
 
-#include <list>
+#include "PlotsUI.h"
 
-enum HistoryEnum {TWS, TWD, TWA, AWS, AWA, SOG, COG, HDG, XTE, LAT, LON,
-                  PDS10, PDS60, PDC10, PDC60, BAR, HDM, HISTORY_COUNT};
 
-// three buffers, one for current data, and one
-// with entrees averaged to each minute, and hour
-#define HISTORY_BUCKETS 3
+class plots_pi;
+class Plot;
 
-struct HistoryAtom
+class PlotsDialog: public PlotsDialogBase
 {
-    HistoryAtom() {}
-    HistoryAtom(double v, time_t t) : value(v), ticks(t) {}
-    double value;
-    time_t ticks;
+public:
+    PlotsDialog(wxWindow* parent, int index);
+    ~PlotsDialog();
+
+    void Relay( wxKeyEvent& event );
+    void OnSize(wxSizeEvent& event) { Refresh(); event.Skip(); }
+    void OnDoubleClick( wxMouseEvent& event );
+    void OnPaint(wxPaintEvent& event);
+
+    void SetupPlot();
+
+private:
+    void OnTimeChoice( wxCommandEvent& event ) { Refresh(); }
+    void OnConfiguration( wxCommandEvent& event );
+
+    void OnClose( wxCloseEvent& );
+    void OnRefreshTimer( wxTimerEvent & );
+
+    int PlotCount();
+    int TotalSeconds();
+
+    bool initialized;
+    PlotConfigurationDialog m_configuration;
+
+    wxTimer m_tRefreshTimer;
+    int m_lastTimerTotalSeconds;
+
+    std::list<Plot*> m_plots;
 };
-
-struct HistoryData
-{
-    std::list<HistoryAtom> data;
-    bool newdata;
-};
-
-struct History
-{
-    HistoryData data[HISTORY_BUCKETS];
-    bool resolve;
-
-    bool LastValue(double &value) { int dummy = 0; return LastValue(value, dummy); }
-    bool LastValue(double &value, int &tick_diff);
-    time_t LastTicks();
-    void AddData(int i, HistoryAtom state);
-    void AddData(double value, time_t ticks, bool resolve);
-
-    static void Read(wxString filename);
-    static void Write(wxString filename);
-    static int Divisor(int i);
-    static int Depth(int i);
-};
-
-extern History g_history[];

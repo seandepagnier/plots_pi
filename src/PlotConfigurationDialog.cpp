@@ -48,6 +48,7 @@ PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, PlotsDialog &
     ADD_CB(PDC10);
     ADD_CB(PDC60);
     ADD_CB(HDG);
+    ADD_CB(HDM);
     ADD_CB(CourseFFTWPlot);
     ADD_CB(VMG);
 
