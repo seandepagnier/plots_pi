@@ -27,6 +27,9 @@
 #include <wx/wx.h>
 #include <wx/stdpaths.h>
 
+#include "wxJSON/jsonreader.h"
+#include "wxJSON/jsonwriter.h"
+
 #include "plots_pi.h"
 #include "PlotConfigurationDialog.h"
 #include "PlotsDialog.h"
@@ -364,7 +367,7 @@ void plots_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
 
     if(message_id == _T("WMM_VARIATION_BOAT")) {
         if(r.Parse( message_body, &v ) == 0) {
-            root[_T("Decl")].AsString().ToDouble(&m_declination);
+            v[_T("Decl")].AsString().ToDouble(&m_declination);
             m_declinationTime = wxDateTime::Now();
         }
     }
