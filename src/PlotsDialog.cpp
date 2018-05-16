@@ -31,7 +31,7 @@
 #include "Plot.h"
 
 PlotsDialog::PlotsDialog(wxWindow* parent, int index)
-    : PlotsDialogBase( parent, wxID_ANY, _("Sweep Plot"), wxDefaultPosition, wxDefaultSize,
+    : PlotsDialogBase( parent, wxID_ANY, _("Plots"), wxDefaultPosition, wxDefaultSize,
                            (PlotConfigurationDialog::ShowTitleBar(index) ? wxCAPTION|wxDEFAULT_DIALOG_STYLE : 0)
                            |wxRESIZE_BORDER|wxSUNKEN_BORDER|wxWANTS_CHARS),
       initialized(false),
