@@ -480,6 +480,16 @@ void plots_pi::SetNMEASentence( wxString &sentence )
                 }
             } 
         }
+    } else if( nmea.LastSentenceIDReceived == _T("VWR") ) {
+        if( nmea.Parse() && nmea.Mwv.IsDataValid == NTrue ) {
+            double speed = nmea.Vwr.WindSpeedKnots;
+            if( nmea.Vwr.WindDirectionMagnitude < 999. ) { //if WindAngleTrue is available, use it ...
+                if(nmea.Vwr.DirectionOfWind == 'L')
+                    nmea.Vwr.WindDirectionMagnitude = 360 - nmea.Vwr.WindDirectionMagnitude;
+                AddData(AWA, nmea.Vwr.WindDirectionMagnitude);
+            }
+            AddData(AWS, speed);
+        }
     } else if(nmea.LastSentenceIDReceived == _T("MDA")) {
         if( nmea.Parse() ) {
             AddData(BAR, nmea.Mda.Pressure * 1000);
