@@ -481,7 +481,7 @@ void plots_pi::SetNMEASentence( wxString &sentence )
             } 
         }
     } else if( nmea.LastSentenceIDReceived == _T("VWR") ) {
-        if( nmea.Parse() && nmea.Mwv.IsDataValid == NTrue ) {
+        if( nmea.Parse() ) {
             double speed = nmea.Vwr.WindSpeedKnots;
             if( nmea.Vwr.WindDirectionMagnitude < 999. ) { //if WindAngleTrue is available, use it ...
                 if(nmea.Vwr.DirectionOfWind == 'L')
