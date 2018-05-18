@@ -484,7 +484,7 @@ void plots_pi::SetNMEASentence( wxString &sentence )
         if( nmea.Parse() ) {
             double speed = nmea.Vwr.WindSpeedKnots;
             if( nmea.Vwr.WindDirectionMagnitude < 999. ) { //if WindAngleTrue is available, use it ...
-                if(nmea.Vwr.DirectionOfWind == 'L')
+                if(nmea.Vwr.DirectionOfWind == Left)
                     nmea.Vwr.WindDirectionMagnitude = 360 - nmea.Vwr.WindDirectionMagnitude;
                 AddData(AWA, nmea.Vwr.WindDirectionMagnitude);
             }
