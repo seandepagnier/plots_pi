@@ -99,7 +99,7 @@ int plots_pi::Init(void)
                                 ( plots_pi::OnInitTimer ), NULL, this);
     m_InitTimer.Start(5000, true); // 5 seconds
     
-#ifdef PLOTS_USE_SVG
+#ifdef OCPN_USE_SVG
     m_leftclick_tool_id = InsertPlugInToolSVG( _T( "Plots" ), _svg_plots, _svg_plots_rollover, _svg_plots_toggled, wxITEM_CHECK, _( "Plots" ), _T( "" ), NULL, PLOTS_TOOL_POSITION, 0, this);
 #else
     m_leftclick_tool_id  = InsertPlugInTool
@@ -257,13 +257,13 @@ bool plots_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
 
 bool plots_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 {
-    glEnable( GL_LINE_SMOOTH );
-    glEnable( GL_BLEND );
+//    glEnable( GL_LINE_SMOOTH );
+//    glEnable( GL_BLEND );
 
     Render(NULL, *vp);
 
-    glDisable( GL_BLEND );
-    glDisable( GL_LINE_SMOOTH );
+//    glDisable( GL_BLEND );
+//    glDisable( GL_LINE_SMOOTH );
 
     return true;
 }
@@ -272,7 +272,7 @@ void plots_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
 {
     if(!m_PreferencesDialog || !m_PreferencesDialog->m_cbCoursePrediction->GetValue())
         return;
-
+#ifndef __OCPN__ANDROID__
     int ticks = m_PreferencesDialog->m_sCoursePredictionSeconds->GetValue();
     int length = m_PreferencesDialog->m_sCoursePredictionLength->GetValue();
 
@@ -358,6 +358,7 @@ void plots_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
             glEnd();
         }
     }
+#endif
 }
 
 void plots_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
@@ -435,6 +436,9 @@ wxString plots_pi::StandardPath()
 #endif
 #ifdef __WXOSX__
     wxString stdPath  = std_path.GetUserConfigDir();   // should be ~/Library/Preferences	
+#endif
+#ifdef __OCPN__ANDROID__
+    wxString stdPath  = "/mnt/sdcard/Android/data/org.opencpn.opencpn/files";
 #endif
 
     return stdPath + wxFileName::GetPathSeparator() +

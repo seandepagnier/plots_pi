@@ -9,7 +9,7 @@
 
 wxBitmap *_img_plots;
 
-#ifdef PLOTS_USE_SVG
+#ifdef OCPN_USE_SVG
 #include "ocpn_plugin.h"
 wxString _svg_plots;
 wxString _svg_plots_rollover;
@@ -23,7 +23,7 @@ void initialize_images(void)
 		_img_plots = new wxBitmap(wxImage(sm));
 	}
     
-#ifdef PLOTS_USE_SVG
+#ifdef OCPN_USE_SVG
     wxFileName fn;
     fn.SetPath(*GetpSharedDataLocation());
     fn.AppendDir(_T("plugins"));

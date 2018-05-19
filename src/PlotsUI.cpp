@@ -20,17 +20,19 @@ PlotsDialogBase::PlotsDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer8->SetFlexibleDirection( wxBOTH );
 	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_scrollWindow = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
-	m_scrollWindow->SetScrollRate( 5, 5 );
-	wxFlexGridSizer* fgSizer10;
-	fgSizer10 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer10->AddGrowableCol( 0 );
-	fgSizer10->AddGrowableRow( 0 );
-	fgSizer10->SetFlexibleDirection( wxBOTH );
-	fgSizer10->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	m_scrollWindow = NULL;//new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+//	m_scrollWindow->SetScrollRate( 5, 5 );
+//	wxFlexGridSizer* fgSizer10;
+//	fgSizer10 = new wxFlexGridSizer( 0, 2, 0, 0 );
+//	fgSizer10->AddGrowableCol( 0 );
+//	fgSizer10->AddGrowableRow( 0 );
+//	fgSizer10->SetFlexibleDirection( wxBOTH );
+//	fgSizer10->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_swPlots = new wxScrolledWindow( m_scrollWindow, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
-	m_swPlots->SetScrollRate( 5, 5 );
+	//m_swPlots = new wxScrolledWindow( m_scrollWindow, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+        //	m_swPlots->SetScrollRate( 5, 5 );
+        m_swPlots = new wxWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+
 	m_menu1 = new wxMenu();
 	m_mt1 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("5 m") ) , wxEmptyString, wxITEM_RADIO );
 	m_menu1->Append( m_mt1 );
@@ -71,13 +73,13 @@ PlotsDialogBase::PlotsDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	m_swPlots->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( PlotsDialogBase::m_swPlotsOnContextMenu ), NULL, this ); 
 	
-	fgSizer10->Add( m_swPlots, 1, wxEXPAND | wxALL, 5 );
+//	fgSizer10->Add( m_swPlots, 1, wxEXPAND | wxALL, 5 );
 	
 	
-	m_scrollWindow->SetSizer( fgSizer10 );
-	m_scrollWindow->Layout();
-	fgSizer10->Fit( m_scrollWindow );
-	fgSizer8->Add( m_scrollWindow, 1, wxEXPAND | wxALL, 5 );
+//	m_scrollWindow->SetSizer( fgSizer10 );
+//	m_scrollWindow->Layout();
+//	fgSizer10->Fit( m_scrollWindow );
+	fgSizer8->Add( m_swPlots, 1, wxEXPAND | wxALL, 5 );
 	
 	
 	this->SetSizer( fgSizer8 );
