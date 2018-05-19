@@ -51,7 +51,12 @@ PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, PlotsDialog &
     ADD_CB(HDM);
     ADD_CB(CourseFFTWPlot);
     ADD_CB(VMG);
-
+    ADD_CB(AWS);
+    ADD_CB(TWS);
+    ADD_CB(AWA);
+    ADD_CB(TWA);
+    ADD_CB(TWD);
+    
     pConf->SetPath ( wxString::Format( "/Settings/Plots/%d", index ) );
 
     for(std::list<cbState>::iterator it = m_cbStates.begin(); it != m_cbStates.end(); it++)
