@@ -67,7 +67,7 @@ PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, PlotsDialog &
     m_tVMGCourse->SetValue(wxString::Format(_T("%f"), vmgcourse));
 
 #if wxCHECK_VERSION(3,0,0)
-    m_fpPlotFont->SetSelectedFont(pConf->Read(_T("PlotFont"), wxToString(m_fpPlotFont->GetSelectedFont())));
+//    m_fpPlotFont->SetSelectedFont(pConf->Read(_T("PlotFont"), wxToString(m_fpPlotFont->GetSelectedFont())));
 #else
     wxLogMessage(_T("plots_pi: cannot save and load fonts using wxwidgets version < 3"));
 #endif    

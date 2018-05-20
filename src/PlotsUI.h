@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Feb 20 2018)
+// C++ code generated with wxFormBuilder (version May 19 2018)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -46,7 +46,7 @@ class PlotsDialogBase : public wxDialog
 	private:
 	
 	protected:
-		wxWindow* m_swPlots;
+		wxScrolledWindow* m_swPlots;
 		wxMenu* m_menu1;
 		wxMenuItem* m_mt1;
 		wxMenuItem* m_mt2;
