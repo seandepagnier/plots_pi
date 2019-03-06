@@ -46,7 +46,7 @@ class PlotsDialogBase : public wxDialog
 	private:
 	
 	protected:
-		wxWindow* m_swPlots;
+		wxScrolledWindow* m_swPlots;
 		wxMenu* m_menu1;
 		wxMenuItem* m_mt1;
 		wxMenuItem* m_mt2;

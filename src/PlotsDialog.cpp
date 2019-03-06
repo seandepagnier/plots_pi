@@ -24,9 +24,6 @@
  ***************************************************************************
  */
 
-#include <wx/dcbuffer.h>
-#include <wx/dcgraph.h>         // supplemental, for Mac
-
 #include "plots_pi.h"
 #include "PlotConfigurationDialog.h"
 #include "PlotsDialog.h"
@@ -113,11 +110,10 @@ void PlotsDialog::OnDoubleClick( wxMouseEvent& event )
 void PlotsDialog::OnPaint( wxPaintEvent& event )
 {
     wxWindow *window = dynamic_cast<wxWindow*>(event.GetEventObject());
-    window = m_swPlots;
     if(!window)
         return;
 
-    wxAutoBufferedPaintDC dc( window );
+    wxPaintDC dc( window );
     dc.SetFont(m_configuration.m_fpPlotFont->GetSelectedFont());
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
@@ -209,11 +205,11 @@ void PlotsDialog::OnClose( wxCloseEvent& )
 void PlotsDialog::OnRefreshTimer( wxTimerEvent & )
 {
     if(m_lastTimerTotalSeconds != TotalSeconds())
-        m_swPlots->Refresh();
+        Refresh();
     else
     for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++)
         if((*it)->Visible() && (*it)->NewData(TotalSeconds())) {
-            m_swPlots->Refresh();
+            Refresh();
             break;
         }
 

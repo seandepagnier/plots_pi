@@ -11,7 +11,7 @@ extern void initialize_images(void);
 
 extern wxBitmap *_img_plots;
 
-#ifdef OCPN_USE_SVG
+#ifdef PLOTS_USE_SVG
 extern wxString _svg_plots;
 extern wxString _svg_plots_rollover;
 extern wxString _svg_plots_toggled;
