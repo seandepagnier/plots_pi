@@ -10,6 +10,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6.2)
 # This should be 2.8.0 to have FindGTK2 module
 
 PROJECT(plots_pi)
+
+SET(PLUGIN_SOURCE_DIR .)
+
 SET(PACKAGE_NAME plots_pi)
 SET(VERBOSE_NAME Plots)
 SET(TITLE_NAME Plots)
