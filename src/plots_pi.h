@@ -33,6 +33,8 @@
 #include <wx/wx.h>
 #include <wx/fileconf.h>
 
+#include "plugingl/qtstylesheet.h"
+
 #include "version.h"
 
 #define     MY_API_VERSION_MAJOR    1

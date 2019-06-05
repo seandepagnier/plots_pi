@@ -27,11 +27,12 @@ SET(SRC_PLOTS
             src/Plot.cpp
             src/PlotsUI.cpp
             src/icons.cpp
+            src/plugingl/qtstylesheet.cpp
 	)
 
-INCLUDE("cmake/PluginNMEA.cmake")
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_PLOTS})
 
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_PLOTS} ${SRC_NMEA0183})
+INCLUDE("cmake/PluginNMEA.cmake")
 
 
 INCLUDE("cmake/PluginLocalization.cmake")

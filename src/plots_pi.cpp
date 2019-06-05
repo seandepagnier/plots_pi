@@ -543,10 +543,10 @@ void plots_pi::UpdatePositionDetermined(enum HistoryEnum speed, enum HistoryEnum
 
 void plots_pi::AddData(enum HistoryEnum e, double value, time_t ticks)
 {
-    const int resolve[] = {TWD, TWA, AWA, COG, HDG, PDC10, PDC60};
+    const int resolve[] = {TWD, TWA, AWA, COG, HDG, HDM, PDC10, PDC60};
     bool bresolve = false;
     for(unsigned int i=0; i < (sizeof resolve) / (sizeof *resolve); i++)
-        if(resolve[i])
+        if(resolve[i] == e)
            bresolve = true;
     g_history[e].AddData(value, ticks, bresolve);
 }

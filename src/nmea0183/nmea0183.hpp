@@ -33,6 +33,8 @@
 #if ! defined( NMEA_0183_CLASS_HEADER )
 #define NMEA_0183_CLASS_HEADER
 
+#define NMEA0183 plot_NMEA0183
+
 /*
 ** Author: Samuel R. Blackburn
 ** CI$: 76300,326
@@ -138,6 +140,7 @@
 */
 
 WX_DECLARE_LIST(RESPONSE, MRL);
+
 
 class NMEA0183
 {
