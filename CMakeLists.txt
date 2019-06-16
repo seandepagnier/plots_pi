@@ -29,11 +29,10 @@ SET(SRC_PLOTS
             src/icons.cpp
 	)
 
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_PLOTS})
+
 INCLUDE("cmake/PluginNMEA.cmake")
-
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_PLOTS} ${SRC_NMEA0183})
-
-
+INCLUDE("cmake/PluginJSON.cmake")
 INCLUDE("cmake/PluginLocalization.cmake")
 INCLUDE("cmake/PluginInstall.cmake")
 INCLUDE("cmake/PluginPackage.cmake")

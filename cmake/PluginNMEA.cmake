@@ -38,6 +38,10 @@ SET(SRC_NMEA0183
     src/nmea0183/mta.cpp
     src/nmea0183/vlw.cpp
     src/nmea0183/mda.cpp
+#    src/nmea0183/xdr.cpp
 )
 
 INCLUDE_DIRECTORIES(src/nmea0183)
+
+ADD_LIBRARY(LIB_PLUGINNMEA0183 STATIC ${SRC_NMEA0183})
+TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} LIB_PLUGINNMEA0183 )

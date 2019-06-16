@@ -61,6 +61,7 @@ PlotsDialog::PlotsDialog(wxWindow* parent, int index)
     coursePlot->PUSH_HISTORY_TRACE(PDC10);
     coursePlot->PUSH_HISTORY_TRACE(PDC60);
     coursePlot->PUSH_HISTORY_TRACE(HDG);
+    coursePlot->PUSH_HISTORY_TRACE(HDM);
     m_plots.push_back(coursePlot);
 
     Plot *courseFFTWPlot = new Plot(_("Course FFTW"), false);
@@ -117,6 +118,7 @@ void PlotsDialog::OnPaint( wxPaintEvent& event )
     if(!window)
         return;
 
+    window->SetBackgroundStyle(wxBG_STYLE_PAINT);
     wxAutoBufferedPaintDC dc( window );
     dc.SetFont(m_configuration.m_fpPlotFont->GetSelectedFont());
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
