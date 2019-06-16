@@ -27,6 +27,7 @@ SET(SRC_PLOTS
             src/Plot.cpp
             src/PlotsUI.cpp
             src/icons.cpp
+            src/plugingl/qtstylesheet.cpp
 	)
 
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_PLOTS})

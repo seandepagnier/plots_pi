@@ -93,7 +93,10 @@ PlotsDialogBase::PlotsDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	m_swPlots->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( PlotsDialogBase::Relay ), NULL, this );
 	m_swPlots->Connect( wxEVT_KEY_UP, wxKeyEventHandler( PlotsDialogBase::Relay ), NULL, this );
 	m_swPlots->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( PlotsDialogBase::OnDoubleClick ), NULL, this );
+	m_swPlots->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PlotsDialogBase::OnLeftDown ), NULL, this );
+	m_swPlots->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( PlotsDialogBase::OnLeftUp ), NULL, this );
 	m_swPlots->Connect( wxEVT_PAINT, wxPaintEventHandler( PlotsDialogBase::OnPaint ), NULL, this );
+	m_swPlots->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( PlotsDialogBase::OnRightDown ), NULL, this );
 	this->Connect( m_mConfiguration->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( PlotsDialogBase::OnConfiguration ) );
 }
 
@@ -106,7 +109,10 @@ PlotsDialogBase::~PlotsDialogBase()
 	m_swPlots->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler( PlotsDialogBase::Relay ), NULL, this );
 	m_swPlots->Disconnect( wxEVT_KEY_UP, wxKeyEventHandler( PlotsDialogBase::Relay ), NULL, this );
 	m_swPlots->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( PlotsDialogBase::OnDoubleClick ), NULL, this );
+	m_swPlots->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PlotsDialogBase::OnLeftDown ), NULL, this );
+	m_swPlots->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( PlotsDialogBase::OnLeftUp ), NULL, this );
 	m_swPlots->Disconnect( wxEVT_PAINT, wxPaintEventHandler( PlotsDialogBase::OnPaint ), NULL, this );
+	m_swPlots->Disconnect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( PlotsDialogBase::OnRightDown ), NULL, this );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( PlotsDialogBase::OnConfiguration ) );
 	
 	delete m_menu1; 
@@ -253,7 +259,7 @@ PlotConfigurationDialogBase::PlotConfigurationDialogBase( wxWindow* parent, wxWi
 	fgSizer201->SetFlexibleDirection( wxBOTH );
 	fgSizer201->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_cbBAR = new wxCheckBox( m_panel5, wxID_ANY, _("Barometer Pressure( (NMEA MDA)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbBAR = new wxCheckBox( m_panel5, wxID_ANY, _("Barometer Pressure(NMEA MDA)"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer201->Add( m_cbBAR, 0, wxALL, 5 );
 	
 	
@@ -285,9 +291,8 @@ PlotConfigurationDialogBase::PlotConfigurationDialogBase( wxWindow* parent, wxWi
 	m_staticText13->Wrap( -1 );
 	fgSizer101->Add( m_staticText13, 0, wxALL, 5 );
 	
-	m_fpPlotFont = new wxFontPickerCtrl( this, wxID_ANY, wxNullFont, wxDefaultPosition, wxDefaultSize, wxFNTP_DEFAULT_STYLE );
-	m_fpPlotFont->SetMaxPointSize( 100 ); 
-	fgSizer101->Add( m_fpPlotFont, 0, wxALL, 5 );
+	m_button51 = new wxButton( this, wxID_ANY, _("Set Font"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer101->Add( m_button51, 0, wxALL, 5 );
 	
 	m_staticText12 = new wxStaticText( this, wxID_ANY, _("Minimum Height"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText12->Wrap( -1 );
@@ -366,7 +371,7 @@ PlotConfigurationDialogBase::PlotConfigurationDialogBase( wxWindow* parent, wxWi
 	// Connect Events
 	m_button5->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PlotConfigurationDialogBase::OnPDS ), NULL, this );
 	m_tVMGCourse->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
-	m_fpPlotFont->Connect( wxEVT_COMMAND_FONTPICKER_CHANGED, wxFontPickerEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
+	m_button51->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PlotConfigurationDialogBase::OnFont ), NULL, this );
 	m_sPlotMinHeight->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
 	m_cColors->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
 	m_sPlotTransparency->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
@@ -378,7 +383,7 @@ PlotConfigurationDialogBase::~PlotConfigurationDialogBase()
 	// Disconnect Events
 	m_button5->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PlotConfigurationDialogBase::OnPDS ), NULL, this );
 	m_tVMGCourse->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
-	m_fpPlotFont->Disconnect( wxEVT_COMMAND_FONTPICKER_CHANGED, wxFontPickerEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
+	m_button51->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PlotConfigurationDialogBase::OnFont ), NULL, this );
 	m_sPlotMinHeight->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
 	m_cColors->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );
 	m_sPlotTransparency->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( PlotConfigurationDialogBase::OnPlotChange ), NULL, this );

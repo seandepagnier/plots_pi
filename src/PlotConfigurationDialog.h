@@ -42,6 +42,9 @@ public:
 
     static bool ShowTitleBar(int index);
 
+    void OnFont( wxCommandEvent& event );
+    wxFont m_font;
+
 private:
     PlotsDialog &m_PlotsDialog;
     struct cbState {

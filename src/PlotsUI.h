@@ -31,7 +31,6 @@
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
 #include <wx/stattext.h>
-#include <wx/fontpicker.h>
 #include <wx/spinctrl.h>
 #include <wx/choice.h>
 
@@ -64,7 +63,10 @@ class PlotsDialogBase : public wxDialog
 		virtual void OnSize( wxSizeEvent& event ) { event.Skip(); }
 		virtual void Relay( wxKeyEvent& event ) { event.Skip(); }
 		virtual void OnDoubleClick( wxMouseEvent& event ) { event.Skip(); }
+		virtual void OnLeftDown( wxMouseEvent& event ) { event.Skip(); }
+		virtual void OnLeftUp( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnPaint( wxPaintEvent& event ) { event.Skip(); }
+		virtual void OnRightDown( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnConfiguration( wxCommandEvent& event ) { event.Skip(); }
 		
 	
@@ -92,10 +94,10 @@ class PlotConfigurationDialogBase : public wxDialog
 		wxListbook* m_listbook1;
 		wxButton* m_button5;
 		wxPanel* m_panel2;
-		wxCheckBox* m_cbHDM;
 		wxPanel* m_panel3;
 		wxPanel* m_panel4;
 		wxStaticText* m_staticText13;
+		wxButton* m_button51;
 		wxStaticText* m_staticText12;
 		wxSpinCtrl* m_sPlotMinHeight;
 		wxStaticText* m_staticText121;
@@ -108,7 +110,7 @@ class PlotConfigurationDialogBase : public wxDialog
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnPDS( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPlotChange( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnPlotChange( wxFontPickerEvent& event ) { event.Skip(); }
+		virtual void OnFont( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPlotChange( wxSpinEvent& event ) { event.Skip(); }
 		virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
 		
@@ -125,6 +127,7 @@ class PlotConfigurationDialogBase : public wxDialog
 		wxCheckBox* m_cbPDC60;
 		wxCheckBox* m_cbHDG;
 		wxCheckBox* m_cbCourseFFTWPlot;
+		wxCheckBox* m_cbHDM;
 		wxCheckBox* m_cbAWS;
 		wxCheckBox* m_cbTWS;
 		wxCheckBox* m_cbAWA;
@@ -132,7 +135,6 @@ class PlotConfigurationDialogBase : public wxDialog
 		wxCheckBox* m_cbTWD;
 		wxPanel* m_panel5;
 		wxCheckBox* m_cbBAR;
-		wxFontPickerCtrl* m_fpPlotFont;
 		wxChoice* m_cColors;
 		wxSpinCtrl* m_sPlotTransparency;
 		wxChoice* m_cPlotStyle;
