@@ -66,7 +66,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //---------------------------------------------------------------------------------------------------------
 
 plots_pi::plots_pi(void *ppimgr)
-    : opencpn_plugin_113(ppimgr)
+    : opencpn_plugin_116(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
@@ -141,12 +141,12 @@ bool plots_pi::DeInit(void)
 
 int plots_pi::GetAPIVersionMajor()
 {
-    return MY_API_VERSION_MAJOR;
+    return OCPN_API_VERSION_MAJOR;
 }
 
 int plots_pi::GetAPIVersionMinor()
 {
-    return MY_API_VERSION_MINOR;
+    return OCPN_API_VERSION_MINOR;
 }
 
 int plots_pi::GetPlugInVersionMajor()
@@ -166,20 +166,18 @@ wxBitmap *plots_pi::GetPlugInBitmap()
 
 wxString plots_pi::GetCommonName()
 {
-    return _("Plots");
+    return _T(PLUGIN_COMMON_NAME);
 }
 
 
 wxString plots_pi::GetShortDescription()
 {
-    return _("Plots PlugIn for OpenCPN");
+    return _(PLUGIN_SHORT_DESCRIPTION);
 }
 
 wxString plots_pi::GetLongDescription()
-{
-    return _("Plots PlugIn for OpenCPN\n\
-Plot speed and course over ground to make the result of \
-small adjustments evident.");
+{										 
+    return _(PLUGIN_LONG_DESCRIPTION);
 }
 
 int plots_pi::GetToolbarToolCount(void)

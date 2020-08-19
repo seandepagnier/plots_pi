@@ -35,8 +35,6 @@
 
 #include "version.h"
 
-#define     MY_API_VERSION_MAJOR    1
-#define     MY_API_VERSION_MINOR    10
 
 #define ABOUT_AUTHOR_URL "http://seandepagnier.users.sourceforge.net"
 
@@ -108,7 +106,7 @@ double heading_resolve(double degrees, double ref=0);
 class PlotsDialog;
 class PreferencesDialog;
 
-class plots_pi : public wxEvtHandler, public opencpn_plugin_113
+class plots_pi : public wxEvtHandler, public opencpn_plugin_116
 {
 public:
       plots_pi(void *ppimgr);
