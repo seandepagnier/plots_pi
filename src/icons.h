@@ -7,11 +7,16 @@
 #	include <wx/wx.h>
 #endif
 
+#include "ocpn_plugin.h"
+
+#include <wx/filename.h>
+#include <wx/mstream.h>
+
 extern void initialize_images(void);
 
 extern wxBitmap *_img_plots;
 
-#ifdef OCPN_USE_SVG
+#ifdef PLUGIN_USE_SVG
 extern wxString _svg_plots;
 extern wxString _svg_plots_rollover;
 extern wxString _svg_plots_toggled;

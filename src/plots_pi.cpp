@@ -23,8 +23,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  ***************************************************************************
  */
+#include "wx/wxprec.h"
 
-#include <wx/wx.h>
+#ifndef  WX_PRECOMP
+  #include "wx/wx.h"
+#endif //precompiled headers
+
+//#include <wx/wx.h>
 #include <wx/stdpaths.h>
 
 #include "wxJSON/jsonreader.h"
@@ -66,7 +71,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //---------------------------------------------------------------------------------------------------------
 
 plots_pi::plots_pi(void *ppimgr)
-    : opencpn_plugin_113(ppimgr)
+    : opencpn_plugin_116(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
@@ -99,7 +104,7 @@ int plots_pi::Init(void)
                                 ( plots_pi::OnInitTimer ), NULL, this);
     m_InitTimer.Start(5000, true); // 5 seconds
     
-#ifdef OCPN_USE_SVG
+#ifdef PLOTS_USE_SVG
     m_leftclick_tool_id = InsertPlugInToolSVG( _T( "Plots" ), _svg_plots, _svg_plots_rollover, _svg_plots_toggled, wxITEM_CHECK, _( "Plots" ), _T( "" ), NULL, PLOTS_TOOL_POSITION, 0, this);
 #else
     m_leftclick_tool_id  = InsertPlugInTool
@@ -141,12 +146,12 @@ bool plots_pi::DeInit(void)
 
 int plots_pi::GetAPIVersionMajor()
 {
-    return MY_API_VERSION_MAJOR;
+    return OCPN_API_VERSION_MAJOR;
 }
 
 int plots_pi::GetAPIVersionMinor()
 {
-    return MY_API_VERSION_MINOR;
+    return OCPN_API_VERSION_MINOR;
 }
 
 int plots_pi::GetPlugInVersionMajor()
@@ -166,20 +171,18 @@ wxBitmap *plots_pi::GetPlugInBitmap()
 
 wxString plots_pi::GetCommonName()
 {
-    return _("Plots");
+    return _T(PLUGIN_COMMON_NAME);
 }
 
 
 wxString plots_pi::GetShortDescription()
 {
-    return _("Plots PlugIn for OpenCPN");
+    return _(PLUGIN_SHORT_DESCRIPTION);
 }
 
 wxString plots_pi::GetLongDescription()
-{
-    return _("Plots PlugIn for OpenCPN\n\
-Plot speed and course over ground to make the result of \
-small adjustments evident.");
+{										 
+    return _(PLUGIN_LONG_DESCRIPTION);
 }
 
 int plots_pi::GetToolbarToolCount(void)
@@ -257,13 +260,13 @@ bool plots_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
 
 bool plots_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 {
-//    glEnable( GL_LINE_SMOOTH );
-//    glEnable( GL_BLEND );
+    glEnable( GL_LINE_SMOOTH );
+    glEnable( GL_BLEND );
 
     Render(NULL, *vp);
 
-//    glDisable( GL_BLEND );
-//    glDisable( GL_LINE_SMOOTH );
+    glDisable( GL_BLEND );
+    glDisable( GL_LINE_SMOOTH );
 
     return true;
 }
@@ -272,7 +275,7 @@ void plots_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
 {
     if(!m_PreferencesDialog || !m_PreferencesDialog->m_cbCoursePrediction->GetValue())
         return;
-#ifndef __OCPN__ANDROID__
+
     int ticks = m_PreferencesDialog->m_sCoursePredictionSeconds->GetValue();
     int length = m_PreferencesDialog->m_sCoursePredictionLength->GetValue();
 
@@ -358,7 +361,6 @@ void plots_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
             glEnd();
         }
     }
-#endif
 }
 
 void plots_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
@@ -436,9 +438,6 @@ wxString plots_pi::StandardPath()
 #endif
 #ifdef __WXOSX__
     wxString stdPath  = std_path.GetUserConfigDir();   // should be ~/Library/Preferences	
-#endif
-#ifdef __OCPN__ANDROID__
-    wxString stdPath  = "/mnt/sdcard/Android/data/org.opencpn.opencpn/files";
 #endif
 
     return stdPath + wxFileName::GetPathSeparator() +
