@@ -100,17 +100,19 @@ int plots_pi::Init(void)
     
     // use a timer to delay loading history so that the plugin
     // does not slow down startup... this could be in a thread also
+	
     m_InitTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
                                 ( plots_pi::OnInitTimer ), NULL, this);
     m_InitTimer.Start(5000, true); // 5 seconds
     
-#ifdef PLOTS_USE_SVG
+#ifdef PLUGIN_USE_SVG
     m_leftclick_tool_id = InsertPlugInToolSVG( _T( "Plots" ), _svg_plots, _svg_plots_rollover, _svg_plots_toggled, wxITEM_CHECK, _( "Plots" ), _T( "" ), NULL, PLOTS_TOOL_POSITION, 0, this);
 #else
     m_leftclick_tool_id  = InsertPlugInTool
         (_T(""), _img_plots, _img_plots, wxITEM_NORMAL,
          _("Plots"), _T(""), NULL, PLOTS_TOOL_POSITION, 0, this);
 #endif
+
         
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
@@ -427,6 +429,9 @@ void plots_pi::WriteHistory()
     History::Write(data);
 }
 
+
+/* OLD VERSION
+
 wxString plots_pi::StandardPath()
 {
     wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
@@ -444,6 +449,44 @@ wxString plots_pi::StandardPath()
         _T("plugins") + wxFileName::GetPathSeparator() +
         _T("plots") +  wxFileName::GetPathSeparator();
 }
+
+*/
+
+
+wxString plots_pi::StandardPath()
+{
+    wxString s = wxFileName::GetPathSeparator();
+    wxString stdPath  = *GetpPrivateApplicationDataLocation();
+
+    stdPath += s + _T("plugins");
+    if (!wxDirExists(stdPath))
+      wxMkdir(stdPath);
+
+    stdPath += s + _T("weather_routing");
+
+#ifdef __WXOSX__
+    // Compatibility with pre-OCPN-4.2; move config dir to
+    // ~/Library/Preferences/opencpn if it exists
+    {
+        wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
+        wxString s = wxFileName::GetPathSeparator();
+        // should be ~/Library/Preferences/opencpn
+        wxString oldPath = (std_path.GetUserConfigDir() +s + _T("plugins") +s + _T("plots"));
+        if (wxDirExists(oldPath) && !wxDirExists(stdPath)) {
+		    wxLogMessage("plots_pi: moving config dir %s to %s", oldPath, stdPath);
+		    wxRenameFile(oldPath, stdPath);
+        }
+    }
+#endif	
+
+    if (!wxDirExists(stdPath))
+      wxMkdir(stdPath);
+
+    stdPath += s;
+    return stdPath;
+}
+
+	
 
 void plots_pi::SetNMEASentence( wxString &sentence )
 {
