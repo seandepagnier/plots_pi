@@ -39,7 +39,7 @@ set(LONG_DESCRIPTION "Plots PlugIn for OpenCPN Plot speed and course over ground
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "2")
 set(VERSION_PATCH "5")
-set(VERSION_TWEAK "0")
+set(VERSION_TWEAK "1")
 set(VERSION_DATE "29-6-2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -152,13 +152,14 @@ SET(HDR_PLOTS
 			src/wx28compat.h
     )
 			
-# set(OCPNSRC ocpnsrc/TexFont.cpp)
-#set(OCPNHDRS
-#    ocpninclude/ocpn_plugin.h
-#    ocpninclude/pluginmanager.h
-#    ocpninclude/TexFont.h
-#    libs/ocpn-api/ocpn_plugin.h
-#)
+set(OCPNSRC ocpnsrc/TexFont.cpp)
+
+set(OCPNHDRS
+    ocpninclude/ocpn_plugin.h
+    ocpninclude/pluginmanager.h
+    ocpninclude/TexFont.h
+    libs/ocpn-api/ocpn_plugin.h
+)
 
 add_definitions(-DPLUGIN_USE_SVG)
 
@@ -182,8 +183,8 @@ add_definitions(-DPLUGIN_USE_SVG)
 #endif(PI_JSON_SCHEMA_VALIDATOR)
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
