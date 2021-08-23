@@ -1,7 +1,7 @@
 site:
   title: Plots Plugin Manual
   url:  https://nowhere.net
-  start_page: sweep_plot:ROOT:sweep_plot.adoc
+  start_page: sweep_plot:ROOT:index.adoc
 
 content:
   sources:
