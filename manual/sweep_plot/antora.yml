@@ -1,4 +1,4 @@
 name: sweep_plot
-title: sweep_plot
+title: Plots Plugin
 version: '0.1'
 start_page: ROOT:sweep_plot.adoc 
