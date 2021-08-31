@@ -1,8 +1,8 @@
-== Plots
+= Plots
 
 Plugin for improving sail trim and maintaining course
 
-=== Links
+== Links
 
 * Source: https://github.com/seandepagnier/plots_pi +
 * Download: https://opencpn.org/OpenCPN/plugins/sweepplot.html +
@@ -35,7 +35,7 @@ image::sweepplot_pi.jpeg[]
 The top histogram is the Speed Screen which offers Speed, PDS10
 (Position Determined Speed = 10 seconds) and PDS 60 (60 seconds.)
 
-==== PDS
+=== PDS
 
 *Position Determined Speed* PDS finds the speed of the vessel by
 comparing current position to the position from the past. For example
@@ -52,7 +52,7 @@ with read higher than the PDS position determined speed.
 image::sweep-plot-speed-pds.jpeg[]
 
 
-==== Configuration
+=== Configuration
 
 While running the plugin right-click on the plugin screen to bring up
 the Configuration Menu.
