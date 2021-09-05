@@ -5,18 +5,21 @@ Plugin for improving sail trim and maintaining course
 == Links
 
 * Source: https://github.com/seandepagnier/plots_pi +
-* Download: https://opencpn.org/OpenCPN/plugins/sweepplot.html +
-* Forum:
-http://www.cruisersforum.com/forums/f134/plots-plugin-201294.html[CF
-Plots_pi Thread] +
-* YouTube Sean: https://www.youtube.com/watch?v=kHseBfjJNmE[Plots
-Plugin]
+* Maintainance Source: https://github.com/rgleason/plots_pi +
+* Download: https://opencpn.org/OpenCPN/plugins/sweepplot.html[Downloads] +
+* Forum: http://www.cruisersforum.com/forums/f134/plots-plugin-201294.html[CF Plots_pi Thread] +
+* YouTube Sean: https://www.youtube.com/watch?v=kHseBfjJNmE[Plots Plugin]
 
 Plots Plugin has been improved again, and provides Historical data in a
 format useful for sailing, using a large selection of Data Types (Speed,
 Course, Wind True & Apparent, etc). It is the best tool for showing
 historical data in OpenCPN.
 
+== Installation
+
+The OpenCPN Manual has general information in xref:opencpn-plugins:misc:plugin-install.adoc[Plugin Download, Install and Enable].
+
+== Purpose
 The plugin is designed to monitor speed and course to make the changes
 to sail sweep obvious. It may be used to better understand the sailing
 characteristics of a particular sailing vessel, or for fine tuning to
