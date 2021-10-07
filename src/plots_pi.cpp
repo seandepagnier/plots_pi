@@ -32,8 +32,8 @@
 //#include <wx/wx.h>
 #include <wx/stdpaths.h>
 
-#include "wxJSON/jsonreader.h"
-#include "wxJSON/jsonwriter.h"
+#include "jsonreader.h"
+#include "jsonwriter.h"
 
 #include "plots_pi.h"
 #include "PlotConfigurationDialog.h"
@@ -97,14 +97,14 @@ int plots_pi::Init(void)
     m_PreferencesDialog->SetIcon(icon);
 
     LoadConfig(); //    And load the configuration items
-    
+
     // use a timer to delay loading history so that the plugin
     // does not slow down startup... this could be in a thread also
-	
+
     m_InitTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
                                 ( plots_pi::OnInitTimer ), NULL, this);
     m_InitTimer.Start(5000, true); // 5 seconds
-    
+
 #ifdef PLUGIN_USE_SVG
     m_leftclick_tool_id = InsertPlugInToolSVG( _T( "Plots" ), _svg_plots, _svg_plots_rollover, _svg_plots_toggled, wxITEM_CHECK, _( "Plots" ), _T( "" ), NULL, PLOTS_TOOL_POSITION, 0, this);
 #else
@@ -113,7 +113,7 @@ int plots_pi::Init(void)
          _("Plots"), _T(""), NULL, PLOTS_TOOL_POSITION, 0, this);
 #endif
 
-        
+
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
             WANTS_TOOLBAR_CALLBACK    |
@@ -183,7 +183,7 @@ wxString plots_pi::GetShortDescription()
 }
 
 wxString plots_pi::GetLongDescription()
-{										 
+{
     return _(PLUGIN_LONG_DESCRIPTION);
 }
 
@@ -223,11 +223,11 @@ double plots_pi::Declination()
 }
 
 void plots_pi::OnInitTimer( wxTimerEvent & )
-{    
+{
     // read history
     wxString data = StandardPath() + _T("data");
     History::Read(data);
-    
+
     m_HistoryWriteTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
                                 ( plots_pi::OnHistoryWriteTimer ), NULL, this);
     m_HistoryWriteTimer.Start(1000*60*20); // every 20 minutes
@@ -323,7 +323,7 @@ void plots_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
 
                     double d0 = sqrt(v0[0]*v0[0] + v0[1]*v0[1]);
                     double d1 = sqrt(v1[0]*v1[0] + v1[1]*v1[1]);
-                    
+
                     float alpha = 1 - (v0[0]*v1[1] - v0[1]*v1[0]) / (d0*d1);
                     alpha /= sqrt(sqrt(ticks));
 //                    alpha = sqrt(sqrt(alpha));
@@ -412,7 +412,7 @@ bool plots_pi::SaveConfig(void)
         pConf->Write ( _T ( "DialogW" ), s.x);
         pConf->Write ( _T ( "DialogH" ), s.y);
     }
-    
+
     return true;
 }
 
@@ -442,7 +442,7 @@ wxString plots_pi::StandardPath()
     wxString stdPath  = std_path.GetUserDataDir();
 #endif
 #ifdef __WXOSX__
-    wxString stdPath  = std_path.GetUserConfigDir();   // should be ~/Library/Preferences	
+    wxString stdPath  = std_path.GetUserConfigDir();   // should be ~/Library/Preferences
 #endif
 
     return stdPath + wxFileName::GetPathSeparator() +
@@ -477,7 +477,7 @@ wxString plots_pi::StandardPath()
 		    wxRenameFile(oldPath, stdPath);
         }
     }
-#endif	
+#endif
 
     if (!wxDirExists(stdPath))
       wxMkdir(stdPath);
@@ -486,7 +486,7 @@ wxString plots_pi::StandardPath()
     return stdPath;
 }
 
-	
+
 
 void plots_pi::SetNMEASentence( wxString &sentence )
 {
@@ -524,7 +524,7 @@ void plots_pi::SetNMEASentence( wxString &sentence )
                     AddData(TWA, nmea.Mwv.WindAngle);
                     AddData(TWS, speed);
                 }
-            } 
+            }
         }
     } else if( nmea.LastSentenceIDReceived == _T("VWR") ) {
         if( nmea.Parse() ) {
@@ -609,7 +609,7 @@ void plots_pi::CreatePlots()
         m_PlotsDialogs.push_back(dlg);
 
         pConf->SetPath ( wxString::Format( "/Settings/Plots/%d", i ) );
-        
+
         dlg->Move(pConf->Read ( _T ( "DialogPosX" ), 20L ),
                   pConf->Read ( _T ( "DialogPosY" ), 20L ));
         dlg->SetSize(pConf->Read ( _T ( "DialogW" ), 400L ),
