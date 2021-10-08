@@ -3,7 +3,7 @@
 ## Copyright:   
 ## License:     GPLv3
 # ---------------------------------------------------------------------------
-# Frontend Author: jongough aka. Jon Gough  Frontend:  1.0.175.4  03/10/2021
+# Frontend Author: jongough aka. Jon Gough  Frontend:  1.0.176.1  07/10/2021
 # ---------------------------------------------------------------------------
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
 ## ----- Changes should only be made between the section blocks that identify where     ----- ##
@@ -38,9 +38,9 @@ set(LONG_DESCRIPTION "Plots PlugIn for OpenCPN Plot speed and course over ground
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "2")
-set(VERSION_PATCH "6")
-set(VERSION_TWEAK "2")
-set(VERSION_DATE "04-10-2021") # DD/MM/YYYY format
+set(VERSION_PATCH "7")
+set(VERSION_TWEAK "0")
+set(VERSION_DATE "07-10-2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
