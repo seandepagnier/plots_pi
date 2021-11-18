@@ -75,6 +75,32 @@ plots_pi::plots_pi(void *ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
+
+// Create the PlugIn icons  -from shipdriver
+// loads png file for the listing panel icon
+    wxFileName fn;
+    auto path = GetPluginDataDir("plots_pi");
+    fn.SetPath(path);
+    fn.AppendDir("data");
+    fn.SetFullName("plots_panel.png");
+
+    path = fn.GetFullPath();
+
+    wxInitAllImageHandlers();
+
+    wxLogDebug(wxString("Using icon path: ") + path);
+    if (!wxImage::CanRead(path)) {
+        wxLogDebug("Initiating image handlers.");
+        wxInitAllImageHandlers();
+    }
+    wxImage panelIcon(path);
+    if (panelIcon.IsOk())
+        m_panelBitmap = wxBitmap(panelIcon);
+    else
+        wxLogWarning("Climatology panel icon has NOT been loaded");
+// End of from Shipdriver	
+
+	
     m_declination = NAN;
 }
 
@@ -166,10 +192,16 @@ int plots_pi::GetPlugInVersionMinor()
     return PLUGIN_VERSION_MINOR;
 }
 
-wxBitmap *plots_pi::GetPlugInBitmap()
-{
-    return new wxBitmap(_img_plots->ConvertToImage().Copy());
-}
+//  Converts  icon.cpp file to an image. Original process
+//wxBitmap *plots_pi::GetPlugInBitmap()
+//{
+//    return new wxBitmap(_img_plots->ConvertToImage().Copy());
+//}
+
+// Shipdriver uses the climatology_panel.png file to make the bitmap.
+wxBitmap *plots_pi::GetPlugInBitmap()  { return &m_panelBitmap; }
+// End of shipdriver process
+
 
 wxString plots_pi::GetCommonName()
 {

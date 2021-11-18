@@ -34,13 +34,13 @@ set(TITLE_NAME "PLOTS")
 set(PACKAGE_CONTACT  "Sean D'Epagnier ")
 set(PACKAGE "plots")
 set(SHORT_DESCRIPTION "Plots PlugIn for OpenCPN")
-set(LONG_DESCRIPTION "Plots PlugIn for OpenCPN Plot speed and course over ground to make the result of small adjustments evident.")
+set(LONG_DESCRIPTION "Sailing Performance: Plot speed and course over ground to make the result of small adjustments evident.")
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "2")
 set(VERSION_PATCH "7")
-set(VERSION_TWEAK "0")
-set(VERSION_DATE "07-10-2021") # DD/MM/YYYY format
+set(VERSION_TWEAK "1")
+set(VERSION_DATE "17-11-2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
