@@ -3,7 +3,7 @@
 ## Copyright:   
 ## License:     GPLv3
 # ---------------------------------------------------------------------------
-# Frontend Author: jongough aka. Jon Gough  Frontend:  1.0.176.1  07/10/2021
+# Frontend Author: jongough aka. Jon Gough  Frontend:  1.0.180 17/11/2021
 # ---------------------------------------------------------------------------
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
 ## ----- Changes should only be made between the section blocks that identify where     ----- ##
@@ -16,12 +16,14 @@
 set(CMLOC "CMakeLists: ")
 
 # define minimum cmake version
-cmake_minimum_required(VERSION 3.1.1)
+cmake_minimum_required(VERSION 3.5.1)
 if(COMMAND cmake_policy)
     if(POLICY CMP0043)
         cmake_policy(SET CMP0043 NEW)
     endif(POLICY CMP0043)
     cmake_policy(SET CMP0048 NEW)
+# Need cmake 3.13 to implement this, but raspbian builds are at 3.7.2 and bionic at 3.10 and xenial builds at 3.5.1
+#    cmake_policy(SET CMP0076 NEW)
     if(POLICY CMP0077)
         cmake_policy(SET CMP0077 NEW)
     endif(POLICY CMP0077)
@@ -38,8 +40,8 @@ set(LONG_DESCRIPTION "Sailing Performance: Plot speed and course over ground to 
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "2")
-set(VERSION_PATCH "7")
-set(VERSION_TWEAK "1")
+set(VERSION_PATCH "8")
+set(VERSION_TWEAK "0")
 set(VERSION_DATE "17-11-2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -53,22 +55,21 @@ set(PARENT "opencpn")
 # This default is needed to build locally and to build flatpak.
 #set(GIT_REPOSITORY_SERVER "github.com")
 
-#No longer needed, queried.
-#set(GIT_USER "rgleason")
-#set(GIT_REPOSITORY_NAME "testplugin_pi")
-
 # Specifies cloudsmith repository sufficies
 set(PROD "prod") # Standard Repos
 set(BETA "beta") # Standard Repos
 set(ALPHA "alpha") # Standard Repos
 
-# set this if your cloudsmith repository name does not match your git repository name 
-#set(CLOUDSMITH_USER "rick-gleason")
-set(CLOUDSMITH_USER "opencpn")
 
 # Set if yourCloudsmith Base Repository name does not match your Git Repository name.
 # set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins") #Rick's customization
 set (CLOUDSMITH_BASE_REPOSITORY "plots")  #without the pi 
+
+# set this if your cloudsmith repository name does not match your git repository name 
+set(CLOUDSMITH_USER "opencpn")
+#set(CLOUDSMITH_USER "rick-gleason")
+
+
 
 set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/sweepplot.html")
 set(XML_SUMMARY ${SHORT_DESCRIPTION})
@@ -157,47 +158,52 @@ SET(HDR_PLOTS
 set(OCPNSRC ocpnsrc/TexFont.cpp)
 
 set(OCPNHDRS
+    ocpninclude/cutil.h
     ocpninclude/ocpn_plugin.h
     ocpninclude/pluginmanager.h
+    ocpninclude/shaders.h
     ocpninclude/TexFont.h
+    ocpninclude/vector2D.h
     libs/ocpn-api/ocpn_plugin.h
 )
 
 add_definitions(-DPLUGIN_USE_SVG)
 
-# Not ussing JSON Schema validator
 #set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
-#if(APPLE)
-#    option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" OFF)
-#else(APPLE)
-#    option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" ON)
-#endif(APPLE)
+
 #
-#if(PI_JSON_SCHEMA_VALIDATOR)
-#    message(STATUS "${CMLOC}Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
-#    add_definitions(-DPI_JSON_SCHEMA_VALIDATOR)
-#    message(STATUS "${CMLOC}Adding JSON Schema validation")
+# ----- If using JSON validation in plugin section below is needed ----- ##
 #
-#    set(EXTSRC ${EXTSRC} extsrc/json-schema-validator/json-schema-draft7.json.cpp extsrc/json-schema-validator/json-uri.cpp extsrc/json-schema-validator/json-validator.cpp)
-#    set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude/nlohmann extinclude)
-#    #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
-#else(PI_JSON_SCHEMA_VALIDATOR)
-#    message(STATUS "${CMLOC}Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
-#endif(PI_JSON_SCHEMA_VALIDATOR)
+
+# Not useing JSON Schema validator
+
+
+
+#
+# ----- If using JSON validation in plugin section above is needed ----- ##
+#
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
-if(QT_ANDROID)
-    include_directories(BEFORE ${qt_android_include})
-    include_directories( ${CMAKE_SOURCE_DIR}/extinclude/GLES2)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
 
-    #    #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glshim/include/GLES)
+#
+# ----- Change below to match project requirements for android build ----- ##
+#
+
+if(QT_ANDROID)
+    include_directories( ${PROJECT_SOURCE_DIR}/extinclude/GLES2)
 endif(QT_ANDROID)
+
+##
+## ----- Change above to match project requirements for android build ----- ##
+##
+
 
 # ==================================
 include("PluginNMEA")
@@ -207,6 +213,7 @@ include("PluginJSON")
 
 # ==================================
 target_sources(${PACKAGE_NAME} PUBLIC ${SRC_PLOTS} ${HDR_PLOTS} ${SRC_NMEA0183} ${SRC_JSON})
+# target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC})
 # ==================================
 #add_library(${PACKAGE_NAME} SHARED ${SRC_PLOTS} ${HDR_PLOTS} ${SRC_NMEA0183} ${SRC_JSON})
 
@@ -218,10 +225,18 @@ if(NOT OCPN_FLATPAK_CONFIG)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 endif(NOT OCPN_FLATPAK_CONFIG)
 
-
-
-
 add_definitions(-DTIXML_USE_STL)
+
+#
+# ----- If using JSON validation in plugin section below is needed ----- ##
+#
+
+# Not useing JSON Schema validator
+
+
+#
+# ----- If using JSON validation in plugin section above is needed ----- ##
+#
 
 ##
 ## ----- Change above to match project requirements ----- ##
