@@ -41,8 +41,8 @@ set(LONG_DESCRIPTION "Sailing Performance: Plot speed and course over ground to 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "2")
 set(VERSION_PATCH "11")
-set(VERSION_TWEAK "0")
-set(VERSION_DATE "12-03-2022") # DD/MM/YYYY format
+set(VERSION_TWEAK "1")
+set(VERSION_DATE "13-03-2022") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -133,7 +133,7 @@ include("PluginConfigure")
 
 add_definitions(-DUSE_S57)
 
-SET(SRC_PLOTS
+SET(SRCS
             src/plots_pi.cpp
             src/PlotsDialog.cpp
             src/PreferencesDialog.cpp
@@ -145,7 +145,7 @@ SET(SRC_PLOTS
             src/icons.cpp
 	)
 	
-SET(HDR_PLOTS
+SET(HDRS
             src/PlotsUI.h
             src/History.h
             src/PlotsDialog.h
@@ -167,6 +167,24 @@ set(OCPNHDRS
     libs/ocpn-api/ocpn_plugin.h
 )
 
+#set(EXTSRC
+#)
+#set(EXTINCLUDE
+#    extinclude/ODAPI.h
+#    extinclude/ODJSONSchemas.h
+#)
+
+set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
+
+set(LIBHDRS
+    libs/GL/gl.h
+    libs/GL/gl_private.h
+    libs/GL/glext.h
+    libs/GL/glu.h
+    libs/wx/include/json_defs.h
+    libs/wx/include/jsonreader.h
+    libs/wx/include/jsonval.h
+    libs/wx/include/jsonwriter.h)
 add_definitions(-DPLUGIN_USE_SVG)
 
 #set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
@@ -186,7 +204,7 @@ add_definitions(-DPLUGIN_USE_SVG)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
@@ -212,10 +230,10 @@ include("PluginJSON")
 
 
 # ==================================
-target_sources(${PACKAGE_NAME} PUBLIC ${SRC_PLOTS} ${HDR_PLOTS} ${SRC_NMEA0183} ${SRC_JSON})
+target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${SRC_NMEA0183} ${SRC_JSON})
 # target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC})
 # ==================================
-#add_library(${PACKAGE_NAME} SHARED ${SRC_PLOTS} ${HDR_PLOTS} ${SRC_NMEA0183} ${SRC_JSON})
+#add_library(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_NMEA0183} ${SRC_JSON})
 
 
 if(NOT OCPN_FLATPAK_CONFIG)

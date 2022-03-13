@@ -1,0 +1,16 @@
+src/plots_pi.cpp
+src/PlotsDialog.cpp
+src/PreferencesDialog.cpp
+src/PlotConfigurationDialog.cpp
+src/AboutDialog.cpp
+src/History.cpp
+src/Plot.cpp
+src/PlotsUI.cpp
+src/icons.cpp
+src/PlotsUI.h
+src/History.h
+src/PlotsDialog.h
+src/PlotConfigurationDialog.h
+src/PreferencesDialog.h
+src/AboutDialog.h
+src/wx28compat.h
