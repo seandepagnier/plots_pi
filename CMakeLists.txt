@@ -40,8 +40,8 @@ set(LONG_DESCRIPTION "Sailing Performance: Plot speed and course over ground to 
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "2")
-set(VERSION_PATCH "11")
-set(VERSION_TWEAK "1")
+set(VERSION_PATCH "12")
+set(VERSION_TWEAK "0")
 set(VERSION_DATE "13-03-2022") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -90,6 +90,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(OpenGL_GL_PREFERENCE "LEGACY")
 # Don't use local version of GLU library
 set(USE_LOCAL_GLU FALSE)
+#Turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
 option(USE_GL "Enable OpenGL support" ON)
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
@@ -154,18 +155,20 @@ SET(HDRS
             src/AboutDialog.h
 			src/wx28compat.h
     )
-			
-set(OCPNSRC ocpnsrc/TexFont.cpp)
 
-set(OCPNHDRS
-    ocpninclude/cutil.h
-    ocpninclude/ocpn_plugin.h
-    ocpninclude/pluginmanager.h
-    ocpninclude/shaders.h
-    ocpninclude/TexFont.h
-    ocpninclude/vector2D.h
-    libs/ocpn-api/ocpn_plugin.h
-)
+# From Watchdog - TexFont.cpp has to be here it will not compile
+# From Watchdog -  also src/TexFont.h has to exist AND ocpnhdrs/TexFont.h is not needed.			
+#set(OCPNSRC ocpnsrc/TexFont.cpp)
+
+#set(OCPNHDRS
+#    ocpninclude/cutil.h
+#    ocpninclude/ocpn_plugin.h
+#    ocpninclude/pluginmanager.h
+#    ocpninclude/shaders.h
+#    ocpninclude/TexFont.h
+#    ocpninclude/vector2D.h
+#    libs/ocpn-api/ocpn_plugin.h
+#)
 
 #set(EXTSRC
 #)
@@ -177,23 +180,23 @@ set(OCPNHDRS
 set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
 
 set(LIBHDRS
-    libs/GL/gl.h
-    libs/GL/gl_private.h
-    libs/GL/glext.h
-    libs/GL/glu.h
-    libs/wx/include/json_defs.h
-    libs/wx/include/jsonreader.h
-    libs/wx/include/jsonval.h
-    libs/wx/include/jsonwriter.h)
+#    libs/GL/gl.h
+#    libs/GL/gl_private.h
+#    libs/GL/glext.h
+#    libs/GL/glu.h
+    libs/wxJSON/include/json_defs.h
+    libs/wxJSON/include/jsonreader.h
+    libs/wxJSON/include/jsonval.h
+    libs/wxJSON/include/jsonwriter.h)
 add_definitions(-DPLUGIN_USE_SVG)
 
-#set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
+set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
 
 #
 # ----- If using JSON validation in plugin section below is needed ----- ##
 #
 
-# Not useing JSON Schema validator
+# Not using JSON Schema validator
 
 
 
@@ -201,15 +204,20 @@ add_definitions(-DPLUGIN_USE_SVG)
 # ----- If using JSON validation in plugin section above is needed ----- ##
 #
 
+##=============================================================
+# Modify/configure 'Include' Directories below for the Plugin
+##=============================================================
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
-
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
 #
 # ----- Change below to match project requirements for android build ----- ##
 #
@@ -224,23 +232,26 @@ endif(QT_ANDROID)
 
 
 # ==================================
-include("PluginNMEA")
-include("PluginJSON")
-# ==================================
+target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
+# target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
+# target before
+#target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${SRC_NMEA0183} ${SRC_JSON})
 
-
 # ==================================
-target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${SRC_NMEA0183} ${SRC_JSON})
-# target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC})
-# ==================================
-#add_library(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_NMEA0183} ${SRC_JSON})
 
 
 if(NOT OCPN_FLATPAK_CONFIG)
     # Build environment not available when flatpak is being configured so following statements will not work
     message(STATUS "${CMLOC}Adding target link libraries to ${PACKAGE_NAME}")
+
+    add_subdirectory(libs/jsoncpp)
+    add_subdirectory(libs/nmea0183)
     add_subdirectory(libs/tinyxml)
+
+    target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+    target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
+
 endif(NOT OCPN_FLATPAK_CONFIG)
 
 add_definitions(-DTIXML_USE_STL)
