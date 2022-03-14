@@ -35,6 +35,8 @@
 #include <iostream>
 #include <limits>
 
+#include <cmath>
+
 # if !defined(M_PI)
 # define M_PI		3.14159265358979323846	/* pi */
 # endif
@@ -47,7 +49,7 @@
 # define INFINITY std::numeric_limits<double>::infinity ()
 # endif
 
-#define isnan _isnan
+//#define isnan _isnan
 #define isinf(x) (!_finite(x) && !_isnan(x))
 
 inline double trunc(double d){ return (d>0) ? floor(d) : ceil(d) ; }
@@ -88,7 +90,7 @@ void HistoryTrace::Bounds(double &min, double &max, PlotSettings &plotsettings, 
         double v = it->value;
 
         if(resolve) {
-            if(isnan(fv))
+            if(std::isnan(fv))
                 fv = v;
             if(lv - v > 180)
                 v += 360;
@@ -132,14 +134,14 @@ void HistoryTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &tr
             lx = x - w*(it->ticks - lticks) / plotsettings.TotalSeconds;
         }
 
-        if(!isnan(v)) {
+        if(!std::isnan(v)) {
             if(tracesettings.resolve)
                 v = heading_resolve(v, tracesettings.offset);
 
             // apply scale
             v = h*(.5 + (tracesettings.offset - v)/tracesettings.scale);
 
-            if(!isnan(u)) {
+            if(!std::isnan(u)) {
                 int x1, x2;
                 if(plotsettings.style == CONTINUOUS)
                     x1 = w-x, x2 = w-lx;
@@ -317,11 +319,11 @@ void VMGTrace::Paint(wxDC &dc, PlotSettings &plotsettings, TraceSettings &traces
             lx = x - w*(ticks - lticks) / plotsettings.TotalSeconds;
         }
 
-        if(!isnan(v)) {
+        if(!std::isnan(v)) {
             // apply scale
             v = h*(.5 + (tracesettings.offset - v)/tracesettings.scale);
 
-            if(!isnan(u)) {
+            if(!std::isnan(u)) {
                 int x1, x2;
                 if(plotsettings.style == CONTINUOUS)
                     x1 = w-x, x2 = w-lx;

@@ -23,11 +23,17 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  ***************************************************************************
  */
+#include "wx/wxprec.h"
 
-#include <wx/wx.h>
+#ifndef  WX_PRECOMP
+  #include "wx/wx.h"
+#endif //precompiled headers
+
+//#include <wx/wx.h>
 #include <wx/stdpaths.h>
 
-#include "json/json.h"
+#include "jsonreader.h"
+#include "jsonwriter.h"
 
 #include "plots_pi.h"
 #include "PlotConfigurationDialog.h"
@@ -65,10 +71,36 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //---------------------------------------------------------------------------------------------------------
 
 plots_pi::plots_pi(void *ppimgr)
-    : opencpn_plugin_113(ppimgr)
+    : opencpn_plugin_116(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
+
+// Create the PlugIn icons  -from shipdriver
+// loads png file for the listing panel icon
+    wxFileName fn;
+    auto path = GetPluginDataDir("plots_pi");
+    fn.SetPath(path);
+    fn.AppendDir("data");
+    fn.SetFullName("plots_panel.png");
+
+    path = fn.GetFullPath();
+
+    wxInitAllImageHandlers();
+
+    wxLogDebug(wxString("Using icon path: ") + path);
+    if (!wxImage::CanRead(path)) {
+        wxLogDebug("Initiating image handlers.");
+        wxInitAllImageHandlers();
+    }
+    wxImage panelIcon(path);
+    if (panelIcon.IsOk())
+        m_panelBitmap = wxBitmap(panelIcon);
+    else
+        wxLogWarning("Climatology panel icon has NOT been loaded");
+// End of from Shipdriver	
+
+	
     m_declination = NAN;
 }
 
@@ -91,21 +123,23 @@ int plots_pi::Init(void)
     m_PreferencesDialog->SetIcon(icon);
 
     LoadConfig(); //    And load the configuration items
-    
+
     // use a timer to delay loading history so that the plugin
     // does not slow down startup... this could be in a thread also
+
     m_InitTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
                                 ( plots_pi::OnInitTimer ), NULL, this);
     m_InitTimer.Start(5000, true); // 5 seconds
-    
-#ifdef OCPN_USE_SVG
+
+#ifdef PLUGIN_USE_SVG
     m_leftclick_tool_id = InsertPlugInToolSVG( _T( "Plots" ), _svg_plots, _svg_plots_rollover, _svg_plots_toggled, wxITEM_CHECK, _( "Plots" ), _T( "" ), NULL, PLOTS_TOOL_POSITION, 0, this);
 #else
     m_leftclick_tool_id  = InsertPlugInTool
         (_T(""), _img_plots, _img_plots, wxITEM_NORMAL,
          _("Plots"), _T(""), NULL, PLOTS_TOOL_POSITION, 0, this);
 #endif
-        
+
+
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
             WANTS_TOOLBAR_CALLBACK    |
@@ -140,12 +174,12 @@ bool plots_pi::DeInit(void)
 
 int plots_pi::GetAPIVersionMajor()
 {
-    return MY_API_VERSION_MAJOR;
+    return OCPN_API_VERSION_MAJOR;
 }
 
 int plots_pi::GetAPIVersionMinor()
 {
-    return MY_API_VERSION_MINOR;
+    return OCPN_API_VERSION_MINOR;
 }
 
 int plots_pi::GetPlugInVersionMajor()
@@ -158,27 +192,31 @@ int plots_pi::GetPlugInVersionMinor()
     return PLUGIN_VERSION_MINOR;
 }
 
-wxBitmap *plots_pi::GetPlugInBitmap()
-{
-    return new wxBitmap(_img_plots->ConvertToImage().Copy());
-}
+//  Converts  icon.cpp file to an image. Original process
+//wxBitmap *plots_pi::GetPlugInBitmap()
+//{
+//    return new wxBitmap(_img_plots->ConvertToImage().Copy());
+//}
+
+// Shipdriver uses the climatology_panel.png file to make the bitmap.
+wxBitmap *plots_pi::GetPlugInBitmap()  { return &m_panelBitmap; }
+// End of shipdriver process
+
 
 wxString plots_pi::GetCommonName()
 {
-    return _("Plots");
+    return _T(PLUGIN_COMMON_NAME);
 }
 
 
 wxString plots_pi::GetShortDescription()
 {
-    return _("Plots PlugIn for OpenCPN");
+    return _(PLUGIN_SHORT_DESCRIPTION);
 }
 
 wxString plots_pi::GetLongDescription()
 {
-    return _("Plots PlugIn for OpenCPN\n\
-Plot speed and course over ground to make the result of \
-small adjustments evident.");
+    return _(PLUGIN_LONG_DESCRIPTION);
 }
 
 int plots_pi::GetToolbarToolCount(void)
@@ -213,11 +251,11 @@ double plots_pi::Declination()
 }
 
 void plots_pi::OnInitTimer( wxTimerEvent & )
-{    
+{
     // read history
     wxString data = StandardPath() + _T("data");
     History::Read(data);
-    
+
     m_HistoryWriteTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
                                 ( plots_pi::OnHistoryWriteTimer ), NULL, this);
     m_HistoryWriteTimer.Start(1000*60*20); // every 20 minutes
@@ -252,13 +290,13 @@ bool plots_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
 
 bool plots_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 {
-//    glEnable( GL_LINE_SMOOTH );
-//    glEnable( GL_BLEND );
+    glEnable( GL_LINE_SMOOTH );
+    glEnable( GL_BLEND );
 
     Render(NULL, *vp);
 
-//    glDisable( GL_BLEND );
-//    glDisable( GL_LINE_SMOOTH );
+    glDisable( GL_BLEND );
+    glDisable( GL_LINE_SMOOTH );
 
     return true;
 }
@@ -267,7 +305,7 @@ void plots_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
 {
     if(!m_PreferencesDialog || !m_PreferencesDialog->m_cbCoursePrediction->GetValue())
         return;
-#ifndef __OCPN__ANDROID__
+
     int ticks = m_PreferencesDialog->m_sCoursePredictionSeconds->GetValue();
     int length = m_PreferencesDialog->m_sCoursePredictionLength->GetValue();
 
@@ -313,7 +351,7 @@ void plots_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
 
                     double d0 = sqrt(v0[0]*v0[0] + v0[1]*v0[1]);
                     double d1 = sqrt(v1[0]*v1[0] + v1[1]*v1[1]);
-                    
+
                     float alpha = 1 - (v0[0]*v1[1] - v0[1]*v1[0]) / (d0*d1);
                     alpha /= sqrt(sqrt(ticks));
 //                    alpha = sqrt(sqrt(alpha));
@@ -353,7 +391,6 @@ void plots_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
             glEnd();
         }
     }
-#endif
 }
 
 void plots_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
@@ -404,7 +441,7 @@ bool plots_pi::SaveConfig(void)
         pConf->Write ( _T ( "DialogW" ), s.x);
         pConf->Write ( _T ( "DialogH" ), s.y);
     }
-    
+
     return true;
 }
 
@@ -421,6 +458,9 @@ void plots_pi::WriteHistory()
     History::Write(data);
 }
 
+
+/* OLD VERSION
+
 wxString plots_pi::StandardPath()
 {
     wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
@@ -431,16 +471,51 @@ wxString plots_pi::StandardPath()
     wxString stdPath  = std_path.GetUserDataDir();
 #endif
 #ifdef __WXOSX__
-    wxString stdPath  = std_path.GetUserConfigDir();   // should be ~/Library/Preferences	
-#endif
-#ifdef __OCPN__ANDROID__
-    wxString stdPath  = "/mnt/sdcard/Android/data/org.opencpn.opencpn/files";
+    wxString stdPath  = std_path.GetUserConfigDir();   // should be ~/Library/Preferences
 #endif
 
     return stdPath + wxFileName::GetPathSeparator() +
         _T("plugins") + wxFileName::GetPathSeparator() +
         _T("plots") +  wxFileName::GetPathSeparator();
 }
+
+*/
+
+
+wxString plots_pi::StandardPath()
+{
+    wxString s = wxFileName::GetPathSeparator();
+    wxString stdPath  = *GetpPrivateApplicationDataLocation();
+
+    stdPath += s + _T("plugins");
+    if (!wxDirExists(stdPath))
+      wxMkdir(stdPath);
+
+    stdPath += s + _T("weather_routing");
+
+#ifdef __WXOSX__
+    // Compatibility with pre-OCPN-4.2; move config dir to
+    // ~/Library/Preferences/opencpn if it exists
+    {
+        wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
+        wxString s = wxFileName::GetPathSeparator();
+        // should be ~/Library/Preferences/opencpn
+        wxString oldPath = (std_path.GetUserConfigDir() +s + _T("plugins") +s + _T("plots"));
+        if (wxDirExists(oldPath) && !wxDirExists(stdPath)) {
+		    wxLogMessage("plots_pi: moving config dir %s to %s", oldPath, stdPath);
+		    wxRenameFile(oldPath, stdPath);
+        }
+    }
+#endif
+
+    if (!wxDirExists(stdPath))
+      wxMkdir(stdPath);
+
+    stdPath += s;
+    return stdPath;
+}
+
+
 
 void plots_pi::SetNMEASentence( wxString &sentence )
 {
@@ -478,7 +553,7 @@ void plots_pi::SetNMEASentence( wxString &sentence )
                     AddData(TWA, nmea.Mwv.WindAngle);
                     AddData(TWS, speed);
                 }
-            } 
+            }
         }
     } else if( nmea.LastSentenceIDReceived == _T("VWR") ) {
         if( nmea.Parse() ) {
@@ -563,7 +638,7 @@ void plots_pi::CreatePlots()
         m_PlotsDialogs.push_back(dlg);
 
         pConf->SetPath ( wxString::Format( "/Settings/Plots/%d", i ) );
-        
+
         dlg->Move(pConf->Read ( _T ( "DialogPosX" ), 20L ),
                   pConf->Read ( _T ( "DialogPosY" ), 20L ));
         dlg->SetSize(pConf->Read ( _T ( "DialogW" ), 400L ),

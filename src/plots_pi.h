@@ -37,8 +37,6 @@
 
 #include "version.h"
 
-#define     MY_API_VERSION_MAJOR    1
-#define     MY_API_VERSION_MINOR    10
 
 #define ABOUT_AUTHOR_URL "http://seandepagnier.users.sourceforge.net"
 
@@ -88,8 +86,8 @@ inline double round(double n) { return n < 0.0 ? ceil(n - 0.5) : floor(n + 0.5);
 #include <GL/gl.h>
 #include <GL/glu.h>
 #else
-//#include "qopengl.h"                  // this gives us the qt runtime gles2.h
-//#include "GL/gl_private.h"
+#include "qopengl.h"                  // this gives us the qt runtime gles2.h
+#include "GL/gl_private.h"
 #endif
 
 #endif
@@ -110,7 +108,7 @@ double heading_resolve(double degrees, double ref=0);
 class PlotsDialog;
 class PreferencesDialog;
 
-class plots_pi : public wxEvtHandler, public opencpn_plugin_113
+class plots_pi : public wxEvtHandler, public opencpn_plugin_116
 {
 public:
       plots_pi(void *ppimgr);
@@ -127,6 +125,8 @@ public:
       wxString GetCommonName();
       wxString GetShortDescription();
       wxString GetLongDescription();
+	  // from shipdriver for panel icon read png
+	  wxBitmap m_panelBitmap; 
 
       int GetToolbarToolCount(void);
 
