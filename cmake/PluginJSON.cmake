@@ -3,19 +3,15 @@
 ## Copyright:   2015
 ## License:     GPLv3+
 ##---------------------------------------------------------------------------
+set(PluginJSON_SAVE_CMLOC ${CMLOC})
+set(CMLOC "PluginJSON: ")
+message(STATUS "${CMLOC}In PluginJSON")
 
 SET(SRC_JSON
-	    src/jsoncpp/json_reader.cpp
-	    src/jsoncpp/json_value.cpp
-	    src/jsoncpp/json_writer.cpp
-            )
+	    libs/wxJSON/src/jsonreader.cpp
+	    libs/wxJSON/src/jsonval.cpp
+	    libs/wxJSON/src/jsonwriter.cpp
+        )
 
-IF(QT_ANDROID)
-  ADD_DEFINITIONS(-DJSONCPP_NO_LOCALE_SUPPORT)
-ENDIF(QT_ANDROID)
-
-
-INCLUDE_DIRECTORIES(${PLUGIN_SOURCE_DIR}/src/jsoncpp)
-
-ADD_LIBRARY(${PACKAGE_NAME}_LIB_PLUGINJSON STATIC ${SRC_JSON})
-TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${PACKAGE_NAME}_LIB_PLUGINJSON )
+INCLUDE_DIRECTORIES(BEFORE libs/wxJSON/include)
+set(CMLOC ${PluginJSON_SAVE_CMLOC})
