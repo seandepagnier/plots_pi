@@ -170,7 +170,7 @@ void PlotsDialog::OnPaint( wxPaintEvent& event )
         return;
 
     wxPaintDC dc( window );
-    dc.SetFont(m_configuration.m_fpPlotFont->GetSelectedFont());
+    dc.SetFont(m_configuration.m_font);
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
     double vmgcourse;

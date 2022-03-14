@@ -1,46 +1,3 @@
-<<<<<<< HEAD
-##---------------------------------------------------------------------------
-## Author:      bdbcat aka. dsr (Dave Register)
-## Copyright:
-## License:     wxWidgets License
-##---------------------------------------------------------------------------
-
-
-# define minimum cmake version
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.2)
-# This should be 2.8.0 to have FindGTK2 module
-
-PROJECT(plots_pi)
-SET(PACKAGE_NAME plots_pi)
-SET(VERBOSE_NAME Plots)
-SET(TITLE_NAME Plots)
-SET(CPACK_PACKAGE_CONTACT "Sean D'Epagnier")
-
-INCLUDE("cmake/PluginConfigure.cmake")
-
-SET(SRC_PLOTS
-            src/plots_pi.cpp
-            src/PlotsDialog.cpp
-            src/PreferencesDialog.cpp
-            src/PlotConfigurationDialog.cpp
-            src/AboutDialog.cpp
-            src/History.cpp
-            src/Plot.cpp
-            src/PlotsUI.cpp
-            src/icons.cpp
-            src/plugingl/qtstylesheet.cpp
-	)
-
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_PLOTS})
-
-INCLUDE("cmake/PluginNMEA.cmake")
-INCLUDE("cmake/PluginJSON.cmake")
-INCLUDE("cmake/PluginLocalization.cmake")
-INCLUDE("cmake/PluginInstall.cmake")
-INCLUDE("cmake/PluginPackage.cmake")
-
-
-=======
 ##---------------------------------------------------------------------------
 ## Author:      Sean D'Epagnier
 ## Copyright:   
@@ -220,17 +177,17 @@ SET(HDRS
 #    extinclude/ODJSONSchemas.h
 #)
 
-set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
+#set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
 
-set(LIBHDRS
+#set(LIBHDRS
 #    libs/GL/gl.h
 #    libs/GL/gl_private.h
 #    libs/GL/glext.h
 #    libs/GL/glu.h
-    libs/wxJSON/include/json_defs.h
-    libs/wxJSON/include/jsonreader.h
-    libs/wxJSON/include/jsonval.h
-    libs/wxJSON/include/jsonwriter.h)
+#    libs/wxJSON/include/json_defs.h
+#    libs/wxJSON/include/jsonreader.h
+#    libs/wxJSON/include/jsonval.h
+#    libs/wxJSON/include/jsonwriter.h)
 add_definitions(-DPLUGIN_USE_SVG)
 
 set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
@@ -258,8 +215,7 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
 #
 # ----- Change below to match project requirements for android build ----- ##
@@ -334,4 +290,4 @@ get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTO
 foreach(dir ${dirs})
     message(STATUS "${CMLOC}dir='${dir}'")
 endforeach()
->>>>>>> 51e283a2e5696529711db76806f8a31823c1f0e2
+

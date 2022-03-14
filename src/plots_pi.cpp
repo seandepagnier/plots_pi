@@ -32,8 +32,7 @@
 //#include <wx/wx.h>
 #include <wx/stdpaths.h>
 
-#include "jsonreader.h"
-#include "jsonwriter.h"
+#include "json/json.h"
 
 #include "plots_pi.h"
 #include "PlotConfigurationDialog.h"

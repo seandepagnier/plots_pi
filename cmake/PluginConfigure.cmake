@@ -230,7 +230,6 @@ include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/src)
 
 set(CMAKE_SHARED_LINKER_FLAGS "")
 set(CMAKE_EXE_LINKER_FLAGS "")
->>>>>>> 51e283a2e5696529711db76806f8a31823c1f0e2
 
 # SET(PROFILING 1)
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
@@ -368,33 +367,6 @@ ENDIF(DEFINED _wx_selected_config)
 
 # Building for QT_ANDROID involves a cross-building environment, So the include directories, flags, etc must be stated explicitly without trying to locate them on the host build system.
 IF(QT_ANDROID)
-<<<<<<< HEAD
-  ADD_DEFINITIONS(-D__WXQT__)
-  ADD_DEFINITIONS(-D__OCPN__ANDROID__)
-  ADD_DEFINITIONS(-DOCPN_USE_WRAPPER)
-  ADD_DEFINITIONS(-DANDROID)
-  INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include/android)
-
-  SET(CMAKE_CXX_FLAGS "-pthread -s")
-
-  ## Compiler flags
- #   if(CMAKE_COMPILER_IS_GNUCXX)
- #       set(CMAKE_CXX_FLAGS "-O2")        ## Optimize
-        set(CMAKE_EXE_LINKER_FLAGS "-s")  ## Strip binary
- #   endif()
-
-  INCLUDE_DIRECTORIES("${Qt_Base}/${Qt_Build}/include/QtCore")
-  INCLUDE_DIRECTORIES("${Qt_Base}/${Qt_Build}/include")
-  INCLUDE_DIRECTORIES("${Qt_Base}/${Qt_Build}/include/QtWidgets")
-  INCLUDE_DIRECTORIES("${Qt_Base}/${Qt_Build}/include/QtGui")
-  INCLUDE_DIRECTORIES("${Qt_Base}/${Qt_Build}/include/QtOpenGL")
-  INCLUDE_DIRECTORIES("${Qt_Base}/${Qt_Build}/include/QtTest")
-
-  INCLUDE_DIRECTORIES( "${wxQt_Base}/${wxQt_Build}/lib/wx/include/arm-linux-androideabi-qt-unicode-static-3.1")
-  INCLUDE_DIRECTORIES("${wxQt_Base}/include")
-
-  ADD_DEFINITIONS(-DQT_WIDGETS_LIB)
-=======
     MESSAGE(STATUS "${CMLOC}Processing QT_ANDROID")
     ADD_DEFINITIONS(-D__WXQT__)
     ADD_DEFINITIONS(-D__OCPN__ANDROID__)
