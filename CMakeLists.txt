@@ -3,7 +3,7 @@
 ## Copyright:   
 ## License:     GPLv3
 # ---------------------------------------------------------------------------
-# Frontend Author: Jon Gough  Frontend:  1.0.212.0 16/06/2022  # DD/MM/YYYY format
+# Frontend Author: Jon Gough  Frontend:  1.0.213.0 17/06/2022  # DD/MM/YYYY format
 # ---------------------------------------------------------------------------
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
 ## ----- Changes should only be made between the section blocks that identify where     ----- ##
@@ -40,9 +40,9 @@ set(LONG_DESCRIPTION "Sailing Performance: Plot speed and course over ground to 
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "2")
-set(VERSION_PATCH "14")
+set(VERSION_PATCH "15")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE "16/06/2022") # DD/MM/YYYY format
+set(VERSION_DATE "17/06/2022") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
