@@ -106,7 +106,7 @@ private:
     double course;
 };
 
-class Plot
+struct Plot
 {
     Plot(wxString n, bool r = false)
         : name(n), resolve(r) {}
