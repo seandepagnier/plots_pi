@@ -530,7 +530,7 @@ void plots_pi::SetNMEASentence( wxString &sentence )
 
     if( nmea.LastSentenceIDReceived == _T("HDM") ) {
         if( nmea.Parse() ) {
-            if( !wxIsNaN(nmea.Hdm.DegreesMagnetic) ) {
+            if( !isnan(nmea.Hdm.DegreesMagnetic) ) {
                 AddData(HDG, nmea.Hdm.DegreesMagnetic - Declination());
                 AddData(HDM, nmea.Hdm.DegreesMagnetic);
             }
