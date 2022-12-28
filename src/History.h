@@ -57,6 +57,7 @@ struct History
     time_t LastTicks();
     void AddData(int i, HistoryAtom state);
     void AddData(double value, time_t ticks, bool resolve);
+    void Clear();
 
     static void Read(wxString filename);
     static void Write(wxString filename);

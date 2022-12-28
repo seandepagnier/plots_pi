@@ -573,6 +573,7 @@ void plots_pi::SetNMEASentence( wxString &sentence )
 
 void plots_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 {
+    static bool pds = false;
     if(pfix.FixTime && pfix.nSats) {
 
         AddData(SOG, pfix.Sog);
@@ -584,6 +585,10 @@ void plots_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 
         UpdatePositionDetermined(PDS10, PDC10, 10);
         UpdatePositionDetermined(PDS60, PDC60, 60);
+    } else {
+        // avoid computing speed/course across lost gps
+        g_history[LAT].Clear();
+        g_history[LON].Clear();
     }
 }
 
