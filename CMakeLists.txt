@@ -40,10 +40,9 @@ set(LONG_DESCRIPTION "Sailing Performance: Plot speed and course over ground to 
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "2")
-
-set(VERSION_PATCH "19")
+set(VERSION_PATCH "20")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE "25/12/2022") # DD/MM/YYYY format
+set(VERSION_DATE "12/01/2022") # DD/MM/YYYY format
 
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
