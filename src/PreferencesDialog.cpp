@@ -53,6 +53,10 @@ PreferencesDialog::PreferencesDialog(wxWindow* parent)
 
     pConf->Read(_T("CoursePredictionSeconds"), &ivalue, 10);
     m_sCoursePredictionSeconds->SetValue(ivalue);
+
+#ifdef __OCPN__ANDROID__ 
+    GetHandle()->setStyleSheet( qtStyleSheet);
+#endif
 }
 
 PreferencesDialog::~PreferencesDialog()

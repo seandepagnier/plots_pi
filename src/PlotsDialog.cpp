@@ -58,6 +58,7 @@ PlotsDialog::PlotsDialog(wxWindow* parent, int index)
     coursePlot->PUSH_HISTORY_TRACE(PDC10);
     coursePlot->PUSH_HISTORY_TRACE(PDC60);
     coursePlot->PUSH_HISTORY_TRACE(HDG);
+    coursePlot->PUSH_HISTORY_TRACE(HDM);
     m_plots.push_back(coursePlot);
 
     Plot *courseFFTWPlot = new Plot(_("Course FFTW"), false);
@@ -89,6 +90,21 @@ PlotsDialog::PlotsDialog(wxWindow* parent, int index)
 
     initialized = true;
     SetupPlot();
+
+#ifdef __OCPN__ANDROID__ 
+    GetHandle()->setAttribute(Qt::WA_AcceptTouchEvents);
+    GetHandle()->grabGesture(Qt::PanGesture);
+    GetHandle()->setStyleSheet( qtStyleSheet);
+
+    m_swPlots->GetHandle()->setAttribute(Qt::WA_AcceptTouchEvents);
+    m_swPlots->GetHandle()->grabGesture(Qt::PinchGesture);
+    m_swPlots->GetHandle()->grabGesture(Qt::PanGesture);
+    
+    m_swPlots->Connect( wxEVT_QT_PANGESTURE,
+             (wxObjectEventFunction) (wxEventFunction) &PlotsDialog::OnEvtPanGesture, NULL, this );
+    m_tDownTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
+                            ( PlotsDialog::OnDownTimer ), NULL, this);
+#endif
 }
 
 PlotsDialog::~PlotsDialog()
@@ -96,6 +112,46 @@ PlotsDialog::~PlotsDialog()
     for(std::list<Plot*>::iterator it=m_plots.begin(); it != m_plots.end(); it++)
         delete *it;
 }
+
+#ifdef __OCPN__ANDROID__
+#include "qdebug.h"
+
+void PlotsDialog::OnEvtPanGesture( wxQT_PanGestureEvent &event)
+{
+    switch(event.GetState()){
+        case GestureStarted:
+            m_startPos = GetPosition();
+            m_startMouse = event.GetCursorPos(); //g_mouse_pos_screen;
+            break;
+        default:
+        {
+            wxPoint pos = event.GetCursorPos();
+            int x = wxMax(0, pos.x + m_startPos.x - m_startMouse.x);
+            int y = wxMax(0, pos.y + m_startPos.y - m_startMouse.y);
+            int xmax = ::wxGetDisplaySize().x - GetSize().x;
+            x = wxMin(x, xmax);
+            int ymax = ::wxGetDisplaySize().y - GetSize().y;          // Some fluff at the bottom
+            y = wxMin(y, ymax);
+            
+            Move(x, y);
+            m_tDownTimer.Stop();
+        } break;
+    }
+    
+}
+#endif
+
+void PlotsDialog::OnLeftDown( wxMouseEvent& event )
+{
+    m_tDownTimer.Start(1200, true);
+    m_downPos = event.GetPosition();
+}
+
+void PlotsDialog::OnLeftUp( wxMouseEvent& event )
+{
+    m_tDownTimer.Stop();
+}
+
 
 void PlotsDialog::Relay( wxKeyEvent& event )
 {
@@ -114,7 +170,7 @@ void PlotsDialog::OnPaint( wxPaintEvent& event )
         return;
 
     wxPaintDC dc( window );
-    dc.SetFont(m_configuration.m_fpPlotFont->GetSelectedFont());
+    dc.SetFont(m_configuration.m_font);
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
     double vmgcourse;

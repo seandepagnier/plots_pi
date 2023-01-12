@@ -40,9 +40,10 @@ set(LONG_DESCRIPTION "Sailing Performance: Plot speed and course over ground to 
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "2")
-set(VERSION_PATCH "19")
+set(VERSION_PATCH "20")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE "25/12/2022") # DD/MM/YYYY format
+set(VERSION_DATE "12/01/2022") # DD/MM/YYYY format
+
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -177,17 +178,17 @@ SET(HDRS
 #    extinclude/ODJSONSchemas.h
 #)
 
-set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
+#set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
 
-set(LIBHDRS
+#set(LIBHDRS
 #    libs/GL/gl.h
 #    libs/GL/gl_private.h
 #    libs/GL/glext.h
 #    libs/GL/glu.h
-    libs/wxJSON/include/json_defs.h
-    libs/wxJSON/include/jsonreader.h
-    libs/wxJSON/include/jsonval.h
-    libs/wxJSON/include/jsonwriter.h)
+#    libs/wxJSON/include/json_defs.h
+#    libs/wxJSON/include/jsonreader.h
+#    libs/wxJSON/include/jsonval.h
+#    libs/wxJSON/include/jsonwriter.h)
 add_definitions(-DPLUGIN_USE_SVG)
 
 set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
@@ -215,8 +216,7 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
 #
 # ----- Change below to match project requirements for android build ----- ##
@@ -291,3 +291,4 @@ get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTO
 foreach(dir ${dirs})
     message(STATUS "${CMLOC}dir='${dir}'")
 endforeach()
+

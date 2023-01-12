@@ -26,6 +26,9 @@
 
 #include "PlotsUI.h"
 
+#ifdef __OCPN__ANDROID__
+#include <wx/qt/private/wxQtGesture.h>
+#endif
 
 class plots_pi;
 class Plot;
@@ -36,10 +39,17 @@ public:
     PlotsDialog(wxWindow* parent, int index);
     ~PlotsDialog();
 
+#ifdef __OCPN__ANDROID__
+    void OnEvtPanGesture( wxQT_PanGestureEvent &event);
+#endif    
+
     void Relay( wxKeyEvent& event );
     void OnSize(wxSizeEvent& event) { Refresh(); event.Skip(); }
     void OnDoubleClick( wxMouseEvent& event );
     void OnPaint(wxPaintEvent& event);
+    void OnLeftDown( wxMouseEvent& event );
+    void OnLeftUp( wxMouseEvent& event );
+    void OnRightDown( wxMouseEvent& event ) { m_swPlotsOnContextMenu(event); }
 
     void SetupPlot();
 
@@ -49,6 +59,7 @@ private:
 
     void OnClose( wxCloseEvent& );
     void OnRefreshTimer( wxTimerEvent & );
+    void OnDownTimer( wxTimerEvent & ) { m_swPlots->PopupMenu( m_menu1, m_downPos ); }
 
     int PlotCount();
     int TotalSeconds();
@@ -56,7 +67,9 @@ private:
     bool initialized;
     PlotConfigurationDialog m_configuration;
 
-    wxTimer m_tRefreshTimer;
+    wxPoint m_downPos, m_startPos, m_startMouse;
+
+    wxTimer m_tRefreshTimer, m_tDownTimer;
     int m_lastTimerTotalSeconds;
 
     std::list<Plot*> m_plots;

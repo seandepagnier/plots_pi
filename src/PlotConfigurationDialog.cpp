@@ -24,6 +24,8 @@
  ***************************************************************************
  */
 
+#include <wx/fontdlg.h>
+
 #include "plots_pi.h"
 
 #include "PlotsUI.h"
@@ -56,6 +58,7 @@ PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, PlotsDialog &
     ADD_CB(AWA);
     ADD_CB(TWA);
     ADD_CB(TWD);
+    ADD_CB(BAR);
     
     pConf->SetPath ( wxString::Format( "/Settings/Plots/%d", index ) );
 
@@ -67,7 +70,7 @@ PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, PlotsDialog &
     m_tVMGCourse->SetValue(wxString::Format(_T("%f"), vmgcourse));
 
 #if wxCHECK_VERSION(3,0,0)
-    m_fpPlotFont->SetSelectedFont(pConf->Read(_T("PlotFont"), wxToString(m_fpPlotFont->GetSelectedFont())));
+    m_font = wxFont(pConf->Read(_T("PlotFont"), wxToString(m_font)));
 #else
     wxLogMessage(_T("plots_pi: cannot save and load fonts using wxwidgets version < 3"));
 #endif    
@@ -75,10 +78,14 @@ PlotConfigurationDialog::PlotConfigurationDialog(wxWindow* parent, PlotsDialog &
     m_cColors->SetSelection(pConf->Read(_T("PlotColors"), m_cColors->GetSelection()));
     m_sPlotTransparency->SetValue(pConf->Read(_T("PlotTransparency"), m_sPlotTransparency->GetValue()));
     m_cPlotStyle->SetSelection(pConf->Read(_T("PlotStyle"), m_cPlotStyle->GetSelection()));
-#ifdef WIN32
+#if defined(WIN32) || defined(__OCPN__ANDROID__)
     m_cbShowTitleBar->Disable();
 #else
     m_cbShowTitleBar->SetValue(pConf->Read(_T("PlotShowTitleBar"), m_cbShowTitleBar->GetValue()));
+#endif
+
+#ifdef __OCPN__ANDROID__ 
+    GetHandle()->setStyleSheet( qtStyleSheet);
 #endif
 }
 
@@ -99,7 +106,7 @@ PlotConfigurationDialog::~PlotConfigurationDialog()
     pConf->Write(_T("VMGCourse"), vmgcourse);
 
 #if wxCHECK_VERSION(3,0,0)
-    pConf->Write(_T("PlotFont"), m_fpPlotFont->GetSelectedFont());
+    pConf->Write(_T("PlotFont"), m_font);
 #endif
     pConf->Write(_T("PlotMinHeight"), m_sPlotMinHeight->GetValue());
     pConf->Write(_T("PlotColors"), m_cColors->GetSelection());
@@ -146,4 +153,17 @@ bool PlotConfigurationDialog::ShowTitleBar(int index)
     pConf->SetPath ( wxString::Format( "/Settings/Plots/%d", index ) );
     return pConf->Read(_T("PlotShowTitleBar"), true);
 #endif
+}
+
+void PlotConfigurationDialog::OnFont( wxCommandEvent& event )
+{
+    wxFontData init_font_data;
+    init_font_data.SetInitialFont(m_font);
+    wxFontDialog dlg(GetParent(), init_font_data);
+    dlg.Centre();
+    if (dlg.ShowModal() != wxID_CANCEL) {
+        wxFontData font_data = dlg.GetFontData();
+        m_font = font_data.GetChosenFont();
+        OnPlotChange(event);
+    }
 }
