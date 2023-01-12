@@ -32,8 +32,7 @@
 //#include <wx/wx.h>
 #include <wx/stdpaths.h>
 
-#include "jsonreader.h"
-#include "jsonwriter.h"
+#include "json/json.h"
 
 #include "plots_pi.h"
 #include "PlotConfigurationDialog.h"
@@ -244,13 +243,9 @@ double plots_pi::Declination()
         return m_declination;
     m_declinationRequestTime = wxDateTime::Now();
 
-    if(!m_declinationTime.IsValid() || (wxDateTime::Now() - m_declinationTime).GetSeconds() > 1200) {
-        wxJSONWriter w;
-        wxString out;
-        wxJSONValue v;
-        w.Write(v, out);
-        SendPluginMessage(wxString(_T("WMM_VARIATION_BOAT_REQUEST")), out);
-    }
+    if(!m_declinationTime.IsValid() || (wxDateTime::Now() - m_declinationTime).GetSeconds() > 1200)
+        SendPluginMessage(wxString(_T("WMM_VARIATION_BOAT_REQUEST")), "");
+
     return m_declination;
 }
 
@@ -399,12 +394,13 @@ void plots_pi::Render(wxDC *dc, PlugIn_ViewPort &vp)
 
 void plots_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
 {
-    wxJSONReader r;
-    wxJSONValue v;
+    Json::Reader r;
+    Json::Value v;
 
     if(message_id == _T("WMM_VARIATION_BOAT")) {
-        if(r.Parse( message_body, &v ) == 0) {
-            v[_T("Decl")].AsString().ToDouble(&m_declination);
+        if(r.parse( static_cast<std::string>(message_body), v ) == 0) {
+            wxString sdecl = v["Decl"].asString();
+            sdecl.ToDouble(&m_declination);
             m_declinationTime = wxDateTime::Now();
         }
     }
@@ -577,6 +573,7 @@ void plots_pi::SetNMEASentence( wxString &sentence )
 
 void plots_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 {
+    static bool pds = false;
     if(pfix.FixTime && pfix.nSats) {
 
         AddData(SOG, pfix.Sog);
@@ -588,6 +585,10 @@ void plots_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 
         UpdatePositionDetermined(PDS10, PDC10, 10);
         UpdatePositionDetermined(PDS60, PDC60, 60);
+    } else {
+        // avoid computing speed/course across lost gps
+        g_history[LAT].Clear();
+        g_history[LON].Clear();
     }
 }
 
@@ -617,10 +618,10 @@ void plots_pi::UpdatePositionDetermined(enum HistoryEnum speed, enum HistoryEnum
 
 void plots_pi::AddData(enum HistoryEnum e, double value, time_t ticks)
 {
-    const int resolve[] = {TWD, TWA, AWA, COG, HDG, PDC10, PDC60};
+    const int resolve[] = {TWD, TWA, AWA, COG, HDG, HDM, PDC10, PDC60};
     bool bresolve = false;
     for(unsigned int i=0; i < (sizeof resolve) / (sizeof *resolve); i++)
-        if(resolve[i])
+        if(resolve[i] == e)
            bresolve = true;
     g_history[e].AddData(value, ticks, bresolve);
 }

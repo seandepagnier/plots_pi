@@ -1,15 +1,13 @@
-/******************************************************************************
+/***************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  plots Plugin
- * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2016 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2017 by David S. Register                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 3 of the License, or     *
+ *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
@@ -21,38 +19,29 @@
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
- ***************************************************************************
- */
+ **************************************************************************/
 
-#include "PlotsUI.h"
+#ifndef __PISHADERS_H__
+#define __PISHADERS_H__
 
-class PlotsDialog;
+#include "wx/wxprec.h"
+#ifndef  WX_PRECOMP
+#include "wx/wx.h"
+#endif //precompiled headers
 
-class PlotConfigurationDialog: public PlotConfigurationDialogBase
-{
-public:
-    PlotConfigurationDialog(wxWindow* parent, PlotsDialog &m_dialog, int index);
-    ~PlotConfigurationDialog();
+#ifdef ocpnUSE_GLES2
+#include "GLES2/gl2.h"
+#endif
 
-    void OnPDS( wxCommandEvent& event );
-    void OnPlotChange(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
+    extern GLint pi_color_tri_shader_program;
+    extern GLint pi_colorv_tri_shader_program;
+    extern GLint pi_texture_2D_shader_program;
+    extern GLint pi_texture_2DA_shader_program;
+    extern GLint pi_texture_text_shader_program;
+    extern GLint pi_circle_filled_shader_program;
+    
 
-    int PlotMinHeight() { return m_sPlotMinHeight->GetValue(); }
+bool pi_loadShaders();
+void configureShaders(float width, float height);
 
-    static bool ShowTitleBar(int index);
-
-    void OnFont( wxCommandEvent& event );
-    wxFont m_font;
-
-private:
-    PlotsDialog &m_PlotsDialog;
-    struct cbState {
-       cbState(wxCheckBox *a, wxString n) : cb(a), name(n) { }
-        wxCheckBox *cb;
-        wxString name;
-    };
-
-    std::list<cbState> m_cbStates;
-    int m_index;
-};
+#endif

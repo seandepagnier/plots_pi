@@ -117,6 +117,12 @@ void History::AddData(double value, time_t ticks, bool resolve)
     }
 }
 
+void History::Clear()
+{
+    for(int i=0; i<HISTORY_BUCKETS; i++)
+        data[i].data.clear();
+}
+
 const int history_magic = 0xfe01 + HISTORY_COUNT;
 
 void History::Read(wxString filename)

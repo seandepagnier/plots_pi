@@ -1,15 +1,17 @@
 /******************************************************************************
+ * $Id: ocpn_draw_pi.h,v 1.0 2015/01/28 01:54:37 jongough Exp $
  *
  * Project:  OpenCPN
- * Purpose:  plots Plugin
- * Author:   Sean D'Epagnier
+ * Purpose:  Redefine _() macro to allow usage of catalog
+ * Author:   Jon Gough
  *
  ***************************************************************************
- *   Copyright (C) 2016 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2010 by David S. Register   *
+ *   $EMAIL$   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 3 of the License, or     *
+ *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
@@ -20,39 +22,21 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.             *
  ***************************************************************************
  */
+#ifndef _PICATTRANS_H_
+#define _PICATTRANS_H_
 
-#include "PlotsUI.h"
+#ifndef WXINTL_NO_GETTEXT_MACRO
+#ifdef _
+#undef _
+#endif // _
+#if wxCHECK_VERSION(3,0,0)
+    #define _(s) wxGetTranslation((s), wxS("opencpn-${PACKAGE_NAME}"))
+#else // wxCHECK_VERSION(3,0,0)
+#define _(s) wxGetTranslation(wxT(s), wxT("opencpn-${PACKAGE_NAME}"))
+#endif // wxCHECK_VERSION(3,0,0)
+#endif // WXINTL_NO_GETTEXT_MACRO
 
-class PlotsDialog;
-
-class PlotConfigurationDialog: public PlotConfigurationDialogBase
-{
-public:
-    PlotConfigurationDialog(wxWindow* parent, PlotsDialog &m_dialog, int index);
-    ~PlotConfigurationDialog();
-
-    void OnPDS( wxCommandEvent& event );
-    void OnPlotChange(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
-
-    int PlotMinHeight() { return m_sPlotMinHeight->GetValue(); }
-
-    static bool ShowTitleBar(int index);
-
-    void OnFont( wxCommandEvent& event );
-    wxFont m_font;
-
-private:
-    PlotsDialog &m_PlotsDialog;
-    struct cbState {
-       cbState(wxCheckBox *a, wxString n) : cb(a), name(n) { }
-        wxCheckBox *cb;
-        wxString name;
-    };
-
-    std::list<cbState> m_cbStates;
-    int m_index;
-};
+#endif
