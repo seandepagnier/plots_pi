@@ -3,7 +3,7 @@
 ## Copyright:   
 ## License:     GPLv3
 # ---------------------------------------------------------------------------
-# Frontend Author: Jon Gough  Frontend:  1.0.226.0 17/02/2023  # DD/MM/YYYY format
+# Frontend Author: Jon Gough  Frontend:  1.0.230.0 05/03/2023  # DD/MM/YYYY format
 # ---------------------------------------------------------------------------
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
 ## ----- Changes should only be made between the section blocks that identify where     ----- ##
@@ -39,12 +39,12 @@ set(SHORT_DESCRIPTION "Plots PlugIn for OpenCPN")
 set(LONG_DESCRIPTION "Sailing Performance: Plot speed and course over ground to make the result of small adjustments evident.")
 
 set(VERSION_MAJOR "2")
-set(VERSION_MINOR "2")
-set(VERSION_PATCH "21")
+set(VERSION_MINOR "3")
+set(VERSION_PATCH "0")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE "27/02/2023") # DD/MM/YYYY format
+set(VERSION_DATE "26/03/2023") # DD/MM/YYYY format
 
-set(OCPN_MIN_VERSION "ov50")
+set(OCPN_MIN_VERSION "ov57")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
 set(TP_COMMENT "  * Release for O5 using CI")
@@ -210,13 +210,12 @@ set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
 ##=============================================================
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp/include)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
 #
 # ----- Change below to match project requirements for android build ----- ##
@@ -233,9 +232,6 @@ endif(QT_ANDROID)
 
 # ==================================
 target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
-# target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
-# target before
-#target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${SRC_NMEA0183} ${SRC_JSON})
 
 # ==================================
 
