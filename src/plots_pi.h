@@ -33,7 +33,7 @@
 #include <wx/wx.h>
 #include <wx/fileconf.h>
 
-#include "plugingl/qtstylesheet.h"
+#include "qtstylesheet.h"
 
 #include "version.h"
 

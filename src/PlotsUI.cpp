@@ -185,7 +185,7 @@ PlotConfigurationDialogBase::PlotConfigurationDialogBase( wxWindow* parent, wxWi
 	m_panel1->SetSizer( fgSizer14 );
 	m_panel1->Layout();
 	fgSizer14->Fit( m_panel1 );
-	m_listbook1->AddPage( m_panel1, _("Speed"), false );
+	m_listbook1->AddPage( m_panel1, _("Speed"), true );
 	m_panel2 = new wxPanel( m_listbook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer17;
 	fgSizer17 = new wxFlexGridSizer( 0, 2, 0, 0 );
