@@ -55,7 +55,7 @@ set(LONG_DESCRIPTION "Sailing Performance: Plot speed and course over ground to 
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "3")
-set(VERSION_PATCH "4")
+set(VERSION_PATCH "5")
 set(VERSION_TWEAK "0")
 set(VERSION_DATE  "26/09/2023")#DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov58")
@@ -190,15 +190,6 @@ SET(SRC ${SRCS} ${HDRS} )
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/pluginDC/include)
-
 ## Change target_sources to match your project needs.
 ##==============================================================
 
@@ -211,14 +202,6 @@ if(NOT OCPN_FLATPAK_CONFIG)
 	# so following statements will not work
     message(STATUS "${CMLOC}Adding target link libraries to ${PACKAGE_NAME}")
 
-#    add_subdirectory(libs/jsoncpp)
-#    add_subdirectory(libs/nmea0183)
-#    add_subdirectory(libs/tinyxml)
-#    add_subdirectory(libs/pluginDC)
-#    target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
-#    target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
-#    target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
-#    target_link_libraries(${PACKAGE_NAME} ocpn::pluginDC)
     add_subdirectory(opencpn-libs/WindowsHeaders)
     target_link_libraries(${PACKAGE_NAME} windows::headers)
 

@@ -87,7 +87,7 @@ inline double round(double n) { return n < 0.0 ? ceil(n - 0.5) : floor(n + 0.5);
 #include <GL/glu.h>
 #else
 #include "qopengl.h"                  // this gives us the qt runtime gles2.h
-#include "GL/gl_private.h"
+//#include "GL/gl_private.h"
 #endif
 
 #endif
