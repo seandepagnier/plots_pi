@@ -118,6 +118,7 @@ message(STATUS "${CMLOC}Build type: ${CMAKE_BUILD_TYPE}")
 project(${PACKAGE})
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 ##========================================================
 
@@ -211,8 +212,8 @@ if(NOT OCPN_FLATPAK_CONFIG)
     add_subdirectory(opencpn-libs/tinyxml)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
-#    add_subdirectory(opencpn-libs/glu)
-#    target_link_libraries(${PACKAGE_NAME} ocpn::glu)
+    add_subdirectory(opencpn-libs/glu)
+    target_link_libraries(${PACKAGE_NAME} ocpn::glu)
 
     add_subdirectory(opencpn-libs/jsoncpp)
     target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
