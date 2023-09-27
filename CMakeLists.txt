@@ -213,7 +213,7 @@ if(NOT OCPN_FLATPAK_CONFIG)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
     add_subdirectory(opencpn-libs/glu)
-    target_link_libraries(${PACKAGE_NAME} ocpn::glu)
+    target_link_libraries(${PACKAGE_NAME} ocpn::glu_static)
 
     add_subdirectory(opencpn-libs/jsoncpp)
     target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
