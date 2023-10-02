@@ -69,7 +69,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //---------------------------------------------------------------------------------------------------------
 
 plots_pi::plots_pi(void *ppimgr)
-    : opencpn_plugin_116(ppimgr)
+    : opencpn_plugin_117(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
@@ -188,6 +188,16 @@ int plots_pi::GetPlugInVersionMajor()
 int plots_pi::GetPlugInVersionMinor()
 {
     return PLUGIN_VERSION_MINOR;
+}
+
+int plots_pi::GetPlugInVersionPatch()
+{
+    return PLUGIN_VERSION_PATCH;
+}
+
+int plots_pi::GetPlugInVersionPost()
+{
+    return PLUGIN_VERSION_TWEAK;
 }
 
 //  Converts  icon.cpp file to an image. Original process
