@@ -5,33 +5,33 @@ msgstr ""
 "POT-Creation-Date: 2018-02-15 13:41-0300\n"
 "PO-Revision-Date: 2023-10-04 18:33\n"
 "Last-Translator: \n"
-"Language-Team: Portuguese, Brazilian\n"
-"Language: pt_BR\n"
+"Language-Team: Hebrew\n"
+"Language: he_IL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3;\n"
 "X-Crowdin-Project: opencpn\n"
 "X-Crowdin-Project-ID: 49843\n"
-"X-Crowdin-Language: pt-BR\n"
+"X-Crowdin-Language: he\n"
 "X-Crowdin-File: /plugins/sweepplot_pi/po/sweepplot_pi.pot\n"
 "X-Crowdin-File-ID: 184\n"
 
 #: src/SweepPlotDialog.cpp:34 src/SweepPlotUI.h:74
 msgid "Sweep Plot"
-msgstr "Sweep Plot"
+msgstr ""
 
 #: src/SweepPlotDialog.cpp:48 src/SweepPlotUI.cpp:183
 msgid "Speed"
-msgstr "Velocidade"
+msgstr ""
 
 #: src/SweepPlotDialog.cpp:56 src/SweepPlotUI.cpp:167 src/SweepPlotUI.cpp:209
 msgid "Course"
-msgstr "Curso"
+msgstr ""
 
 #: src/SweepPlotDialog.cpp:63
 msgid "Course FFTW"
-msgstr "Curso FFTW"
+msgstr ""
 
 #: src/SweepPlotDialog.cpp:69 src/SweepPlotUI.cpp:160
 msgid "VMG"
@@ -39,7 +39,7 @@ msgstr ""
 
 #: src/SweepPlotDialog.cpp:75 src/SweepPlotUI.cpp:226
 msgid "Wind Speed"
-msgstr "Velocidade do vento"
+msgstr ""
 
 #: src/SweepPlotDialog.cpp:80
 msgid "Wind Angle"
@@ -51,67 +51,67 @@ msgstr ""
 
 #: src/SweepPlotDialog.cpp:128
 msgid "No Plots Enabled"
-msgstr "Sem desenhos ativos"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:35
 msgid "5 m"
-msgstr "5 m"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:39
 msgid "20 m"
-msgstr "20 m"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:42
 msgid "1 h"
-msgstr "1 h"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:45
 msgid "4 h"
-msgstr "4 h"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:48
 msgid "8 h"
-msgstr "8 h"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:51
 msgid "24 h"
-msgstr "24 h"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:54
 msgid "3 d"
-msgstr "3 d"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:57
 msgid "10 d"
-msgstr "10 d"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:60
 msgid "30 d"
-msgstr "30 d"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:63
 msgid "60 d"
-msgstr "60 d"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:69
 msgid "Configuration"
-msgstr "Configuração"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:143
 msgid "GPS Speed (SOG)"
-msgstr "Velocidade de GPS (SOG)"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:147
 msgid "PDS 10"
-msgstr "PDS 10"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:150
 msgid "PDS 60"
-msgstr "PDS 60"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:153
 msgid "?"
-msgstr "?"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:170
 msgid "0"
@@ -119,23 +119,23 @@ msgstr ""
 
 #: src/SweepPlotUI.cpp:190
 msgid "GPS Course (COG)"
-msgstr "Curso GPS (COG)"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:193
 msgid "PDC 10"
-msgstr "PDC 10"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:196
 msgid "PDC 60"
-msgstr "PDC 60"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:199
 msgid "Heading"
-msgstr "Proa"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:202
 msgid "FFTW Plot"
-msgstr "Desenho FFTW"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:216
 msgid "Apparent Wind Speed (NMEA MWV)"
@@ -159,7 +159,7 @@ msgstr ""
 
 #: src/SweepPlotUI.cpp:246
 msgid "Wind Direction"
-msgstr "Direção do vento"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:253
 msgid "Barometer Pressure( (NMEA MDA)"
@@ -167,47 +167,47 @@ msgstr ""
 
 #: src/SweepPlotUI.cpp:281
 msgid "Font"
-msgstr "Fonte"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:289
 msgid "Minimum Height"
-msgstr "Altura mínima"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:296
 msgid "Colors"
-msgstr "Cores"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:300
 msgid "Standard"
-msgstr "Padrão"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:300
 msgid "Light"
-msgstr "Luz"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:300
 msgid "Retro"
-msgstr "Retrô"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:300
 msgid "Sky"
-msgstr "Céu"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:306
 msgid "Transparency"
-msgstr "Transparência"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:313
 msgid "Style"
-msgstr "Estilo"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:317
 msgid "Continuous"
-msgstr "Continuo"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:317
 msgid "Sweep"
-msgstr "Varredura"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:331
 msgid "Show Title Bar (restart required)\n"
@@ -216,11 +216,11 @@ msgstr ""
 
 #: src/SweepPlotUI.cpp:343 src/SweepPlotUI.cpp:467
 msgid "About"
-msgstr "Sobre"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:396
 msgid "Plots"
-msgstr "Desenhos"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:403
 msgid "Plot Count"
@@ -228,31 +228,31 @@ msgstr ""
 
 #: src/SweepPlotUI.cpp:417
 msgid "Course Prediction Display (from ship on main chart)"
-msgstr "Apresentação da previsão de rumo (do navio na carta principal)"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:424
 msgid "Enable"
-msgstr "Habilitar"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:428
 msgid "Blended (Requires OpenGL)"
-msgstr "Misturado (requer OpenGL)"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:434
 msgid "Length"
-msgstr "Comprimento"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:441
 msgid "minutes"
-msgstr "minutos"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:445
 msgid "Using"
-msgstr "Usando"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:452
 msgid "seconds"
-msgstr "segundos"
+msgstr ""
 
 #: src/SweepPlotUI.cpp:507
 msgid "The sweepplot plugin for opencpn is\n"
@@ -265,40 +265,30 @@ msgid "The sweepplot plugin for opencpn is\n"
 "Author:\n"
 "Sean D'Epagnier\n\n"
 "Many thanks to all of the translators and testers."
-msgstr "O Plugin Sweepplot para  OpenCPN foi\n"
-"desenhado para monitorar a velocidade e rumo para tornar o resultado da navegação à vela evidente.  Pode ser usado para melhor entender as características da navegação de um determinado navio,ou para afinações para apresentar resultados ótimos.\n\n"
-"Por exemplo, caçar uma escota ou ajustar um carro pode produzir um resultado tão ligeiro que é difícil medir o resultado.  Este plugin pode fazer a avaliação da velocidade GPS visível.\n\n"
-"A linha de previsão permite selecionar o tempo de amostragem para uma previsão mais suave que a previsão interna.  Isto é especialmente útil ao viajar relativamente devagar em áreas com ondas grandes..\n\n"
-"Licença: GPLv3+\n\n"
-"Código fonte:\n"
-"https://github.com/seandepagnier/sweepplot_pi\n\n"
-"Autor:\n"
-"Sean D'Epagnier\n\n"
-"Muintos agradecimentos a todos os tradutores e testadores."
+msgstr ""
 
 #: src/SweepPlotUI.cpp:517
 msgid "About Author"
-msgstr "Sobre o autor"
+msgstr ""
 
 #: src/SweepPlotUI.h:173
 msgid "SweepPlot Preferences"
-msgstr "Preferências SweepPlot"
+msgstr ""
 
 #: src/SweepPlotUI.h:197
 msgid "About SweepPlot"
-msgstr "Acerca do SweepPlot"
+msgstr ""
 
 #: src/sweepplot_pi.cpp:94 src/sweepplot_pi.cpp:98 src/sweepplot_pi.cpp:158
 msgid "SweepPlot"
-msgstr "SweepPlot"
+msgstr ""
 
 #: src/sweepplot_pi.cpp:164
 msgid "SweepPlot PlugIn for OpenCPN"
-msgstr "PlugIn SweepPlot para OpenCPN"
+msgstr ""
 
 #: src/sweepplot_pi.cpp:169
 msgid "SweepPlot PlugIn for OpenCPN\n"
 "Plot speed and course over ground to make the result of small adjustments evident."
-msgstr "Plugin SweepPlot para OpenCPN\n"
-"Desenha a velocidade e rumo sobre o solo para tornar evidente o resultado de pequenos ajustes."
+msgstr ""
 
