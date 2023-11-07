@@ -83,8 +83,13 @@ inline double round(double n) { return n < 0.0 ? ceil(n - 0.5) : floor(n + 0.5);
 #else
 
 #ifndef __OCPN__ANDROID__
+#ifdef __WXOSX__
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
+
 #else
 #include "qopengl.h"                  // this gives us the qt runtime gles2.h
 #include "GL/gl_private.h"
