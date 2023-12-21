@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.9.0 Sep 12 2020)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -185,7 +185,7 @@ PlotConfigurationDialogBase::PlotConfigurationDialogBase( wxWindow* parent, wxWi
 	m_panel1->SetSizer( fgSizer14 );
 	m_panel1->Layout();
 	fgSizer14->Fit( m_panel1 );
-	m_listbook1->AddPage( m_panel1, _("Speed"), false );
+	m_listbook1->AddPage( m_panel1, _("Speed"), true );
 	m_panel2 = new wxPanel( m_listbook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer17;
 	fgSizer17 = new wxFlexGridSizer( 0, 2, 0, 0 );
@@ -193,6 +193,7 @@ PlotConfigurationDialogBase::PlotConfigurationDialogBase( wxWindow* parent, wxWi
 	fgSizer17->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
 	m_cbCOG = new wxCheckBox( m_panel2, wxID_ANY, _("GPS Course (COG)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbCOG->SetValue(true);
 	fgSizer17->Add( m_cbCOG, 0, wxALL, 5 );
 
 	m_cbPDC10 = new wxCheckBox( m_panel2, wxID_ANY, _("PDC 10"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -214,7 +215,7 @@ PlotConfigurationDialogBase::PlotConfigurationDialogBase( wxWindow* parent, wxWi
 	m_panel2->SetSizer( fgSizer17 );
 	m_panel2->Layout();
 	fgSizer17->Fit( m_panel2 );
-	m_listbook1->AddPage( m_panel2, _("Course"), true );
+	m_listbook1->AddPage( m_panel2, _("Course"), false );
 	m_panel3 = new wxPanel( m_listbook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer19;
 	fgSizer19 = new wxFlexGridSizer( 0, 1, 0, 0 );
@@ -276,10 +277,10 @@ PlotConfigurationDialogBase::PlotConfigurationDialogBase( wxWindow* parent, wxWi
 	m_listbook1ListView->SetWindowStyleFlag( m_listbook1Flags );
 	#endif
 
-	fgSizer13->Add( m_listbook1, 1, wxEXPAND | wxALL, 5 );
+	fgSizer13->Add( m_listbook1, 1, wxEXPAND, 5 );
 
 
-	fgSizer111->Add( fgSizer13, 1, wxEXPAND, 5 );
+	fgSizer111->Add( fgSizer13, 1, wxALL|wxEXPAND, 5 );
 
 	wxFlexGridSizer* fgSizer101;
 	fgSizer101 = new wxFlexGridSizer( 0, 4, 0, 0 );

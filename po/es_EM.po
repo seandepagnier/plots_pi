@@ -1,0 +1,294 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: opencpn\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-15 13:41-0300\n"
+"PO-Revision-Date: 2023-10-19 09:18\n"
+"Last-Translator: \n"
+"Language-Team: Spanish (Modern)\n"
+"Language: es_EM\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Project-ID: 49843\n"
+"X-Crowdin-Language: es-EM\n"
+"X-Crowdin-File: /plugins/sweepplot_pi/po/sweepplot_pi.pot\n"
+"X-Crowdin-File-ID: 184\n"
+
+#: src/SweepPlotDialog.cpp:34 src/SweepPlotUI.h:74
+msgid "Sweep Plot"
+msgstr "crwdns8641:0crwdne8641:0"
+
+#: src/SweepPlotDialog.cpp:48 src/SweepPlotUI.cpp:183
+msgid "Speed"
+msgstr "crwdns8642:0crwdne8642:0"
+
+#: src/SweepPlotDialog.cpp:56 src/SweepPlotUI.cpp:167 src/SweepPlotUI.cpp:209
+msgid "Course"
+msgstr "crwdns8643:0crwdne8643:0"
+
+#: src/SweepPlotDialog.cpp:63
+msgid "Course FFTW"
+msgstr "crwdns8644:0crwdne8644:0"
+
+#: src/SweepPlotDialog.cpp:69 src/SweepPlotUI.cpp:160
+msgid "VMG"
+msgstr "crwdns10605:0crwdne10605:0"
+
+#: src/SweepPlotDialog.cpp:75 src/SweepPlotUI.cpp:226
+msgid "Wind Speed"
+msgstr "crwdns8670:0crwdne8670:0"
+
+#: src/SweepPlotDialog.cpp:80
+msgid "Wind Angle"
+msgstr "crwdns10606:0crwdne10606:0"
+
+#: src/SweepPlotDialog.cpp:86 src/SweepPlotUI.cpp:260
+msgid "Barometer"
+msgstr "crwdns10607:0crwdne10607:0"
+
+#: src/SweepPlotDialog.cpp:128
+msgid "No Plots Enabled"
+msgstr "crwdns8645:0crwdne8645:0"
+
+#: src/SweepPlotUI.cpp:35
+msgid "5 m"
+msgstr "crwdns8648:0crwdne8648:0"
+
+#: src/SweepPlotUI.cpp:39
+msgid "20 m"
+msgstr "crwdns8649:0crwdne8649:0"
+
+#: src/SweepPlotUI.cpp:42
+msgid "1 h"
+msgstr "crwdns8650:0crwdne8650:0"
+
+#: src/SweepPlotUI.cpp:45
+msgid "4 h"
+msgstr "crwdns8651:0crwdne8651:0"
+
+#: src/SweepPlotUI.cpp:48
+msgid "8 h"
+msgstr "crwdns8652:0crwdne8652:0"
+
+#: src/SweepPlotUI.cpp:51
+msgid "24 h"
+msgstr "crwdns8653:0crwdne8653:0"
+
+#: src/SweepPlotUI.cpp:54
+msgid "3 d"
+msgstr "crwdns8654:0crwdne8654:0"
+
+#: src/SweepPlotUI.cpp:57
+msgid "10 d"
+msgstr "crwdns8655:0crwdne8655:0"
+
+#: src/SweepPlotUI.cpp:60
+msgid "30 d"
+msgstr "crwdns8656:0crwdne8656:0"
+
+#: src/SweepPlotUI.cpp:63
+msgid "60 d"
+msgstr "crwdns8657:0crwdne8657:0"
+
+#: src/SweepPlotUI.cpp:69
+msgid "Configuration"
+msgstr "crwdns8658:0crwdne8658:0"
+
+#: src/SweepPlotUI.cpp:143
+msgid "GPS Speed (SOG)"
+msgstr "crwdns8660:0crwdne8660:0"
+
+#: src/SweepPlotUI.cpp:147
+msgid "PDS 10"
+msgstr "crwdns8661:0crwdne8661:0"
+
+#: src/SweepPlotUI.cpp:150
+msgid "PDS 60"
+msgstr "crwdns8663:0crwdne8663:0"
+
+#: src/SweepPlotUI.cpp:153
+msgid "?"
+msgstr "crwdns8662:0crwdne8662:0"
+
+#: src/SweepPlotUI.cpp:170
+msgid "0"
+msgstr "crwdns10608:0crwdne10608:0"
+
+#: src/SweepPlotUI.cpp:190
+msgid "GPS Course (COG)"
+msgstr "crwdns8664:0crwdne8664:0"
+
+#: src/SweepPlotUI.cpp:193
+msgid "PDC 10"
+msgstr "crwdns8665:0crwdne8665:0"
+
+#: src/SweepPlotUI.cpp:196
+msgid "PDC 60"
+msgstr "crwdns8666:0crwdne8666:0"
+
+#: src/SweepPlotUI.cpp:199
+msgid "Heading"
+msgstr "crwdns8667:0crwdne8667:0"
+
+#: src/SweepPlotUI.cpp:202
+msgid "FFTW Plot"
+msgstr "crwdns8668:0crwdne8668:0"
+
+#: src/SweepPlotUI.cpp:216
+msgid "Apparent Wind Speed (NMEA MWV)"
+msgstr "crwdns10609:0crwdne10609:0"
+
+#: src/SweepPlotUI.cpp:219
+msgid "True Wind Speed (via gpps speed)"
+msgstr "crwdns10610:0crwdne10610:0"
+
+#: src/SweepPlotUI.cpp:233
+msgid "Apparent Wind Direction (NMEA MWV)"
+msgstr "crwdns10611:0crwdne10611:0"
+
+#: src/SweepPlotUI.cpp:236
+msgid "True Wind Angle (via GPS speed)"
+msgstr "crwdns10612:0crwdne10612:0"
+
+#: src/SweepPlotUI.cpp:239
+msgid "True Wind Direction (via GPS speed)"
+msgstr "crwdns10613:0crwdne10613:0"
+
+#: src/SweepPlotUI.cpp:246
+msgid "Wind Direction"
+msgstr "crwdns8671:0crwdne8671:0"
+
+#: src/SweepPlotUI.cpp:253
+msgid "Barometer Pressure( (NMEA MDA)"
+msgstr "crwdns10614:0crwdne10614:0"
+
+#: src/SweepPlotUI.cpp:281
+msgid "Font"
+msgstr "crwdns8673:0crwdne8673:0"
+
+#: src/SweepPlotUI.cpp:289
+msgid "Minimum Height"
+msgstr "crwdns8674:0crwdne8674:0"
+
+#: src/SweepPlotUI.cpp:296
+msgid "Colors"
+msgstr "crwdns8675:0crwdne8675:0"
+
+#: src/SweepPlotUI.cpp:300
+msgid "Standard"
+msgstr "crwdns8676:0crwdne8676:0"
+
+#: src/SweepPlotUI.cpp:300
+msgid "Light"
+msgstr "crwdns8677:0crwdne8677:0"
+
+#: src/SweepPlotUI.cpp:300
+msgid "Retro"
+msgstr "crwdns8678:0crwdne8678:0"
+
+#: src/SweepPlotUI.cpp:300
+msgid "Sky"
+msgstr "crwdns8679:0crwdne8679:0"
+
+#: src/SweepPlotUI.cpp:306
+msgid "Transparency"
+msgstr "crwdns8680:0crwdne8680:0"
+
+#: src/SweepPlotUI.cpp:313
+msgid "Style"
+msgstr "crwdns8681:0crwdne8681:0"
+
+#: src/SweepPlotUI.cpp:317
+msgid "Continuous"
+msgstr "crwdns8682:0crwdne8682:0"
+
+#: src/SweepPlotUI.cpp:317
+msgid "Sweep"
+msgstr "crwdns8683:0crwdne8683:0"
+
+#: src/SweepPlotUI.cpp:331
+msgid "Show Title Bar (restart required)\n"
+"Window Manager may not support this"
+msgstr "crwdns10615:0crwdne10615:0"
+
+#: src/SweepPlotUI.cpp:343 src/SweepPlotUI.cpp:467
+msgid "About"
+msgstr "crwdns8692:0crwdne8692:0"
+
+#: src/SweepPlotUI.cpp:396
+msgid "Plots"
+msgstr "crwdns8659:0crwdne8659:0"
+
+#: src/SweepPlotUI.cpp:403
+msgid "Plot Count"
+msgstr "crwdns10616:0crwdne10616:0"
+
+#: src/SweepPlotUI.cpp:417
+msgid "Course Prediction Display (from ship on main chart)"
+msgstr "crwdns8685:0crwdne8685:0"
+
+#: src/SweepPlotUI.cpp:424
+msgid "Enable"
+msgstr "crwdns8686:0crwdne8686:0"
+
+#: src/SweepPlotUI.cpp:428
+msgid "Blended (Requires OpenGL)"
+msgstr "crwdns8687:0crwdne8687:0"
+
+#: src/SweepPlotUI.cpp:434
+msgid "Length"
+msgstr "crwdns8688:0crwdne8688:0"
+
+#: src/SweepPlotUI.cpp:441
+msgid "minutes"
+msgstr "crwdns8689:0crwdne8689:0"
+
+#: src/SweepPlotUI.cpp:445
+msgid "Using"
+msgstr "crwdns8690:0crwdne8690:0"
+
+#: src/SweepPlotUI.cpp:452
+msgid "seconds"
+msgstr "crwdns8691:0crwdne8691:0"
+
+#: src/SweepPlotUI.cpp:507
+msgid "The sweepplot plugin for opencpn is\n"
+"designed to monitor speed and course to make the results of changes to sail sweep obvious.  It may be used to better understand the sailing characteristics of a particular vessel, or for fine tuning to give optimal results.\n\n"
+"For example, tightening a vang or adjusting a traveler may produce such a slight result that it is difficult to gauge the result.  This plugin can make gps speed feedback visible.\n\n"
+"The predictor line allows setting the sample time for smoother prediction than the builtin predictor.  This is especially useful when traveling relatively slowly in areas with large waves.\n\n"
+"License: GPLv3+\n\n"
+"Source Code:\n"
+"https://github.com/seandepagnier/sweepplot_pi\n\n"
+"Author:\n"
+"Sean D'Epagnier\n\n"
+"Many thanks to all of the translators and testers."
+msgstr "crwdns8693:0crwdne8693:0"
+
+#: src/SweepPlotUI.cpp:517
+msgid "About Author"
+msgstr "crwdns8694:0crwdne8694:0"
+
+#: src/SweepPlotUI.h:173
+msgid "SweepPlot Preferences"
+msgstr "crwdns8695:0crwdne8695:0"
+
+#: src/SweepPlotUI.h:197
+msgid "About SweepPlot"
+msgstr "crwdns8696:0crwdne8696:0"
+
+#: src/sweepplot_pi.cpp:94 src/sweepplot_pi.cpp:98 src/sweepplot_pi.cpp:158
+msgid "SweepPlot"
+msgstr "crwdns8697:0crwdne8697:0"
+
+#: src/sweepplot_pi.cpp:164
+msgid "SweepPlot PlugIn for OpenCPN"
+msgstr "crwdns8698:0crwdne8698:0"
+
+#: src/sweepplot_pi.cpp:169
+msgid "SweepPlot PlugIn for OpenCPN\n"
+"Plot speed and course over ground to make the result of small adjustments evident."
+msgstr "crwdns8699:0crwdne8699:0"
+

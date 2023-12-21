@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.9.0 Sep 12 2020)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -57,7 +57,7 @@ class PlotsDialogBase : public wxDialog
 		wxMenuItem* m_mt9;
 		wxMenuItem* m_mt10;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
 		virtual void OnSize( wxSizeEvent& event ) { event.Skip(); }
 		virtual void Relay( wxKeyEvent& event ) { event.Skip(); }
@@ -73,6 +73,7 @@ class PlotsDialogBase : public wxDialog
 		wxScrolledWindow* m_scrollWindow;
 
 		PlotsDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Plots"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxWANTS_CHARS|wxBORDER_SUNKEN );
+
 		~PlotsDialogBase();
 
 		void m_swPlotsOnContextMenu( wxMouseEvent &event )
@@ -106,7 +107,7 @@ class PlotConfigurationDialogBase : public wxDialog
 		wxStdDialogButtonSizer* m_sdbSizer1;
 		wxButton* m_sdbSizer1OK;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnPDS( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPlotChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnFont( wxCommandEvent& event ) { event.Skip(); }
@@ -140,6 +141,7 @@ class PlotConfigurationDialogBase : public wxDialog
 		wxCheckBox* m_cbShowTitleBar;
 
 		PlotConfigurationDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+
 		~PlotConfigurationDialogBase();
 
 };
@@ -161,7 +163,7 @@ class PreferencesDialogBase : public wxDialog
 		wxStdDialogButtonSizer* m_sdbSizer1;
 		wxButton* m_sdbSizer1OK;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
 
 
@@ -173,6 +175,7 @@ class PreferencesDialogBase : public wxDialog
 		wxSpinCtrl* m_sCoursePredictionSeconds;
 
 		PreferencesDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Plots Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE );
+
 		~PreferencesDialogBase();
 
 };
@@ -190,13 +193,14 @@ class AboutDialogBase : public wxDialog
 		wxStdDialogButtonSizer* m_sdbSizer2;
 		wxButton* m_sdbSizer2OK;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnAboutAuthor( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
 
 		AboutDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About Plots"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+
 		~AboutDialogBase();
 
 };

@@ -33,7 +33,7 @@
 #include <wx/wx.h>
 #include <wx/fileconf.h>
 
-#include "plugingl/qtstylesheet.h"
+#include "qtstylesheet.h"
 
 #include "version.h"
 
@@ -83,8 +83,13 @@ inline double round(double n) { return n < 0.0 ? ceil(n - 0.5) : floor(n + 0.5);
 #else
 
 #ifndef __OCPN__ANDROID__
+#ifdef __WXOSX__
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
+
 #else
 #include "qopengl.h"                  // this gives us the qt runtime gles2.h
 #include "GL/gl_private.h"
@@ -108,7 +113,7 @@ double heading_resolve(double degrees, double ref=0);
 class PlotsDialog;
 class PreferencesDialog;
 
-class plots_pi : public wxEvtHandler, public opencpn_plugin_116
+class plots_pi : public wxEvtHandler, public opencpn_plugin_117
 {
 public:
       plots_pi(void *ppimgr);
@@ -121,6 +126,9 @@ public:
       int GetAPIVersionMinor();
       int GetPlugInVersionMajor();
       int GetPlugInVersionMinor();
+      int GetPlugInVersionPatch();
+      int GetPlugInVersionPost();
+	  
       wxBitmap *GetPlugInBitmap();
       wxString GetCommonName();
       wxString GetShortDescription();

@@ -29,7 +29,6 @@
   #include "wx/wx.h"
 #endif //precompiled headers
 
-//#include <wx/wx.h>
 #include <wx/stdpaths.h>
 
 #include "json/json.h"
@@ -70,7 +69,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //---------------------------------------------------------------------------------------------------------
 
 plots_pi::plots_pi(void *ppimgr)
-    : opencpn_plugin_116(ppimgr)
+    : opencpn_plugin_117(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
@@ -189,6 +188,16 @@ int plots_pi::GetPlugInVersionMajor()
 int plots_pi::GetPlugInVersionMinor()
 {
     return PLUGIN_VERSION_MINOR;
+}
+
+int plots_pi::GetPlugInVersionPatch()
+{
+    return PLUGIN_VERSION_PATCH;
+}
+
+int plots_pi::GetPlugInVersionPost()
+{
+    return PLUGIN_VERSION_TWEAK;
 }
 
 //  Converts  icon.cpp file to an image. Original process
@@ -526,7 +535,7 @@ void plots_pi::SetNMEASentence( wxString &sentence )
 
     if( nmea.LastSentenceIDReceived == _T("HDM") ) {
         if( nmea.Parse() ) {
-            if( !wxIsNaN(nmea.Hdm.DegreesMagnetic) ) {
+            if( !isnan(nmea.Hdm.DegreesMagnetic) ) {
                 AddData(HDG, nmea.Hdm.DegreesMagnetic - Declination());
                 AddData(HDM, nmea.Hdm.DegreesMagnetic);
             }
